@@ -10,7 +10,19 @@
     "build": "node build/build.js"
   },
   "dependencies": {
-    "vue": "^2.5.2"
+    "axios": "^0.19.2",
+    "bootstrap": "^4.4.1",
+    "bootstrap-vue": "^2.12.0",
+    "core-js": "^3.6.5",
+    "leaflet": "^1.6.0",
+    "leaflet-geosearch": "^2.7.0",
+    "register-service-worker": "^1.7.1",
+    "vue": "^2.6.11",
+    "vue-router": "^3.1.6",
+    "vue2-leaflet": "^2.5.2",
+    "vue2-leaflet-geosearch": "^1.0.6",
+    "vuejs-datatable": "^2.0.0-alpha.7",
+    "vuex": "^3.2.0"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
