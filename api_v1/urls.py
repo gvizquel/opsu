@@ -1,0 +1,37 @@
+"""EndPoints for api V1
+"""
+# Django Libraries
+from django.urls import path
+from django.views.generic import TemplateView
+
+# Local Folders Libraries
+from .viewsets import (
+    EstadoViewset,
+    MunicipioViewset,
+    ParroquiaViewset,
+    ProgramaAcademicoViewSet,
+)
+
+app_name = "api_v1"
+
+urlpatterns = [
+    path("", TemplateView.as_view(template_name="api_v1_doc.html")),
+    # ###################### Programas Academicos de Pre Grado ####################### #
+    path(
+        "programa-academico/pre-grado/listar/",
+        ProgramaAcademicoViewSet.as_view({"get": "list"}),
+        name="pre-programa-listar",
+    ),
+    # ######################## División Político Territorial ######################### #
+    path("estado/listar/", EstadoViewset.as_view({"get": "list"}), name="estado",),
+    path(
+        "municipio/listar/",
+        MunicipioViewset.as_view({"get": "list"}),
+        name="municipio",
+    ),
+    path(
+        "parroquia/listar/",
+        ParroquiaViewset.as_view({"get": "list"}),
+        name="parroquia",
+    ),
+]

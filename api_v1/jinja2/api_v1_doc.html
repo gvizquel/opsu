@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>{{ settings.NOMBRE_APP }} | Registro</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.7 -->
+    <link rel="stylesheet" href="{{ static('bower_components/bootstrap/dist/css/bootstrap.min.css') }}">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="{{ static('bower_components/font-awesome/css/font-awesome.min.css') }}">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="{{ static('bower_components/Ionicons/css/ionicons.min.css') }}">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="{{ static('dist/css/AdminLTE.min.css') }}">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+    <!-- Google Font -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+
+    <style>
+        .lockscreen-wrapper {
+            max-width: 700px;
+            margin: 0 auto;
+            margin-top: 0px;
+            margin-top: 5%;
+            border-bottom-color: currentcolor;
+            border-bottom-style: solid;
+            border-bottom-width: thin;
+        }
+    </style>
+</head>
+
+<body class="hold-transition lockscreen">
+    <!-- Automatic element centering -->
+    <div class="lockscreen-wrapper">
+        <div class="lockscreen-logo">
+            <a href="../../"><b>{{ settings.PREFIJO }}</b>{{ settings.SUFIJO }}</a>
+        </div>
+        <!-- User name -->
+        <div class="lockscreen-name">LOEU API V1.0</div>
+
+        <!-- START LOCK SCREEN ITEM -->
+        <div class="lockscreen-item">
+
+        </div>
+        <!-- /.lockscreen-item -->
+        <div class="lockscreen-footer">
+            <h3>EndPoints Instituciones de Educación Universitaria (IEU)</h3>
+            <p><a href="{{ url('api_v1:municipio') }}">Tipo IEU</a>: Devuelve uno o una lista de tipos de Instituciones de Educación Universitaria de Venezuela.</p>
+            <p><a href="{{ url('api_v1:estado') }}">IEU</a>: Devuelve uno o una lista de Instituciones de Educación Universitaria en Venezuela.</p>
+            <p><a href="{{ url('api_v1:parroquia') }}">Localidad (des)</a>: Devuelve uno o una lista de localidades de Instituciones de Educación Universitaria en Venezuela.</p>
+            <h3>EndPoints Académicos</h3>
+            <p><a href="{{ url('api_v1:pre-programa-listar') }}">Area (s) de conocimiento (s)</a>: Devuelve uno o una lista de los programas académicos de pregrado.</p>
+            <p><a href="{{ url('api_v1:pre-programa-listar') }}">Area (s) de conocimiento (s)</a>: Devuelve uno o una lista de los programas académicos de pregrado.</p>
+            <p><a href="{{ url('api_v1:pre-programa-listar') }}">Tipo de Programa Académico</a>: Devuelve uno o una lista de los programas académicos de pregrado.</p>
+            <p><a href="{{ url('api_v1:pre-programa-listar') }}">Título de Grado</a>: Devuelve uno o una lista de los programas académicos de pregrado.</p>
+            <p><a href="{{ url('api_v1:pre-programa-listar') }}">Programas Académicos de Pregrado</a>: Devuelve uno o una lista de los programas académicos de pregrado.</p>
+            <h3>EndPoints Político Territoriales</h3>
+            <p><a href="{{ url('api_v1:estado') }}">Estado (s)</a>: Devuelve uno o una lista de estados de Venezuela.</p>
+            <p><a href="{{ url('api_v1:municipio') }}">Municipio (s)</a>: Devuelve uno o una lista de municipios de Venezuela.</p>
+            <p><a href="{{ url('api_v1:parroquia') }}">Parroquia (s)</a>: Devuelve uno o una lista de parroquias de Venezuela.</p>
+        </div>
+    </div>
+    <!-- /.center -->
+
+    <!-- jQuery 3 -->
+    <script src="{{ static('bower_components/jquery/dist/jquery.min.js') }}"></script>
+    <!-- Bootstrap 3.3.7 -->
+    <script src="{{ static('bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+</body>
+
+</html>

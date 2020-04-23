@@ -1,0 +1,32 @@
+#!/bin/bash
+
+NAME="LOEU"                             # Nombre de la aplicación
+DJANGODIR=~/opsu                        # Directorio del proyecto Django
+SOCKFILE=$DJANGODIR/run/gunicorn.sock       # Nos comunicaremos usando este socket unix
+USER=loeu                               # El usuario que ejecuta la app
+GROUP=loeu                              # El grupo que ejecuta la app
+NUM_WORKERS=1                           # Cuantos trabajadores procesaran Gunicorn (cant. de procesadores + 1).
+DJANGO_SETTINGS_MODULE=opsu.settings    # Que archivo de configuración usará Django
+DJANGO_WSGI_MODULE=opsu.wsgi            # Nombre del módulo WSGI
+
+echo "Iniciando $NAME as `whoami`"
+
+# Activar el entorno virtual
+cd $DJANGODIR
+source $DJANGODIR/.venv/bin/activate
+export DJANGO_SETTINGS_MODULE=$DJANGO_SETTINGS_MODULE
+export PYTHONPATH=$DJANGODIR:$PYTHONPATH
+
+# Crea el directorio run en caso de que no exista
+RUNDIR=$(dirname $SOCKFILE)
+test -d $RUNDIR || mkdir -p $RUNDIR
+
+# Iniciar la app Django con gunicorn
+# Los programas que están supuestos a usar supervisor no deben usar demonios (no usar --daemon)
+exec gunicorn ${DJANGO_WSGI_MODULE}:application \
+  --name $NAME \
+  --workers $NUM_WORKERS \
+  --user=$USER --group=$GROUP \
+  --bind=unix:$SOCKFILE \
+  --log-level=debug \
+  --log-file=-
