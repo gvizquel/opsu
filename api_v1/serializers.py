@@ -29,17 +29,27 @@ class IeuSerializer(serpy.Serializer):
     """
 
     id = serpy.Field()
+    institucion_ministerial = serpy.MethodField("ieu_nombre", label="nombre")
+    siglas = serpy.MethodField("ieu_siglas", label="siglas")
+    dep_admin = serpy.MethodField("ieu_dep_admin", label="dep_admin")
     tipo_especifico_ieu = serpy.StrField(label="tipo_ieu")
-    localidad_principal = serpy.StrField()
     logo = serpy.StrField()
     fachada = serpy.StrField()
     cod_activacion = serpy.MethodField("activo", label="activo")
-    institucion_ministerial = InstitucionMinisterialSerializer()
 
     def activo(self, Ieu):
         if Ieu.cod_activacion == "11001111" or Ieu.cod_activacion == "10001111":
             return True
         return False
+
+    def ieu_nombre(self, Ieu):
+        return Ieu.institucion_ministerial.nombre
+
+    def ieu_siglas(self, Ieu):
+        return Ieu.institucion_ministerial.siglas
+
+    def ieu_dep_admin(self, Ieu):
+        return Ieu.institucion_ministerial.dep_admin
 
 
 class LocalidadSerializer(serpy.Serializer):
@@ -141,12 +151,14 @@ class TipoIeuEspecificoSerializer(serpy.Serializer):
     """
 
     id = serpy.Field()
-    nombre = serpy.Field()
-    municipio = serpy.MethodField("municipio_method")
-    estado = serpy.MethodField("estado_method")
+    tipo = serpy.MethodField("tipo_ieu_method", label="nombre")
 
-    def estado_method(self, Parroquia):
-        return Parroquia.estado.id
+    def tipo_ieu_method(self, TipoEspecificoInstitucion):
 
-    def municipio_method(self, Parroquia):
-        return Parroquia.municipio.id
+        if TipoEspecificoInstitucion.nombre:
+            nombre_tipo_ieu = "{} {}".format(
+                TipoEspecificoInstitucion.sub_tipo_ieu, TipoEspecificoInstitucion.nombre
+            )
+        else:
+            nombre_tipo_ieu = "%s" % (TipoEspecificoInstitucion.sub_tipo_ieu)
+        return nombre_tipo_ieu

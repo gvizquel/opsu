@@ -104,7 +104,7 @@ TEMPLATES = [
         "BACKEND": "django.template.backends.jinja2.Jinja2",
         "DIRS": [
             os.path.join(BASE_DIR, "jinja2"),
-            os.path.join(BASE_DIR, "front/dist"),
+            os.path.join(BASE_DIR, "loeu_front/dist"),
         ],
         "APP_DIRS": True,
         "OPTIONS": {
@@ -116,7 +116,7 @@ TEMPLATES = [
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         "DIRS": [
             os.path.join(BASE_DIR, "templates"),
-            os.path.join(BASE_DIR, "front/dist"),
+            os.path.join(BASE_DIR, "loeu_front/dist"),
         ],
         "APP_DIRS": True,
         "OPTIONS": {
@@ -259,8 +259,8 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = "media"
-STATIC_URL = "/front/dist/static/"
-STATIC_ROOT = os.path.join(BASE_DIR, "front/dist/static")
+STATIC_URL = "/loeu_front/dist/static/"
+STATIC_ROOT = os.path.join(BASE_DIR, "loeu_front/dist/static")
 
 
 ################################## Suit Admin Config ###################################
