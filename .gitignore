@@ -22,7 +22,6 @@ base_datos/*
 .vscode/
 .mypy_cache/*
 Pipfile.lock
-static/
 log/
 .venv/
 media/
