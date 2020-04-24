@@ -7,9 +7,12 @@ from django.views.generic import TemplateView
 # Local Folders Libraries
 from .viewsets import (
     EstadoViewset,
+    IeuViewSet,
+    LocalidadViewSet,
     MunicipioViewset,
     ParroquiaViewset,
     ProgramaAcademicoViewSet,
+    TipoIeuViewSet,
 )
 
 app_name = "api_v1"
@@ -20,7 +23,7 @@ urlpatterns = [
     path(
         "programa-academico/pre-grado/listar/",
         ProgramaAcademicoViewSet.as_view({"get": "list"}),
-        name="pre-programa-listar",
+        name="pre-programa",
     ),
     # ######################## División Político Territorial ######################### #
     path("estado/listar/", EstadoViewset.as_view({"get": "list"}), name="estado",),
@@ -33,5 +36,11 @@ urlpatterns = [
         "parroquia/listar/",
         ParroquiaViewset.as_view({"get": "list"}),
         name="parroquia",
+    ),
+    # ################### Istituciones de Educación Universitaria #################### #
+    path("ieu/tipo/", TipoIeuViewSet.as_view({"get": "list"}), name="tipo-ieu",),
+    path("ieu/", IeuViewSet.as_view({"get": "list"}), name="ieu",),
+    path(
+        "ieu/localidad/", LocalidadViewSet.as_view({"get": "list"}), name="localidad",
     ),
 ]

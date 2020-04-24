@@ -393,9 +393,7 @@ class TipoEspecificoInstitucion(models.Model):
         return cadena
 
     class Meta:
-        ordering = [
-            "nombre",
-        ]
+        ordering = ["tipo_ieu__nombre", "sub_tipo_ieu__nombre", "nombre"]
         db_table = 'oeu"."tipo_especifico_ieu'
         verbose_name = "Tipo IEU Específico"
         verbose_name_plural = "Tipos IEU Específicos"
