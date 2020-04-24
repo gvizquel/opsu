@@ -3,18 +3,30 @@
 
 # Thirdparty Libraries
 from globales.models import Estado, Municipio, Parroquia
-from oeu.models import Carrera, TipoEspecificoInstitucion, Ieu, Localidad
+from oeu.models import (
+    AreaConocimiento,
+    Carrera,
+    Ieu,
+    Localidad,
+    SubAreaConocimiento,
+    TipoEspecificoInstitucion,
+)
+from oeuconfig.models import TipoCarrera, Titulo
 from rest_framework import viewsets
 
 # Local Folders Libraries
 from .serializers import (
+    AreaSerializer,
     CarreraSerializer,
     EstadoSerializer,
     IeuSerializer,
     LocalidadSerializer,
     MunicipioSerializer,
     ParroquiaSerializer,
+    SubAreaSerializer,
     TipoIeuEspecificoSerializer,
+    TipoProgramaSerializer,
+    TituloSerializer,
 )
 
 
@@ -115,7 +127,6 @@ class ProgramaAcademicoViewSet(viewsets.ReadOnlyModelViewSet):
         """
         queryset = self.filter_queryset(self.get_queryset())
 
-        #################### Parametros que pueden venir en la url #####################
         id_estado = self.request.query_params.get("id_estado", None)
         id_municipio = self.request.query_params.get("id_municipio", None)
         id_parroquia = self.request.query_params.get("id_parroquia", None)
@@ -128,7 +139,6 @@ class ProgramaAcademicoViewSet(viewsets.ReadOnlyModelViewSet):
         id_localidad = self.request.query_params.get("id_localidad", None)
         dep_admin = self.request.query_params.get("dep_admin", None)
 
-        ############################# Filtrando el queryset ############################
         if id_estado:
             queryset = queryset.filter(localidad__estado=id_estado)
         if id_municipio:
@@ -188,7 +198,6 @@ class EstadoViewset(viewsets.ReadOnlyModelViewSet):
 
     serializer_class = EstadoSerializer
     queryset = Estado.objects.all()
-    model = Estado
 
     def list(self, request):
         """
@@ -196,10 +205,8 @@ class EstadoViewset(viewsets.ReadOnlyModelViewSet):
         """
         queryset = self.filter_queryset(self.get_queryset())
 
-        #################### Parametros que pueden venir en la url #####################
         object_id = self.request.query_params.get("id", None)
 
-        ############################# Filtrando el queryset ############################
         if object_id:
             queryset = queryset.filter(pk=object_id)
 
@@ -240,7 +247,6 @@ class MunicipioViewset(viewsets.ReadOnlyModelViewSet):
 
     serializer_class = MunicipioSerializer
     queryset = Municipio.objects.all()
-    model = Municipio
 
     def list(self, request):
         """
@@ -248,11 +254,9 @@ class MunicipioViewset(viewsets.ReadOnlyModelViewSet):
         """
         queryset = self.filter_queryset(self.get_queryset())
 
-        #################### Parametros que pueden venir en la url #####################
         id_estado = self.request.query_params.get("id_estado", None)
         object_id = self.request.query_params.get("id", None)
 
-        ############################# Filtrando el queryset ############################
         if object_id:
             queryset = queryset.filter(pk=object_id)
         if id_estado:
@@ -298,7 +302,6 @@ class ParroquiaViewset(viewsets.ReadOnlyModelViewSet):
 
     serializer_class = ParroquiaSerializer
     queryset = Parroquia.objects.all()
-    model = Parroquia
 
     def list(self, request):
         """
@@ -306,13 +309,11 @@ class ParroquiaViewset(viewsets.ReadOnlyModelViewSet):
         """
         queryset = self.filter_queryset(self.get_queryset())
 
-        #################### Parametros que pueden venir en la url #####################
         id_estado = self.request.query_params.get("id_estado", None)
         id_municipio = self.request.query_params.get("id_municipio", None)
         id_parroquia = self.request.query_params.get("id_parroquia", None)
         object_id = self.request.query_params.get("id", None)
 
-        ############################# Filtrando el queryset ############################
         if object_id:
             queryset = queryset.filter(pk=object_id)
         if id_estado:
@@ -357,7 +358,6 @@ class TipoIeuViewSet(viewsets.ReadOnlyModelViewSet):
 
     serializer_class = TipoIeuEspecificoSerializer
     queryset = TipoEspecificoInstitucion.objects.all()
-    model = TipoEspecificoInstitucion
 
     def list(self, request):
         """
@@ -365,10 +365,8 @@ class TipoIeuViewSet(viewsets.ReadOnlyModelViewSet):
         """
         queryset = self.filter_queryset(self.get_queryset())
 
-        #################### Parametros que pueden venir en la url #####################
         object_id = self.request.query_params.get("id", None)
 
-        ############################# Filtrando el queryset ############################
         if object_id:
             queryset = queryset.filter(pk=object_id)
 
@@ -421,12 +419,10 @@ class IeuViewSet(viewsets.ReadOnlyModelViewSet):
         """
         queryset = self.filter_queryset(self.get_queryset())
 
-        #################### Parametros que pueden venir en la url #####################
         object_id = self.request.query_params.get("id", None)
         id_tipo_ieu = self.request.query_params.get("id_tipo_ieu", None)
         dep_admin = self.request.query_params.get("dep_admin", None)
 
-        ############################# Filtrando el queryset ############################
         if object_id:
             queryset = queryset.filter(pk=object_id)
         if id_tipo_ieu:
@@ -512,7 +508,6 @@ class LocalidadViewSet(viewsets.ReadOnlyModelViewSet):
         """
         queryset = self.filter_queryset(self.get_queryset())
 
-        #################### Parametros que pueden venir en la url #####################
         id_estado = self.request.query_params.get("id_estado", None)
         id_municipio = self.request.query_params.get("id_municipio", None)
         id_parroquia = self.request.query_params.get("id_parroquia", None)
@@ -521,7 +516,6 @@ class LocalidadViewSet(viewsets.ReadOnlyModelViewSet):
         object_id = self.request.query_params.get("id", None)
         dep_admin = self.request.query_params.get("dep_admin", None)
 
-        ############################# Filtrando el queryset ############################
         if id_estado:
             queryset = queryset.filter(estado=id_estado)
         if id_municipio:
@@ -538,6 +532,196 @@ class LocalidadViewSet(viewsets.ReadOnlyModelViewSet):
             queryset = queryset.filter(
                 ieu__institucion_ministerial__dep_admin=dep_admin
             )
+
+        page = self.paginate_queryset(queryset)
+        serializer = self.get_serializer(page, many=True)
+        return self.get_paginated_response(serializer.data)
+
+
+class AreaViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    ## Obtener Area de Conocimiento de los Programas Académicos
+    Este EndPoint puede devolver uno o una lista de las Áreas del Conocimeinto que agrupan a los Programas Académicos.
+
+    * Method: **GET**
+    * Content-Type: **application/json**
+    * Url Params:
+        * **id**: tipo int que filtra el tipo de Institución de Educación Universitaria.
+
+    * Respuesta exitosa:
+        * HTTP code: 200
+        * Objeto:
+
+            {\n
+                "count": 14,
+                "next": null,
+                "previous": null,
+                "results": [
+                    {
+                        "id": identificador único del áreas del conocimeinto (int),
+                        "nombre": nombre del áreas del conocimeinto (str)"
+                    }
+                ]
+            }
+    """
+
+    serializer_class = AreaSerializer
+    queryset = AreaConocimiento.objects.all()
+
+    def list(self, request):
+        """
+        Metodo to list estados
+        """
+        queryset = self.filter_queryset(self.get_queryset())
+
+        object_id = self.request.query_params.get("id", None)
+
+        if object_id:
+            queryset = queryset.filter(pk=object_id)
+
+        page = self.paginate_queryset(queryset)
+        serializer = self.get_serializer(page, many=True)
+        return self.get_paginated_response(serializer.data)
+
+
+class SubAreaViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    ## Obtener Subarea de Conocimiento de los Programas Académicos
+    Este EndPoint puede devolver uno o una lista de las Subareas del Conocimeinto que agrupan a los Programas Académicos.
+
+    * Method: **GET**
+    * Content-Type: **application/json**
+    * Url Params:
+        * **id**: tipo int que filtra el subáreas del conocimeinto.
+        * **id_area**: tipo int que filtra las subáreas del conocimeinto de acuerdo al
+            id del área.
+
+    * Respuesta exitosa:
+        * HTTP code: 200
+        * Objeto:
+
+            {\n
+                "count": 14,
+                "next": null,
+                "previous": null,
+                "results": [
+                    {
+                        "id": identificador único del subáreas del conocimeinto (int),
+                        "nombre": nombre del subáreas del conocimeinto (str)",
+                        "area": nombre del área del conocimeinto (str)"
+                    }
+                ]
+            }
+    """
+
+    serializer_class = SubAreaSerializer
+    queryset = SubAreaConocimiento.objects.all()
+
+    def list(self, request):
+        """
+        Metodo to list estados
+        """
+        queryset = self.filter_queryset(self.get_queryset())
+
+        object_id = self.request.query_params.get("id", None)
+        id_area = self.request.query_params.get("id_area", None)
+
+        if object_id:
+            queryset = queryset.filter(pk=object_id)
+        if id_area:
+            queryset = queryset.filter(area_conocimiento=id_area)
+
+        page = self.paginate_queryset(queryset)
+        serializer = self.get_serializer(page, many=True)
+        return self.get_paginated_response(serializer.data)
+
+
+class TituloViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    ## Obtener Títulos de Grado de los Programas Académicos
+    Este EndPoint puede devolver uno o una lista de los título de grado de los Programas Académicos.
+
+    * Method: **GET**
+    * Content-Type: **application/json**
+    * Url Params:
+        * **id**: tipo int que filtra el título de grado.
+
+    * Respuesta exitosa:
+        * HTTP code: 200
+        * Objeto:
+
+            {\n
+                "count": 14,
+                "next": null,
+                "previous": null,
+                "results": [
+                    {
+                        "id": identificador único del título (int),
+                        "nombre": nombre del título (str)"
+                    }
+                ]
+            }
+    """
+
+    serializer_class = TituloSerializer
+    queryset = Titulo.objects.all()
+
+    def list(self, request):
+        """
+        Metodo to list estados
+        """
+        queryset = self.filter_queryset(self.get_queryset())
+
+        object_id = self.request.query_params.get("id", None)
+
+        if object_id:
+            queryset = queryset.filter(pk=object_id)
+
+        page = self.paginate_queryset(queryset)
+        serializer = self.get_serializer(page, many=True)
+        return self.get_paginated_response(serializer.data)
+
+
+class TipoProgramaViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    ## Obtener Tipos de Programas Académicos
+    Este EndPoint puede devolver uno o una lista de los Tipos de Programas Académicos.
+
+    * Method: **GET**
+    * Content-Type: **application/json**
+    * Url Params:
+        * **id**: tipo int que filtra el tipo de programas académicos.
+
+    * Respuesta exitosa:
+        * HTTP code: 200
+        * Objeto:
+
+            {\n
+                "count": 14,
+                "next": null,
+                "previous": null,
+                "results": [
+                    {
+                        "id": identificador único del tipo de programas académicos (int),
+                        "nombre": nombre del tipo de programas académicos (str)"
+                    }
+                ]
+            }
+    """
+
+    serializer_class = TipoProgramaSerializer
+    queryset = TipoCarrera.objects.all()
+
+    def list(self, request):
+        """
+        Metodo to list estados
+        """
+        queryset = self.filter_queryset(self.get_queryset())
+
+        object_id = self.request.query_params.get("id", None)
+
+        if object_id:
+            queryset = queryset.filter(pk=object_id)
 
         page = self.paginate_queryset(queryset)
         serializer = self.get_serializer(page, many=True)
