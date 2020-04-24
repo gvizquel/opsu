@@ -162,3 +162,40 @@ class TipoIeuEspecificoSerializer(serpy.Serializer):
         else:
             nombre_tipo_ieu = "%s" % (TipoEspecificoInstitucion.sub_tipo_ieu)
         return nombre_tipo_ieu
+
+
+class AreaSerializer(serpy.Serializer):
+    """
+    Class to serilize Areas de conocimiento
+    """
+
+    id = serpy.Field()
+    nombre = serpy.Field()
+
+
+class SubAreaSerializer(serpy.Serializer):
+    """
+    Class to serilize Subareas de conocimiento
+    """
+
+    id = serpy.Field()
+    nombre = serpy.Field()
+    area_conocimiento = serpy.StrField()
+
+
+class TituloSerializer(serpy.Serializer):
+    """
+    Class to serilize Areas de conocimiento
+    """
+
+    id = serpy.Field()
+    nombre = serpy.Field()
+
+
+class TipoProgramaSerializer(serpy.Serializer):
+    """
+    Class to serilize Areas de conocimiento
+    """
+
+    id = serpy.Field()
+    nombre = serpy.Field()
