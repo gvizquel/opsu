@@ -1,5 +1,7 @@
 """Viwesets for oeu app EndPoints
 """
+# Standard Libraries
+import logging
 
 # Thirdparty Libraries
 from globales.models import Estado, Municipio, Parroquia
@@ -29,6 +31,9 @@ from .serializers import (
     TituloSerializer,
 )
 
+#  logging
+LOGGER = logging.getLogger("standart")
+
 
 class ProgramaAcademicoViewSet(viewsets.ReadOnlyModelViewSet):
     """
@@ -40,27 +45,27 @@ class ProgramaAcademicoViewSet(viewsets.ReadOnlyModelViewSet):
     * Content-Type: **application/json**
     * Url Params:
         * Parametros político territoriales:
-            * **id_estado**: tipo int que filtra las localidades del correspondiente
+            * **id_estado**: lista de valores (1,2,n) sin paréntesis tipo int que filtra las localidades del correspondiente
                 estado.
-            * **id_municipio**: tipo int que filtra las localidades del correspondiente
+            * **id_municipio**: lista de valores (1,2,n) sin paréntesis tipo int que filtra las localidades del correspondiente
                 municipio.
-            * **id_parroquia**: tipo int que filtra las localidades de la correspondiente
+            * **id_parroquia**: lista de valores (1,2,n) sin paréntesis tipo int que filtra las localidades de la correspondiente
                 parroquia.
         * Parametros académicos:
-            * **id_tipo_programa**: tipo int que filtra las localidades del correspondiente
+            * **id_tipo_programa**: lista de valores (1,2,n) sin paréntesis tipo int que filtra las localidades del correspondiente
                 tipo de programa académico.
             * **id_titulo**:  tipo int que filtra las localidades del correspondiente
                 titulo de grado que otorga.
-            * **area_conocimiento**: tipo int que filtra las localidades de la correspondiente
+            * **area_conocimiento**: lista de valores (1,2,n) sin paréntesis tipo int que filtra las localidades de la correspondiente
                 area conocimiento.
-            * **sub_area_conocimiento**: tipo int que filtra las localidades de la
+            * **sub_area_conocimiento**: lista de valores (1,2,n) sin paréntesis tipo int que filtra las localidades de la
                 correspondiente sub area conocimiento.
         * Parametros institucionales:
-            * **id_ieu**: tipo int que filtra las localidades de la correspondiente
+            * **id_ieu**: lista de valores (1,2,n) sin paréntesis tipo int que filtra las localidades de la correspondiente
                 institución de educación universitaria.
-            * **id_tipo_ieu**: tipo int que filtra las localidades del correspondiente
+            * **id_tipo_ieu**: lista de valores (1,2,n) sin paréntesis tipo int que filtra las localidades del correspondiente
                 tipo de institución de educación universitaria.
-            * **id_localidad**: tipo int que filtra las localidades de la correspondiente
+            * **id_localidad**: lista de valores (1,2,n) sin paréntesis tipo int que filtra las localidades de la correspondiente
                 localidad de una institución de educación universitaria.
             * **dep_admin**: tipo str que filtra las localidades por su dependencia
                 adinstrativa ("PÚBLICA" o "PRIVADA").
@@ -140,25 +145,27 @@ class ProgramaAcademicoViewSet(viewsets.ReadOnlyModelViewSet):
         dep_admin = self.request.query_params.get("dep_admin", None)
 
         if id_estado:
-            queryset = queryset.filter(localidad__estado=id_estado)
+            queryset = queryset.filter(localidad__estado__in=id_estado.split(","))
         if id_municipio:
-            queryset = queryset.filter(localidad__municipio=id_municipio)
+            queryset = queryset.filter(localidad__municipio__in=id_municipio.split(","))
         if id_parroquia:
-            queryset = queryset.filter(localidad__parroquia=id_parroquia)
+            queryset = queryset.filter(localidad__parroquia__in=id_parroquia.split(","))
         if id_tipo_programa:
-            queryset = queryset.filter(tipo_carrera=id_tipo_programa)
+            queryset = queryset.filter(tipo_carrera__in=id_tipo_programa.split(","))
         if id_titulo:
-            queryset = queryset.filter(titulo=id_titulo)
+            queryset = queryset.filter(titulo__in=id_titulo.split(","))
         if id_area:
-            queryset = queryset.filter(area_conocimiento=id_area)
+            queryset = queryset.filter(area_conocimiento__in=id_area.split(","))
         if id_sub_area:
-            queryset = queryset.filter(sub_area_conocimiento=id_sub_area)
+            queryset = queryset.filter(sub_area_conocimiento__in=id_sub_area.split(","))
         if id_ieu:
-            queryset = queryset.filter(localidad__ieu=id_ieu)
+            queryset = queryset.filter(localidad__ieu__in=id_ieu.split(","))
         if id_tipo_ieu:
-            queryset = queryset.filter(localidad__ieu__tipo_especifico_ieu=id_tipo_ieu)
+            queryset = queryset.filter(
+                localidad__ieu__tipo_especifico_ieu__in=id_tipo_ieu.split(",")
+            )
         if id_localidad:
-            queryset = queryset.filter(localidad=id_localidad)
+            queryset = queryset.filter(localidad__in=id_localidad.split(","))
         if dep_admin:
             queryset = queryset.filter(
                 localidad__ieu__institucion_ministerial__dep_admin=dep_admin
@@ -177,7 +184,7 @@ class EstadoViewset(viewsets.ReadOnlyModelViewSet):
     * Method: **GET**
     * Content-Type: **application/json**
     * Url Params:
-        * **id**: tipo int que filtra el correspondiente estado.
+        * **id**: lista de valores (1,2,n) sin paréntesis tipo int que filtra el correspondiente estado.
 
     * Respuesta exitosa:
         * HTTP code: 200
@@ -208,7 +215,7 @@ class EstadoViewset(viewsets.ReadOnlyModelViewSet):
         object_id = self.request.query_params.get("id", None)
 
         if object_id:
-            queryset = queryset.filter(pk=object_id)
+            queryset = queryset.filter(pk__in=object_id.split(","))
 
         page = self.paginate_queryset(queryset)
         serializer = self.get_serializer(page, many=True)
@@ -223,8 +230,8 @@ class MunicipioViewset(viewsets.ReadOnlyModelViewSet):
     * Method: **GET**
     * Content-Type: **application/json**
     * Url Params:
-        * **id_estado**: tipo int que filtra los municipios del estado correspondiente.
-        * **id**: tipo int que filtra el municipio correspondiente
+        * **id_estado**: lista de valores (1,2,n) sin paréntesis tipo int que filtra los municipios del estado correspondiente.
+        * **id**: lista de valores (1,2,n) sin paréntesis tipo int que filtra el municipio correspondiente
             municipio.
 
     * Respuesta exitosa:
@@ -258,9 +265,9 @@ class MunicipioViewset(viewsets.ReadOnlyModelViewSet):
         object_id = self.request.query_params.get("id", None)
 
         if object_id:
-            queryset = queryset.filter(pk=object_id)
+            queryset = queryset.filter(pk__in=object_id.split(","))
         if id_estado:
-            queryset = queryset.filter(estado=id_estado)
+            queryset = queryset.filter(estado__in=id_estado.split(","))
 
         page = self.paginate_queryset(queryset)
         serializer = self.get_serializer(page, many=True)
@@ -275,10 +282,10 @@ class ParroquiaViewset(viewsets.ReadOnlyModelViewSet):
     * Method: **GET**
     * Content-Type: **application/json**
     * Url Params:
-        * **id_estado**: tipo int que filtra las parroquias del correspondiente estado.
-        * **id_municipio**: tipo int que filtra las parroquias del correspondiente
+        * **id_estado**: lista de valores (1,2,n) sin paréntesis tipo int que filtra las parroquias del correspondiente estado.
+        * **id_municipio**: lista de valores (1,2,n) sin paréntesis tipo int que filtra las parroquias del correspondiente
             municipio.
-        * **id_parroquia**: tipo int que filtra la
+        * **id_parroquia**: lista de valores (1,2,n) sin paréntesis tipo int que filtra la
             correspondiente parroquia.
 
     * Respuesta exitosa:
@@ -315,13 +322,13 @@ class ParroquiaViewset(viewsets.ReadOnlyModelViewSet):
         object_id = self.request.query_params.get("id", None)
 
         if object_id:
-            queryset = queryset.filter(pk=object_id)
+            queryset = queryset.filter(pk__in=object_id.split(","))
         if id_estado:
-            queryset = queryset.filter(estado=id_estado)
+            queryset = queryset.filter(estado__in=id_estado.split(","))
         if id_municipio:
-            queryset = queryset.filter(municipio=id_municipio)
+            queryset = queryset.filter(municipio__in=id_municipio.split(","))
         if id_parroquia:
-            queryset = queryset.filter(pk=id_parroquia)
+            queryset = queryset.filter(pk__in=id_parroquia.split(","))
 
         page = self.paginate_queryset(queryset)
         serializer = self.get_serializer(page, many=True)
@@ -337,7 +344,7 @@ class TipoIeuViewSet(viewsets.ReadOnlyModelViewSet):
     * Method: **GET**
     * Content-Type: **application/json**
     * Url Params:
-        * **id**: tipo int que filtra el tipo de Institución de Educación Universitaria.
+        * **id**: lista de valores (1,2,n) sin paréntesis tipo int que filtra el tipo de Institución de Educación Universitaria.
 
     * Respuesta exitosa:
         * HTTP code: 200
@@ -368,7 +375,7 @@ class TipoIeuViewSet(viewsets.ReadOnlyModelViewSet):
         object_id = self.request.query_params.get("id", None)
 
         if object_id:
-            queryset = queryset.filter(pk=object_id)
+            queryset = queryset.filter(pk__in=object_id.split(","))
 
         page = self.paginate_queryset(queryset)
         serializer = self.get_serializer(page, many=True)
@@ -383,8 +390,8 @@ class IeuViewSet(viewsets.ReadOnlyModelViewSet):
     * Method: **GET**
     * Content-Type: **application/json**
     * Url Params:
-        * **id**: tipo int que filtra la correspondiente IEU.
-        * **id_tipo_ieu**: tipo int que filtra las IEU del correspondiente tipo de institución de educación universitaria.
+        * **id**: lista de valores (1,2,n) sin paréntesis tipo int que filtra la correspondiente IEU.
+        * **id_tipo_ieu**: lista de valores (1,2,n) sin paréntesis tipo int que filtra las IEU del correspondiente tipo de institución de educación universitaria.
         * **dep_admin**: tipo str que filtra las IEU por su dependencia adinstrativa ("PÚBLICA" o "PRIVADA").
 
     * Respuesta exitosa:
@@ -424,9 +431,9 @@ class IeuViewSet(viewsets.ReadOnlyModelViewSet):
         dep_admin = self.request.query_params.get("dep_admin", None)
 
         if object_id:
-            queryset = queryset.filter(pk=object_id)
+            queryset = queryset.filter(pk__in=object_id.split(","))
         if id_tipo_ieu:
-            queryset = queryset.filter(tipo_especifico_ieu=id_tipo_ieu)
+            queryset = queryset.filter(tipo_especifico_ieu__in=id_tipo_ieu.split(","))
         if dep_admin:
             queryset = queryset.filter(institucion_ministerial__dep_admin=dep_admin)
 
@@ -444,18 +451,18 @@ class LocalidadViewSet(viewsets.ReadOnlyModelViewSet):
     * Content-Type: **application/json**
     * Url Params:
         * Parametros político territoriales:
-            * **id_estado**: tipo int que filtra las localidades del correspondiente
+            * **id_estado**: lista de valores (1,2,n) sin paréntesis tipo int que filtra las localidades del correspondiente
                 estado.
-            * **id_municipio**: tipo int que filtra las localidades del correspondiente
+            * **id_municipio**: lista de valores (1,2,n) sin paréntesis tipo int que filtra las localidades del correspondiente
                 municipio.
-            * **id_parroquia**: tipo int que filtra las localidades de la correspondiente
+            * **id_parroquia**: lista de valores (1,2,n) sin paréntesis tipo int que filtra las localidades de la correspondiente
                 parroquia.
         * Parametros institucionales:
-            * **id_ieu**: tipo int que filtra las localidades de la correspondiente
+            * **id_ieu**: lista de valores (1,2,n) sin paréntesis tipo int que filtra las localidades de la correspondiente
                 institución de educación universitaria.
-            * **id_tipo_ieu**: tipo int que filtra las localidades del correspondiente
+            * **id_tipo_ieu**: lista de valores (1,2,n) sin paréntesis tipo int que filtra las localidades del correspondiente
                 tipo de institución de educación universitaria.
-            * **id_localidad**: tipo int que filtra las localidades de la correspondiente
+            * **id**: lista de valores (1,2,n) sin paréntesis tipo int que filtra las localidades de la correspondiente
                 localidad de una institución de educación universitaria.
             * **dep_admin**: tipo str que filtra las localidades por su dependencia
                 adinstrativa ("PÚBLICA" o "PRIVADA").
@@ -517,17 +524,19 @@ class LocalidadViewSet(viewsets.ReadOnlyModelViewSet):
         dep_admin = self.request.query_params.get("dep_admin", None)
 
         if id_estado:
-            queryset = queryset.filter(estado=id_estado)
+            queryset = queryset.filter(estado__in=id_estado.split(","))
         if id_municipio:
-            queryset = queryset.filter(municipio=id_municipio)
+            queryset = queryset.filter(municipio__in=id_municipio.split(","))
         if id_parroquia:
-            queryset = queryset.filter(parroquia=id_parroquia)
+            queryset = queryset.filter(parroquia__in=id_parroquia.split(","))
         if id_ieu:
-            queryset = queryset.filter(ieu=id_ieu)
+            queryset = queryset.filter(ieu__in=id_ieu.split(","))
         if id_tipo_ieu:
-            queryset = queryset.filter(ieu__tipo_especifico_ieu=id_tipo_ieu)
+            queryset = queryset.filter(
+                ieu__tipo_especifico_ieu__in=id_tipo_ieu.split(",")
+            )
         if object_id:
-            queryset = queryset.filter(pk=object_id)
+            queryset = queryset.filter(pk__in=object_id.split(","))
         if dep_admin:
             queryset = queryset.filter(
                 ieu__institucion_ministerial__dep_admin=dep_admin
@@ -546,7 +555,7 @@ class AreaViewSet(viewsets.ReadOnlyModelViewSet):
     * Method: **GET**
     * Content-Type: **application/json**
     * Url Params:
-        * **id**: tipo int que filtra el tipo de Institución de Educación Universitaria.
+        * **id**: lista de valores (1,2,n) sin paréntesis tipo int que filtra el tipo de Institución de Educación Universitaria.
 
     * Respuesta exitosa:
         * HTTP code: 200
@@ -577,7 +586,7 @@ class AreaViewSet(viewsets.ReadOnlyModelViewSet):
         object_id = self.request.query_params.get("id", None)
 
         if object_id:
-            queryset = queryset.filter(pk=object_id)
+            queryset = queryset.filter(pk__in=object_id.split(","))
 
         page = self.paginate_queryset(queryset)
         serializer = self.get_serializer(page, many=True)
@@ -586,15 +595,16 @@ class AreaViewSet(viewsets.ReadOnlyModelViewSet):
 
 class SubAreaViewSet(viewsets.ReadOnlyModelViewSet):
     """
-    ## Obtener Subarea de Conocimiento de los Programas Académicos
+    ## Obtener Subarea de Conocimiento de los Programas Académicos ##
     Este EndPoint puede devolver uno o una lista de las Subareas del Conocimeinto que agrupan a los Programas Académicos.
 
     * Method: **GET**
     * Content-Type: **application/json**
     * Url Params:
-        * **id**: tipo int que filtra el subáreas del conocimeinto.
-        * **id_area**: tipo int que filtra las subáreas del conocimeinto de acuerdo al
-            id del área.
+        * **id**: lista de valores (1,2,n) sin paréntesis tipo int que filtra el
+            subáreas del conocimeinto.
+        * **id_area**: lista de valores (1,2,n) sin paréntesis tipo int que filtra las
+            subáreas del conocimeinto de acuerdo al id del área.
 
     * Respuesta exitosa:
         * HTTP code: 200
@@ -627,9 +637,9 @@ class SubAreaViewSet(viewsets.ReadOnlyModelViewSet):
         id_area = self.request.query_params.get("id_area", None)
 
         if object_id:
-            queryset = queryset.filter(pk=object_id)
+            queryset = queryset.filter(pk__in=object_id.split(","))
         if id_area:
-            queryset = queryset.filter(area_conocimiento=id_area)
+            queryset = queryset.filter(area_conocimiento__in=id_area.split(","))
 
         page = self.paginate_queryset(queryset)
         serializer = self.get_serializer(page, many=True)
@@ -644,7 +654,7 @@ class TituloViewSet(viewsets.ReadOnlyModelViewSet):
     * Method: **GET**
     * Content-Type: **application/json**
     * Url Params:
-        * **id**: tipo int que filtra el título de grado.
+        * **id**: lista de valores (1,2,n) sin paréntesis tipo int que filtra el título de grado.
 
     * Respuesta exitosa:
         * HTTP code: 200
@@ -675,7 +685,7 @@ class TituloViewSet(viewsets.ReadOnlyModelViewSet):
         object_id = self.request.query_params.get("id", None)
 
         if object_id:
-            queryset = queryset.filter(pk=object_id)
+            queryset = queryset.filter(pk__in=object_id.split(","))
 
         page = self.paginate_queryset(queryset)
         serializer = self.get_serializer(page, many=True)
@@ -690,7 +700,7 @@ class TipoProgramaViewSet(viewsets.ReadOnlyModelViewSet):
     * Method: **GET**
     * Content-Type: **application/json**
     * Url Params:
-        * **id**: tipo int que filtra el tipo de programas académicos.
+        * **id**: lista de valores (1,2,n) sin paréntesis tipo int que filtra el tipo de programas académicos.
 
     * Respuesta exitosa:
         * HTTP code: 200
@@ -721,7 +731,7 @@ class TipoProgramaViewSet(viewsets.ReadOnlyModelViewSet):
         object_id = self.request.query_params.get("id", None)
 
         if object_id:
-            queryset = queryset.filter(pk=object_id)
+            queryset = queryset.filter(pk__in=object_id.split(","))
 
         page = self.paginate_queryset(queryset)
         serializer = self.get_serializer(page, many=True)
