@@ -1,24 +1,33 @@
 <template>
   <div class="home">
-   <CardsHome/>  
+    <careersMap/>
+    <button @click="getCarreras">obtener</button>
+
+    <ul v-for="(carrera, index) in carreras" :key="index">
+      {{carrera.results}}
+    </ul>
   </div>
 </template>
 
 <script>
-import CardsHome from '@/components/CardsHome.vue'
-import { mapMutations } from 'vuex'
+import careersMap from '@/components/CareersMap.vue'
+import { mapMutations, mapActions, mapState } from 'vuex'
 
   export default {
     name: 'Home',
     components: {
-      CardsHome
+      careersMap
+    },
+    computed:{
+      ...mapState(['carreras'])
     },
     methods: {
-      ...mapMutations(['hideInputNavCarreras', 'hideInputNavCarrerasInstitutions'])
+      ...mapMutations(['hideInputNavInstitutions']),
+      ...mapActions(['getCarreras'])
     },
     mounted(){
-      this.hideInputNavCarreras()
       this.hideInputNavInstitutions()
+
     }
   }
 </script>

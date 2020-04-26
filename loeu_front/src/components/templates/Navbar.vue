@@ -4,10 +4,10 @@
             <b-container fluid>
                 <b-button variant="outline-light" @click="showSidebar_iconNav">
                     <span v-if="iconNavbar == false">
-                        <b-icon-chevron-right></b-icon-chevron-right>                      
+                        <b-icon-chevron-left></b-icon-chevron-left>                                            
                     </span>
                     <span v-else>
-                        <b-icon-chevron-left></b-icon-chevron-left>
+                        <b-icon-chevron-right></b-icon-chevron-right> 
                     </span>
                 </b-button>
                 <b-navbar-nav v-if="inputSearch == true" class="mr-auto">

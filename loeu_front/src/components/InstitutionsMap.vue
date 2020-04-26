@@ -15,18 +15,11 @@
 <script>
 
 import Map from '@/components/busqueda/Map.vue'
-import { mapMutations } from 'vuex'
 
 
 export default {
     components:{
         Map
-    },
-     methods: {
-       ...mapMutations(['showInputNavInstitutions'])
-    },
-    mounted(){
-       this.showInputNavInstitutions()
     }
 }
 </script>

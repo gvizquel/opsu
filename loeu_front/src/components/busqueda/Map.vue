@@ -1,4 +1,4 @@
-<template>
+<!--template>
   <l-map style="height: 490px" :zoom="zoom" :center="center">
     <l-tile-layer :url="url"></l-tile-layer>
     <l-control-attribution position="topright" prefix="Libro de oportunidades de estudio"></l-control-attribution>  
@@ -38,7 +38,7 @@ export default {
 
 </script-->
 
-<!--template>
+<template>
   <div>
     <l-map style="height: 490px" :zoom="zoom" :center="center">
     <l-tile-layer :url="url"></l-tile-layer>
@@ -49,7 +49,7 @@ export default {
       :color="circle.color">
         <l-popup>Universidad central de venezuela</l-popup>
       </l-circle-marker>
-      <!--LGeosearch :options="geosearchOptions" ></LGeosearch>
+      <LGeosearch :options="geosearchOptions"></LGeosearch>
     </l-map>
   </div>
 </template>
@@ -82,4 +82,4 @@ export default {
     };
   },
 };
-</script-->
+</script>

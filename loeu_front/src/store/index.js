@@ -1,5 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import axios from 'axios'
+
 
 Vue.use(Vuex)
 
@@ -8,6 +10,7 @@ export default new Vuex.Store({
     inputSearch: false,
     searchInstitutions: false,
     iconNavbar: false,
+    carreras: []
   },
   mutations: {
     showInputNavCarreras(state){ // MOSTRAR INPUT PARA BUSCAR CARRERAS
@@ -28,9 +31,19 @@ export default new Vuex.Store({
       let sidebar = document.getElementById("sidebar");
       sidebar.classList.toggle("active");
     },
+    llenarCarreras(state, actionCarreras){
+      state.carreras = actionCarreras
+    }
 
   },
   actions: {
+    async getCarreras({commit}){
+      const dates = await axios.get('http://loe.terna.net/api-v1/programa-academico/pre-grado/listar/');
+      //const carreras = await data.json();
+      console.log('123');
+      
+      commit('llenarCarreras', dates)
+    }
   },
   modules: {
   }

@@ -15,7 +15,7 @@
 <script>
 
 import Map from '@/components/busqueda/Map.vue'
-import TablaCarreras from '@/components/busqueda/TablaCarreras.vue'
+import TablaCarreras from '@/components/TableCareers.vue'
 import {mapMutations} from 'vuex'
 
 export default {

@@ -7,21 +7,18 @@
             <transition name="slide-fade" mode="out-in">
                 <router-view/>
             </transition>
-            <Footer/>     
         </div>    
     </div>
 </template>
 <script>
     import {mapMutations} from 'vuex'
-    import Sidebar from '@/components/Sidebar.vue'
-    import Navbar from '@/components/Navbar.vue'
-    import Footer from '@/components/Footer.vue'
+    import Sidebar from '@/components/templates/Sidebar.vue'
+    import Navbar from '@/components/templates/Navbar.vue'
 
 export default {
     components:{
         Sidebar,
         Navbar, 
-        Footer
     },
     methods:{
         ...mapMutations(['showSidebar_iconNav'])
