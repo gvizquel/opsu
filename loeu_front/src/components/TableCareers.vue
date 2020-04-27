@@ -1,13 +1,8 @@
 <template>
     <div class="row">
-        <div class="col-xs-12 form-inline">
-            <form class="form-group">
-                <input type="text" class="form-control" v-model="filter" placeholder="Buscar carreras" @keydown="$event.stopImmediatePropagation()">
-            </form>
-        </div>
-
+        {{ message }}
         <div class="col-xs-12 table table-hover table-responsive">
-            <datatable :columns="columns" :data="rows" :filter="filter" :per-page="15"></datatable>
+            <datatable :columns="columns" :data="rows" :filter="filter" :per-page="25"></datatable>
             <datatable-pager v-model="page"></datatable-pager>
         </div>
     </div>
@@ -35,92 +30,97 @@ export default {
             ],
             page: 1,
             apiRequests: [],
+            message: ''
         }
     },    
     methods: {
+        events (me,rowsData) {
+
+            EventBus.$on('state_filter', function (states) {
+                if (states[0] != undefined) {                            
+                    var attr = 'data[i].localidad.estado';
+                    me.bus = false;
+                    me.rows = me.filters(me.rowsData, states,attr);
+
+                } else if (states[0] == undefined) {
+                    me.bus = true;
+                    me.rows = me.rowsData;
+                }
+            });
+
+            EventBus.$on('municipality_filter', function (municipality) {
+                if (municipality[0] != undefined) {
+                    var attr = 'data[i].localidad.municipio';                           
+                    me.bus = false;                            
+                    me.rows = me.filters(me.rowsData, municipality, attr);
+                }
+            });
+
+            EventBus.$on('parish_filter', function (parish) {
+                if (parish[0] != undefined) {
+                    var attr = 'data[i].localidad.parroquia';                            
+                    me.bus = false;                            
+                    me.rows = me.filters(me.rowsData, parish, attr);
+                }
+            });
+
+        },
         filters(data, states,atribute) {
 
             let array = [];
             let attr = atribute;
 
-            for (var j = 0; j < states.length; j++) {
-
-                for (var i = 0; i < data.length; i++) {
+            for (var j = 0; j < states.length; j++) 
+            {
+                for (var i = 0; i < data.length; i++) 
+                {
                     if (eval(attr) == states[j]) 
                     {                        
                         array.push(data[i]);
-                    }
-                              
+                    }                              
                 }
-
             }
 
             return array;
-
         },
-        async getInstitutions(){            
+        async getInstitutions(url, institutions){            
             try {
-                const dates = await axios.get('http://loe.terna.net/api-v1/programa-academico/pre-grado/listar/')
+                const response = await axios.get(url)
 
-                if (dates.data.results.length == 0) {
+                if (response.data.results.length == 0) {
+
                     this.messageNull = 'Disculpe, en estos momentos no hay carreras registradas'
+                
                 }else{
-                    // Se debe declarar me=this desde afuera del EnvenBus
-                    // ya que pertenecen a distintos contexto
-                    var me = this;
-                    me.rowsData = await dates.data.results;
 
-                    if (me.bus) {
-                        me.rows = me.rowsData;
+                    var me = this;
+                    const retrivedInstitutions = institutions.concat(response.data.results)
+                    
+                    if (response.data.next !== null && institutions.length !== 1000) {
+                        me.getInstitutions(response.data.next, retrivedInstitutions);
+                        me.message = 'loading register, please wait...';
+                    } else {
+                        me.rowsData = retrivedInstitutions
+                        me.message = '';
                     }
 
-                    EventBus.$on('state_filter', function (states) {
-                        if (states[0] != undefined) {                            
-                            var attr = 'data[i].localidad.estado';
-                            me.bus = false;
-                            me.rows = me.filters(me.rowsData, states,attr);
-
-                        } else if (states[0] == undefined) {
-                            me.bus = true;
-                            me.rows = me.rowsData;
-                        }
-                    });
-
-                    EventBus.$on('municipality_filter', function (municipality) {
-                        if (municipality[0] != undefined) {
-                            var attr = 'data[i].localidad.municipio';                           
-                            me.bus = false;                            
-                            me.rows = me.filters(me.rowsData, municipality, attr);
-
-                        } else if (municipality[0] == undefined) {
-                            me.bus = true;
-                            me.rows = me.rowsData;
-                        }
-                    });
-
-                    EventBus.$on('parish_filter', function (parish) {
-                        if (parish[0] != undefined) {
-                            var attr = 'data[i].localidad.parroquia';                            
-                            me.bus = false;                            
-                            me.rows = me.filters(me.rowsData, parish, attr);
-
-                        } else if (parish[0] == undefined) {
-                            me.bus = true;
-                            me.rows = me.rowsData;
-                        }
-                    });
+                    me.rowsData = retrivedInstitutions
+                    me.events(me,me.rowsData);
+                    if (me.bus) me.rows = me.rowsData;
 
                 }
+
             } catch (error) {
                 console.log('error', error);    
             }
         },
     },
-    mounted(){        
-        this.getInstitutions();
-    }    
+    created() {
+        this.getInstitutions('http://loe.terna.net/api-v1/programa-academico/pre-grado/listar/', []);
+    },  
 }
 </script>
+
 <style scoped>
     *{
         font-size: 13px;

@@ -1,35 +1,40 @@
 <template>
   <div>
     <nav id="sidebar" class="active">
-      <div class="sidebar-header">
-        <h3>Libro de Oportunidades</h3>
-      </div>
       <ul class="components">
-        <h4 class="text-center">FILTRAR</h4>
+          <h4 class="text-center text-white">Filtrar datos</h4>
+        <hr>  
         <li>
-          <b-button v-b-modal.state variant="primary">
+          <b-button v-b-modal.state variant="transparent">
                 Por estado
           </b-button>
         </li>
         <li>
           <b-button v-b-modal.municipality 
-                    :class="disabled">
+                    :class="disabled"
+                    variant="transparent">
                 Por municipio
           </b-button>
         </li>
         <li>
           <b-button v-b-modal.parish 
-                    :class="disabled">
-                Por parroquía
+                    :class="disabled"
+                    variant="transparent">
+                Por parroquia
           </b-button>
         </li>
         <li>
           <b-button v-b-modal.modal-scrollable 
-                    :class="disabled">
+                    :class="disabled"
+                    variant="transparent">
                 Por centro poblado
           </b-button>
-        </li>   
+        </li>  
+        <div class="sidebar-header">
+        <h4 class="text-center text-white">Libro de oportunidades de estudio</h4>
+      </div> 
       </ul>
+       
     </nav>
 
     <FilterModalState
@@ -59,9 +64,11 @@ import axios from 'axios'
     data() {
       return {
         states: [],
-        municipalitys: [],   
+        municipalitys: [],
+        municipalityAll: [],  
         parishs: [],
-        disabled: 'disabled'
+        parishAll: [],
+        disabled: '' /*revisar esta funcionalidad*/
       }
     },
     components: {
@@ -71,20 +78,13 @@ import axios from 'axios'
     },
     methods: {
       enable(params) {
-        
-        if (params[0] != undefined) 
-        {
-
-          this.disabled = ''
-          this.getmunicipality(params);
-          this.getParish(params);
-
-        } else {
+        if (params){
+          this.municipalitys = this.dataProcess(this.municipalityAll, params);
+          this.parishs = this.dataProcess(this.parishAll, params);
           
+        } else {          
           this.disabled = 'disabled';
-
         }
-
       },
       dataProcess(data, filter) {
 
@@ -104,105 +104,90 @@ import axios from 'axios'
 
         return array;
       },
-      async getStates(){            
-            try {
-                const response = await axios.get('http://loe.terna.net/api-v1/estado/listar/')
+      async getSMP(url, datas, variable) {
+          try {
+              const response = await axios.get(url)
 
-                if (response.data.results.length == 0) {
-                    this.messageNull = 'Disculpe, en estos momentos no hay carreras registradas'
-                }else{
+              if (response.data.results.length == 0) {
+                  this.messageNull = 'Disculpe, en estos momentos no hay carreras registradas'
+              }else{
 
-                  this.states = await response.data.results; 
-
-                }
-            } catch (error) {
-                console.log('error', error);    
-            }
-        },
-        async getmunicipality(params){            
-            try {
-                const response = await axios.get('http://loe.terna.net/api-v1/municipio/listar/')
-
-                if (response.data.results.length == 0) {
-                    this.messageNull = 'Disculpe, en estos momentos no hay carreras registradas'
-                }else{
-
-                  let me = this;
-                  let municipality = await response.data.results;
-                  me.municipalitys = me.dataProcess(municipality, params);
-
-                }
-            } catch (error) {
-                console.log('error', error);    
-            }
-        },
-        async getParish(params){            
-            try {
-                const response = await axios.get('http://loe.terna.net/api-v1/parroquia/listar/')
-
-                if (response.data.results.length == 0) {
-                    this.messageNull = 'Disculpe, en estos momentos no hay carreras registradas'
-                }else{
+                let me = this;
+                const retrivedData = datas.concat(response.data.results)
+                
+                if (response.data.next !== null) {
+                  me.getSMP(response.data.next, retrivedData, variable);
+                } else {
+                  let allData = retrivedData;
                   
-                  let self = this;
-                  let parish = await response.data.results;
-                  self.parishs = self.dataProcess(parish, params);
-
+                  if (variable == 'states') {
+                    this.states = allData;
+                  } else if (variable == 'municipality') {
+                    this.municipalityAll = allData;
+                  } else if (variable == 'parish') {
+                    this.parishAll = allData
+                  }
                 }
-            } catch (error) {
-                console.log('error', error);    
-            }
-        }
+
+              }
+
+          } catch (error) {
+              console.log('error', error);    
+          }
+      },
+    },
+    created () {
+
+      this.getSMP('http://loe.terna.net/api-v1/estado/listar/', [], 'states');      
+      this.getSMP('http://loe.terna.net/api-v1/municipio/listar/', [], 'municipality');
+      this.getSMP('http://loe.terna.net/api-v1/parroquia/listar/', [], 'parish');
+
     },
     mounted () {
-      this.getStates();
+
     }
 
 }
 </script>
 
 <style>
-/* ---------------------------------------------------
-    SIDEBAR STYLE
------------------------------------------------------ */
-#states {
-  font-size: 15px;
-}
+
+#states { font-size: 15px; }
 
 #sidebar {
-  min-width: 250px;
-  max-width: 250px;
-  background: #C22974;
-  color: #fff;
+  min-width: 290px;
+  max-width: 290px;
+  background: url('../../assets/login.jpg') no-repeat;
   transition: all 0.3s;
   height: 100%;
   box-shadow: 3px 3px 3px rgba(0, 0, 0, .3);
 }
 
-#sidebar.active { margin-left: -250px; }
+#sidebar.active { margin-left: -290px; }
 
 #sidebar .sidebar-header {
-  padding: 20px;
-  box-shadow: 3px 3px 3px rgba(0, 0, 0, .3);
-  background: #F3BD19;
+  max-width: 300px;
+  padding: 20px 20px; 
+  bottom: 1px;
+  position: fixed;
 }
 
-#sidebar ul.components { padding: 20px 0; }
+#sidebar ul.components { padding: 5px 0;}
 
 #sidebar ul li button{ width: 100%; }
 
 #sidebar ul li a, 
 #sidebar ul li button{
   padding: 10px;
-  font-size: 1.1em;
+  font-size: 1.29em;
   display: block;
   text-decoration: none;
-  color:#fff;
+  color:#000;
+  margin-top: 5px;
 }
 
 #sidebar ul li a:hover,
 #sidebar ul li button:hover {
-  color: rgb(192, 75, 132);
   background: #fff;
 }
 

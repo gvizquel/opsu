@@ -2,19 +2,28 @@
     <div>
         <nav class="navbar navbar-expand-lg ">
             <b-container fluid>
-                <b-button variant="outline-light" @click="showSidebar_iconNav">
-                    <span v-if="iconNavbar == false">
-                        <b-icon-chevron-left></b-icon-chevron-left>                                            
+                <b-button variant="light" @click="showSidebar_iconNav">
+                    <span v-if="iconNavbar == true">
+                         <b-icon-chevron-right></b-icon-chevron-right>                                
                     </span>
                     <span v-else>
-                        <b-icon-chevron-right></b-icon-chevron-right> 
+                       <b-icon-chevron-left></b-icon-chevron-left> 
                     </span>
                 </b-button>
+
                 <b-navbar-nav v-if="inputSearch == true" class="mr-auto">
                        <FormSearch class="SearchMap"/>
                 </b-navbar-nav>
-                <b-navbar-nav class="ml-auto">  
-                    <b-link to="/">Sistema Nacional de Ingreso</b-link>
+                <b-navbar-nav class="ml-auto"> 
+                    <b-nav-item>
+                        <b-link class="text-dark" to="/">Carreras</b-link>
+                    </b-nav-item>
+                    <b-nav-item>
+                        <b-link class="text-dark" to="/instituciones">Instituciones</b-link>
+                    </b-nav-item>
+                    <b-nav-item>
+                        <b-link class="text-dark" to="/">Sistema Nacional de Ingreso</b-link>
+                    </b-nav-item> 
                 </b-navbar-nav>
             </b-container>
         </nav>
@@ -39,12 +48,12 @@
 <style>
 .navbar {
     padding: 15px 15px;
-    height: 55px;
-    background: #2da7db;
+    height: 65px;
+    background: none;
     border: none;
+    border-bottom: 1px solid rgba(175, 175, 175,.2);
     border-radius: 0;
     margin-bottom: 40px;
-    box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.2);
 }
 
 .navbar-nav a{ 

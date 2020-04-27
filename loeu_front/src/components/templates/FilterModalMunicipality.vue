@@ -34,7 +34,7 @@ import axios from 'axios'
       emitMunicipalitys() {
         let self = this;        
 
-        if (self.filter_municipality){
+        if (self.filter_municipality != ''){
           EventBus.$emit('municipality_filter',self.filter_municipality);
         }
       }      

@@ -35,7 +35,7 @@ import axios from 'axios'
       emitParishs() {
         let self = this;        
 
-        if (self.filter_parish){
+        if (self.filter_parish != ''){
           EventBus.$emit('parish_filter',self.filter_parish);
         }
       }      
