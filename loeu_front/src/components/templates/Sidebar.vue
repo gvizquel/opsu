@@ -131,28 +131,22 @@ import axios from 'axios'
 
               }
 
-          } catch (error) {
-              console.log('error', error);    
+          } catch (err) {
+            console.log('error:', err);    
           }
       },
     },
     created () {
-
       this.getSMP('http://loe.terna.net/api-v1/estado/listar/', [], 'states');      
       this.getSMP('http://loe.terna.net/api-v1/municipio/listar/', [], 'municipality');
       this.getSMP('http://loe.terna.net/api-v1/parroquia/listar/', [], 'parish');
-
-    },
-    mounted () {
-
     }
-
 }
 </script>
 
 <style>
 
-#states { font-size: 15px; }
+#states { font-size: 15px }
 
 #sidebar {
   min-width: 290px;
