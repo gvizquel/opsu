@@ -75,9 +75,9 @@ class ProgramaAcademicoViewSet(viewsets.ReadOnlyModelViewSet):
         * Objeto:
 
             {\n
-                "count": cantidad de registro devueltos por el endpoint,
-                "next": "url a la siguiente página de resultados, hay 25 objetos por página",
-                "previous": "url a la página anterior de resultados, hay 25 objetos por página",
+                "count": Cantidad de objetos que devuelve el EndPoint,
+                "next": URL con la siguiente página (25 objetos) de resultados del EndPoint,
+                "previous": URL con la pagina anterior (25 objetos) de resultados del EndPoint,
                 "results": [
                     {
                         "id": identificador único de la carrera (int),
@@ -191,9 +191,9 @@ class EstadoViewset(viewsets.ReadOnlyModelViewSet):
         * Objeto:
 
             {\n
-                "count": 25,
-                "next": null,
-                "previous": null,
+                "count": Cantidad de objetos que devuelve el EndPoint,
+                "next": URL con la siguiente página (25 objetos) de resultados del EndPoint,
+                "previous": URL con la pagina anterior (25 objetos) de resultados del EndPoint,
                 "results": [
                     {
                         "id": 25,
@@ -239,9 +239,9 @@ class MunicipioViewset(viewsets.ReadOnlyModelViewSet):
         * Objeto:
 
             {\n
-                "count": 337,
-                "next": "http://127.0.0.1:8083/api-v1/municipio/listar/?page=2",
-                "previous": null,
+                "count": Cantidad de objetos que devuelve el EndPoint,
+                "next": URL con la siguiente página (25 objetos) de resultados del EndPoint,
+                "previous": URL con la pagina anterior (25 objetos) de resultados del EndPoint,
                 "results": [
                     {
                         "id": 337,
@@ -293,9 +293,9 @@ class ParroquiaViewset(viewsets.ReadOnlyModelViewSet):
         * Objeto:
 
             {\n
-                "count": 1144,
-                "next": "http://127.0.0.1:8083/api-v1/parroquia/listar/?page=2",
-                "previous": null,
+                "count": Cantidad de objetos que devuelve el EndPoint,
+                "next": URL con la siguiente página (25 objetos) de resultados del EndPoint,
+                "previous": URL con la pagina anterior (25 objetos) de resultados del EndPoint,
                 "results": [
                     {
                         "id": 1144,
@@ -351,9 +351,9 @@ class TipoIeuViewSet(viewsets.ReadOnlyModelViewSet):
         * Objeto:
 
             {\n
-                "count": 14,
-                "next": null,
-                "previous": null,
+                "count": Cantidad de objetos que devuelve el EndPoint,
+                "next": URL con la siguiente página (25 objetos) de resultados del EndPoint,
+                "previous": URL con la pagina anterior (25 objetos) de resultados del EndPoint,
                 "results": [
                     {
                         "id": identificador único del tipo de institución (int),
@@ -399,9 +399,9 @@ class IeuViewSet(viewsets.ReadOnlyModelViewSet):
         * Objeto:
 
             {\n
-                "count": 210,
-                "next": "http://127.0.0.1:8083/api-v1/ieu/?page=2",
-                "previous": null,
+                "count": Cantidad de objetos que devuelve el EndPoint,
+                "next": URL con la siguiente página (25 objetos) de resultados del EndPoint,
+                "previous": URL con la pagina anterior (25 objetos) de resultados del EndPoint,
                 "results": [
                     {
                         "id": identificador único de la IEU (int),
@@ -472,9 +472,9 @@ class LocalidadViewSet(viewsets.ReadOnlyModelViewSet):
         * Objeto:
 
             {\n
-                "count": cantidad de registro devueltos por el endpoint,
-                "next": "url a la siguiente página de resultados, hay 25 objetos por página",
-                "previous": "url a la página anterior de resultados, hay 25 objetos por página",
+                "count": Cantidad de objetos que devuelve el EndPoint,
+                "next": URL con la siguiente página (25 objetos) de resultados del EndPoint,
+                "previous": URL con la pagina anterior (25 objetos) de resultados del EndPoint,
                 "results": [
                     {
                         "id": identificador único de la localidad (int),
@@ -562,9 +562,9 @@ class AreaViewSet(viewsets.ReadOnlyModelViewSet):
         * Objeto:
 
             {\n
-                "count": 14,
-                "next": null,
-                "previous": null,
+                "count": Cantidad de objetos que devuelve el EndPoint,
+                "next": URL con la siguiente página (25 objetos) de resultados del EndPoint,
+                "previous": URL con la pagina anterior (25 objetos) de resultados del EndPoint,
                 "results": [
                     {
                         "id": identificador único del áreas del conocimeinto (int),
@@ -611,9 +611,9 @@ class SubAreaViewSet(viewsets.ReadOnlyModelViewSet):
         * Objeto:
 
             {\n
-                "count": 14,
-                "next": null,
-                "previous": null,
+                "count": Cantidad de objetos que devuelve el EndPoint,
+                "next": URL con la siguiente página (25 objetos) de resultados del EndPoint,
+                "previous": URL con la anterior página (25 objetos) de resultados del EndPoint,
                 "results": [
                     {
                         "id": identificador único del subáreas del conocimeinto (int),
@@ -661,9 +661,9 @@ class TituloViewSet(viewsets.ReadOnlyModelViewSet):
         * Objeto:
 
             {\n
-                "count": 14,
-                "next": null,
-                "previous": null,
+                "count": Cantidad de objetos que devuelve el EndPoint,
+                "next": URL con la siguiente página (25 objetos) de resultados del EndPoint,
+                "previous": URL con la pagina anterior (25 objetos) de resultados del EndPoint,
                 "results": [
                     {
                         "id": identificador único del título (int),
@@ -707,9 +707,9 @@ class TipoProgramaViewSet(viewsets.ReadOnlyModelViewSet):
         * Objeto:
 
             {\n
-                "count": 14,
-                "next": null,
-                "previous": null,
+                "count": Cantidad de objetos que devuelve el EndPoint,
+                "next": URL con la siguiente página (25 objetos) de resultados del EndPoint,
+                "previous": URL con la pagina anterior (25 objetos) de resultados del EndPoint,
                 "results": [
                     {
                         "id": identificador único del tipo de programas académicos (int),

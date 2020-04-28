@@ -45,14 +45,12 @@ from oeu.models import (
 )
 from oeu.views import (
     AgregarModeloComplejo,
-    AreaAutocomplete,
     CarreraAutocomplete,
     EditarModeloComplejo,
     EliminarModeloComplejo,
     IeuAutocomplete,
     ListarModeloComplejo,
     LocalidadIeuAutocomplete,
-    SubAreaAutocomplete,
     SubTipoIeuAutoComplete,
     TipoEspecificoIeuAutocomplete,
     TipoIeuAutoComplete,
@@ -71,8 +69,6 @@ urlpatterns = [
     ),
     path("ieu/", IeuAutocomplete.as_view(), name="ieu",),
     path("localidad-ieu/", LocalidadIeuAutocomplete.as_view(), name="localidad-ieu",),
-    path("area", AreaAutocomplete.as_view(), name="area"),
-    path("subarea", SubAreaAutocomplete.as_view(), name="subarea"),
     path("carrera", CarreraAutocomplete.as_view(), name="carrera"),
     # ######################### rutas para los tipos de ieu ########################## #
     path(  # Listar

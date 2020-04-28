@@ -140,44 +140,6 @@ class LocalidadIeuAutocomplete(autocomplete.Select2QuerySetView):
 
 
 # ########################################################################## #
-class AreaAutocomplete(autocomplete.Select2QuerySetView):
-    """Servicio de auto completado para el modelo Area
-    """
-
-    def get_queryset(self):
-        # Don't forget to filter out results depending on the visitor !
-        if not self.request.user.is_authenticated():
-            return AreaConocimiento.objects.none()
-
-        queryset = AreaConocimiento.objects.all()
-
-        if self.q:
-            queryset = queryset.filter(nombre__icontains=self.q)
-
-        return queryset
-
-
-# ########################################################################## #
-class SubAreaAutocomplete(autocomplete.Select2QuerySetView):
-    """Servicio de auto completado para el modelo SubArea
-    """
-
-    def get_queryset(self):
-        # Don't forget to filter out results depending on the visitor !
-        if not self.request.user.is_authenticated():
-            return SubAreaConocimiento.objects.none()
-
-        area = self.forwarded.get("area_conocimiento_edit", None)
-
-        queryset = SubAreaConocimiento.objects.filter(area_conocimiento=area)
-
-        if self.q:
-            queryset = queryset.filter(nombre__icontains=self.q)
-
-        return queryset
-
-
-# ########################################################################## #
 class CarreraAutocomplete(autocomplete.Select2QuerySetView):
     """Servicio de auto completado para el modelo Carrera
     """
