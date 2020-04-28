@@ -122,7 +122,5 @@ export default {
 </script>
 
 <style scoped>
-    *{
-        font-size: 13px;
-    }    
+    *{ font-size: 13px }    
 </style>
