@@ -15,7 +15,6 @@ import 'leaflet/dist/leaflet.css';
 // IMPORT DataTable VueJs
 import { VuejsDatatableFactory } from 'vuejs-datatable';
 
-
 Vue.use(BootstrapVue);
 Vue.use(IconsPlugin);
 Vue.use( VuejsDatatableFactory );

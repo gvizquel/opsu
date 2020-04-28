@@ -1,5 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import axios from 'axios'
+
 
 Vue.use(Vuex)
 
@@ -7,7 +9,7 @@ export default new Vuex.Store({
   state: {
     inputSearch: false,
     searchInstitutions: false,
-    iconNavbar: false,
+    iconNavbar: true
   },
   mutations: {
     showInputNavCarreras(state){ // MOSTRAR INPUT PARA BUSCAR CARRERAS
@@ -24,11 +26,10 @@ export default new Vuex.Store({
       state.inputSearch = false;    
     },
     showSidebar_iconNav(state){ //CAMBIA EL ESTADO DEL SIDEBAR Y MODIFICA EL ICONO DEL NAVBAR
-      state.iconNavbar = ! state.iconNavbar;    
+      state.iconNavbar = !state.iconNavbar;    
       let sidebar = document.getElementById("sidebar");
       sidebar.classList.toggle("active");
-    },
-
+    }
   },
   actions: {
   },

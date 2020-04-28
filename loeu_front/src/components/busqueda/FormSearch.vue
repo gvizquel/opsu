@@ -52,8 +52,8 @@ export default {
     }
 
     input[type=search]:focus{
-        width: 390px;
-        background: #fff url(https://static.tumblr.com/ftv85bp/MIXmud4tx/search-icon.png) no-repeat 390px center;
+        width: 340px;
+        background: #fff url(https://static.tumblr.com/ftv85bp/MIXmud4tx/search-icon.png) no-repeat 340px center;
     }
 
     input:-moz-placeholder{ color: #999 }

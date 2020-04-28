@@ -16,11 +16,12 @@
 
 <style>
 
-@import url('https://fonts.googleapis.com/css?family=Varela+Round&display=swap');
-*{ font-family: 'Varela Round', sans-serif }
+@import url('https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900');
+*{ font-family: 'Roboto', sans-serif }
+body{ background: #EEEEEE }
 
 p {
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Roboto', sans-serif;
   font-size: 1em;
   font-weight: 300;
   line-height: 1.7em;
@@ -32,5 +33,6 @@ a, a:hover, a:focus {
   text-decoration: none;
   transition: all 0.3s;
 }
+
 
 </style>

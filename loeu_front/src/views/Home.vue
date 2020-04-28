@@ -1,24 +1,20 @@
 <template>
   <div class="home">
-   <CardsHome/>  
+    <careersMap/>
   </div>
 </template>
 
 <script>
-import CardsHome from '@/components/CardsHome.vue'
-import { mapMutations } from 'vuex'
-
+import careersMap from '@/components/CareersMap.vue'
+import {mapMutations} from 'vuex'
   export default {
     name: 'Home',
     components: {
-      CardsHome
+      careersMap
     },
     methods: {
-      ...mapMutations(['hideInputNavCarreras', 'hideInputNavCarrerasInstitutions'])
-    },
-    mounted(){
-      this.hideInputNavCarreras()
-      this.hideInputNavInstitutions()
+      ...mapMutations(['showInputNavCarreras']),
+      ...mapMutations(['hideInputNavInstitutions']),
     }
   }
 </script>
