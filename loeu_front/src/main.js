@@ -13,11 +13,11 @@ import 'bootstrap-vue/dist/bootstrap-vue.min.css'
 import 'leaflet/dist/leaflet.css';
 
 // IMPORT DataTable VueJs
-import { VuejsDatatableFactory } from 'vuejs-datatable';
+import VueGoodTable from 'vue-good-table';
 
+Vue.use(VueGoodTable);
 Vue.use(BootstrapVue);
 Vue.use(IconsPlugin);
-Vue.use( VuejsDatatableFactory );
 
 Vue.config.productionTip = false
 

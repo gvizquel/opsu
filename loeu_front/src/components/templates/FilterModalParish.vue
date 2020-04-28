@@ -9,7 +9,7 @@
                   v-model="filter_parish"
                   :key="parish.id"
                   :value="parish.nombre"
-                  name="parish"
+                  name="parishs"
                   switch
                 >
                   {{ parish.nombre }}

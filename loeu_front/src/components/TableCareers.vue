@@ -1,39 +1,76 @@
 <template>
     <div class="row">
-        {{ message }}
-        <div class="col-xs-12 table table-hover table-responsive">
-            <datatable :columns="columns" :data="rows" :filter="filter" :per-page="25"></datatable>
-            <datatable-pager v-model="page"></datatable-pager>
+        <div class="col-12 text-center">
+            <b-badge variant="warning" v-if="message"><h1>{{ message }}</h1></b-badge>
         </div>
+        <vue-good-table
+            title="Universidades"
+            id="table"
+            :columns="columns"
+            :rows="rows"
+            @on-cell-click="onCellClick"
+            styleClass="table condensed table-bordered table-hover"
+            :search-options="{
+                enabled: true,
+                trigger: 'enter',
+                skipDiacritics: true,
+                placeholder: 'Buscar carreras',
+                externalQuery: filter,
+                searchFn: myFunc
+            }"
+            :pagination-options="{
+                enabled: true,
+                mode: 'records',
+                perPageDropdown: [5, 10, 25],
+                perPage: 25,
+                dropdownAllowAll: false,
+                nextLabel: 'Siguiente',
+                prevLabel: 'Anterior',
+                rowsPerPageLabel: 'Filas por página',
+                ofLabel: 'de',
+            }">
+        </vue-good-table>
+
+        <ModalUniversity
+            v-if="university != ''"
+            :university="university">
+        </ModalUniversity>
+
     </div>
 </template>
 <script>
 
+import ModalUniversity from '@/components/ModalUniversity.vue'
 import EventBus from '../bus'
 import axios from 'axios'
 export default {
      data() {
         return {
-            filter:  '',
+            filter: '',
             bus: true,
+            message: '',
+            university: [],
             rows: [],
             rowsData: [],
             columns: [
-                {label: 'Nombre', field: 'nombre'},
-                {label: 'Titulo', field: 'titulo'},
-                {label: 'Universidad', field: 'localidad.ieu.nombre'},
-                {label: 'Localidad',  representedAs: row => 
-                                        `${ row.localidad.estado },
-                                        ${ row.localidad.municipio }, 
-                                        ${ row.localidad.parroquia }`,
-                                        align: 'left',sortable: false},
+                {label: 'Nombre', field: 'nombre', filterable: true},
+                {label: 'Título', field: 'titulo', filterable: true, html: false},
+                {label: 'Universidad', field: 'localidad.ieu.nombre', filterable: true, html: true},
+                {label: 'Localidad', field: 'localidad.estado', filterable: true, html: false}
             ],
-            page: 1,
-            apiRequests: [],
-            message: ''
         }
+    },
+    components: {
+        ModalUniversity
     },    
     methods: {
+        myFunc(row, col, cellValue, searchTerm){
+            return cellValue === 'my value';
+        },
+         onCellClick(params) {
+            this.university = params.row;
+            this.$bvModal.show('university')
+        },
         events (me,rowsData) {
 
             EventBus.$on('state_filter', function (states) {
@@ -65,16 +102,16 @@ export default {
             });
 
         },
-        filters(data, states,atribute) {
+        filters(data, obj,atribute) {
 
             let array = [];
             let attr = atribute;
 
-            for (var j = 0; j < states.length; j++) 
+            for (var j = 0; j < obj.length; j++) 
             {
                 for (var i = 0; i < data.length; i++) 
                 {
-                    if (eval(attr) == states[j]) 
+                    if (eval(attr) == obj[j]) 
                     {                        
                         array.push(data[i]);
                     }                              
@@ -82,23 +119,22 @@ export default {
             }
 
             return array;
+
         },
         async getInstitutions(url, institutions){            
             try {
                 const response = await axios.get(url)
 
                 if (response.data.results.length == 0) {
-
                     this.messageNull = 'Disculpe, en estos momentos no hay carreras registradas'
-                
                 }else{
 
                     var me = this;
                     const retrivedInstitutions = institutions.concat(response.data.results)
                     
-                    if (response.data.next !== null && institutions.length !== 1000) {
+                    if (response.data.next !== null) {
                         me.getInstitutions(response.data.next, retrivedInstitutions);
-                        me.message = 'loading register, please wait...';
+                        me.message = 'Cargando instituciones...';
                     } else {
                         me.rowsData = retrivedInstitutions
                         me.message = '';
@@ -117,10 +153,23 @@ export default {
     },
     created() {
         this.getInstitutions('http://loe.terna.net/api-v1/programa-academico/pre-grado/listar/', []);
-    },  
+    },
+    mounted(){        
+    }    
 }
 </script>
 
 <style scoped>
-    *{ font-size: 13px }    
+    *{
+        font-size: 13px;
+    }
+    .h1 {
+        font-size: 20px !important;
+        background: beige;
+        font-weight: bold;
+        padding: 10px;
+    }
+    #table {
+        cursor: pointer
+    }
 </style>

@@ -23,13 +23,6 @@
                 Por parroquia
           </b-button>
         </li>
-        <li>
-          <b-button v-b-modal.modal-scrollable 
-                    :class="disabled"
-                    variant="transparent">
-                Por centro poblado
-          </b-button>
-        </li>  
         <div class="sidebar-header">
         <h4 class="text-center text-white">Libro de oportunidades de estudio</h4>
       </div> 
@@ -54,6 +47,7 @@
 </template>
 <script>
 
+
 import EventBus from '../../bus'
 import FilterModalState from '@/components/templates/FilterModalState.vue'
 import FilterModalMunicipality from '@/components/templates/FilterModalMunicipality.vue'
@@ -68,7 +62,7 @@ import axios from 'axios'
         municipalityAll: [],  
         parishs: [],
         parishAll: [],
-        disabled: '' /*revisar esta funcionalidad*/
+        disabled: 'disabled'
       }
     },
     components: {
@@ -78,12 +72,16 @@ import axios from 'axios'
     },
     methods: {
       enable(params) {
-        if (params){
+        if (params[0] != '') 
+        {
           this.municipalitys = this.dataProcess(this.municipalityAll, params);
           this.parishs = this.dataProcess(this.parishAll, params);
+          this.disabled = '';
           
-        } else {          
+        } else if (params[0] == '') {
+          
           this.disabled = 'disabled';
+
         }
       },
       dataProcess(data, filter) {
@@ -131,8 +129,8 @@ import axios from 'axios'
 
               }
 
-          } catch (err) {
-            console.log('error:', err);    
+          } catch (error) {
+              console.log('error', error);    
           }
       },
     },
@@ -140,7 +138,11 @@ import axios from 'axios'
       this.getSMP('http://loe.terna.net/api-v1/estado/listar/', [], 'states');      
       this.getSMP('http://loe.terna.net/api-v1/municipio/listar/', [], 'municipality');
       this.getSMP('http://loe.terna.net/api-v1/parroquia/listar/', [], 'parish');
+    },
+    mounted () {
+
     }
+
 }
 </script>
 

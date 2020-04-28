@@ -9,7 +9,7 @@
                   v-model="filter_municipality"
                   :key="municipality.id"
                   :value="municipality.nombre"
-                  name="flavour-3a"
+                  name="munucipalitys"
                   switch
                 >
                   {{ municipality.nombre }}
