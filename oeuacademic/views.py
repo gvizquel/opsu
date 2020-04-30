@@ -16,7 +16,7 @@ from oeu.models import (
     SubAreaConocimiento,
 )
 from oeuacademic.forms import SubAreaConocimientoForm
-from oeuconfig.models import SoporteFormalCambio, Titulo
+from oeuconfig.models import Titulo
 
 ##############################################################################
 #          Vistas para la gestión de los modelos agregar y editar            #
@@ -68,13 +68,13 @@ class SubAreaConocimientoAutoComplete(autocomplete.Select2QuerySetView):
     """
 
     def get_queryset(self):
-        area_conocimiento = self.forwarded.get("area_conocimiento_edit", None)
-        print("Coño: {}".format(area_conocimiento))
+
+        area = self.forwarded.get("area_conocimiento_edit", None)
+        print(area)
 
         queryset = SubAreaConocimiento.objects.all()
 
-        if area_conocimiento:
-            queryset = queryset.filter(area_conocimiento=area_conocimiento)
+        # queryset = queryset.filter(area_conocimiento=area)
 
         if self.q:
             queryset = queryset.filter(nombre__icontains=self.q)
