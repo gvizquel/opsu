@@ -78,7 +78,7 @@ class TipoEspecificoIeuAutocomplete(autocomplete.Select2QuerySetView):
         sub_tipo_ieu_edit = self.forwarded.get("sub_tipo_ieu_edit", None)
 
         queryset = TipoEspecificoInstitucion.objects.filter(
-            (Q(cod_activacion="11000111") | Q(cod_activacion="10000111"))
+            Q(cod_activacion="11000111") | Q(cod_activacion="10000111")
         )
 
         if sub_tipo_ieu_edit:

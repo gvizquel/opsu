@@ -3,6 +3,9 @@
 # Standard Libraries
 import logging
 
+# Django Libraries
+from django.db.models import Q
+
 # Thirdparty Libraries
 from globales.models import Estado, Municipio, Parroquia
 from oeu.models import (
@@ -35,6 +38,7 @@ from .serializers import (
 LOGGER = logging.getLogger("standart")
 
 
+# #################################################################################### #
 class ProgramaAcademicoViewSet(viewsets.ReadOnlyModelViewSet):
     """
     ## Programas Académicos
@@ -124,7 +128,9 @@ class ProgramaAcademicoViewSet(viewsets.ReadOnlyModelViewSet):
     """
 
     serializer_class = CarreraSerializer
-    queryset = Carrera.objects.all()
+    queryset = Carrera.objects.filter(
+        Q(cod_activacion="11111111") | Q(cod_activacion="10111111")
+    )
 
     def list(self, request):
         """
@@ -176,6 +182,7 @@ class ProgramaAcademicoViewSet(viewsets.ReadOnlyModelViewSet):
         return self.get_paginated_response(serializer.data)
 
 
+# #################################################################################### #
 class EstadoViewset(viewsets.ReadOnlyModelViewSet):
     """
     ## Obtener Estado
@@ -222,6 +229,7 @@ class EstadoViewset(viewsets.ReadOnlyModelViewSet):
         return self.get_paginated_response(serializer.data)
 
 
+# #################################################################################### #
 class MunicipioViewset(viewsets.ReadOnlyModelViewSet):
     """
     ## Obtener Municipio
@@ -274,6 +282,7 @@ class MunicipioViewset(viewsets.ReadOnlyModelViewSet):
         return self.get_paginated_response(serializer.data)
 
 
+# #################################################################################### #
 class ParroquiaViewset(viewsets.ReadOnlyModelViewSet):
     """
     ## Obtener Parroquia
@@ -335,6 +344,7 @@ class ParroquiaViewset(viewsets.ReadOnlyModelViewSet):
         return self.get_paginated_response(serializer.data)
 
 
+# #################################################################################### #
 class TipoIeuViewSet(viewsets.ReadOnlyModelViewSet):
     """
     ## Obtener Tipo de Institución de Educación Universitaria
@@ -364,7 +374,9 @@ class TipoIeuViewSet(viewsets.ReadOnlyModelViewSet):
     """
 
     serializer_class = TipoIeuEspecificoSerializer
-    queryset = TipoEspecificoInstitucion.objects.all()
+    queryset = TipoEspecificoInstitucion.objects.filter(
+        Q(cod_activacion="11000111") | Q(cod_activacion="10000111")
+    )
 
     def list(self, request):
         """
@@ -382,17 +394,22 @@ class TipoIeuViewSet(viewsets.ReadOnlyModelViewSet):
         return self.get_paginated_response(serializer.data)
 
 
+# #################################################################################### #
 class IeuViewSet(viewsets.ReadOnlyModelViewSet):
     """
     ## Instituciones de Educación Universitaria (IEU)
-    Este EndPoint puede devolver uno o una lista de las Instituciones de Educación Universitaria.
+    Este EndPoint puede devolver uno o una lista de las Instituciones de Educación
+    Universitaria.
 
     * Method: **GET**
     * Content-Type: **application/json**
     * Url Params:
-        * **id**: lista de valores (1,2,n) sin paréntesis tipo int que filtra la correspondiente IEU.
-        * **id_tipo_ieu**: lista de valores (1,2,n) sin paréntesis tipo int que filtra las IEU del correspondiente tipo de institución de educación universitaria.
-        * **dep_admin**: tipo str que filtra las IEU por su dependencia adinstrativa ("PÚBLICA" o "PRIVADA").
+        * **id**: lista de valores (1,2,n) sin paréntesis tipo int que filtra la
+            correspondiente IEU.
+        * **id_tipo_ieu**: lista de valores (1,2,n) sin paréntesis tipo int que filtra
+            las IEU del correspondiente tipo de institución de educación universitaria.
+        * **dep_admin**: tipo str que filtra las IEU por su dependencia adinstrativa
+            ("PÚBLICA" o "PRIVADA").
 
     * Respuesta exitosa:
         * HTTP code: 200
@@ -442,6 +459,7 @@ class IeuViewSet(viewsets.ReadOnlyModelViewSet):
         return self.get_paginated_response(serializer.data)
 
 
+# #################################################################################### #
 class LocalidadViewSet(viewsets.ReadOnlyModelViewSet):
     """
     ## Localidad de las Instituciones de Educación Universitaria
@@ -451,19 +469,22 @@ class LocalidadViewSet(viewsets.ReadOnlyModelViewSet):
     * Content-Type: **application/json**
     * Url Params:
         * Parametros político territoriales:
-            * **id_estado**: lista de valores (1,2,n) sin paréntesis tipo int que filtra las localidades del correspondiente
-                estado.
-            * **id_municipio**: lista de valores (1,2,n) sin paréntesis tipo int que filtra las localidades del correspondiente
-                municipio.
-            * **id_parroquia**: lista de valores (1,2,n) sin paréntesis tipo int que filtra las localidades de la correspondiente
-                parroquia.
+            * **id_estado**: lista de valores (1,2,n) sin paréntesis tipo int que filtra
+                las localidades del correspondiente estado.
+            * **id_municipio**: lista de valores (1,2,n) sin paréntesis tipo int que
+                filtra las localidades del correspondiente municipio.
+            * **id_parroquia**: lista de valores (1,2,n) sin paréntesis tipo int que
+                filtra las localidades de la correspondiente parroquia.
         * Parametros institucionales:
-            * **id_ieu**: lista de valores (1,2,n) sin paréntesis tipo int que filtra las localidades de la correspondiente
-                institución de educación universitaria.
-            * **id_tipo_ieu**: lista de valores (1,2,n) sin paréntesis tipo int que filtra las localidades del correspondiente
-                tipo de institución de educación universitaria.
-            * **id**: lista de valores (1,2,n) sin paréntesis tipo int que filtra las localidades de la correspondiente
-                localidad de una institución de educación universitaria.
+            * **id_ieu**: lista de valores (1,2,n) sin paréntesis tipo int que filtra
+                las localidades de la correspondiente institución de educación
+                universitaria.
+            * **id_tipo_ieu**: lista de valores (1,2,n) sin paréntesis tipo int que
+                filtra las localidades del correspondiente  tipo de institución de
+                educación universitaria.
+            * **id**: lista de valores (1,2,n) sin paréntesis tipo int que filtra las
+                localidades de la correspondiente localidad de una institución de
+                educación universitaria.
             * **dep_admin**: tipo str que filtra las localidades por su dependencia
                 adinstrativa ("PÚBLICA" o "PRIVADA").
 
@@ -547,6 +568,7 @@ class LocalidadViewSet(viewsets.ReadOnlyModelViewSet):
         return self.get_paginated_response(serializer.data)
 
 
+# #################################################################################### #
 class AreaViewSet(viewsets.ReadOnlyModelViewSet):
     """
     ## Obtener Area de Conocimiento de los Programas Académicos
@@ -593,6 +615,7 @@ class AreaViewSet(viewsets.ReadOnlyModelViewSet):
         return self.get_paginated_response(serializer.data)
 
 
+# #################################################################################### #
 class SubAreaViewSet(viewsets.ReadOnlyModelViewSet):
     """
     ## Obtener Subarea de Conocimiento de los Programas Académicos ##
@@ -646,6 +669,7 @@ class SubAreaViewSet(viewsets.ReadOnlyModelViewSet):
         return self.get_paginated_response(serializer.data)
 
 
+# #################################################################################### #
 class TituloViewSet(viewsets.ReadOnlyModelViewSet):
     """
     ## Obtener Títulos de Grado de los Programas Académicos
@@ -692,6 +716,7 @@ class TituloViewSet(viewsets.ReadOnlyModelViewSet):
         return self.get_paginated_response(serializer.data)
 
 
+# #################################################################################### #
 class TipoProgramaViewSet(viewsets.ReadOnlyModelViewSet):
     """
     ## Obtener Tipos de Programas Académicos

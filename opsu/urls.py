@@ -19,7 +19,7 @@ urlpatterns = [
     path("configuraciones/", include("globales.urls")),
     # path("sni/", include("snipni.urls")),
     path("admin/", admin.site.urls),
-    path("", TemplateView.as_view(template_name="index.html")),
+    # path("", TemplateView.as_view(template_name="index.html")),
     path("media/<path:path>", serve, {"document_root": settings.MEDIA_ROOT}),
     path("static/<path:path>", serve, {"document_root": settings.STATIC_ROOT}),
 ]
