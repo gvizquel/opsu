@@ -1151,12 +1151,12 @@ class Carrera(models.Model):
     revisor = models.ManyToManyField(
         "cuenta.Persona",
         through="CarreraRevisor",
-        related_name="revisor_carrera_pre_publicado",
+        related_name="revisor_carrera_publicado",
     )
     revisor_edit = models.ManyToManyField(
         "cuenta.Persona",
         through="CarreraRevisorEdit",
-        related_name="revisores_carrera_pre_edit",
+        related_name="revisores_carrera_edit",
     )
     editor = models.ForeignKey(
         "cuenta.Persona",
@@ -1209,7 +1209,7 @@ class CarreraRevisor(models.Model):
     instituciones de educación universitaria
     """
 
-    carrera_pre = models.ForeignKey("Carrera", on_delete=models.CASCADE)
+    carrera = models.ForeignKey("Carrera", on_delete=models.CASCADE)
     persona = models.ForeignKey("cuenta.Persona", on_delete=models.PROTECT)
 
     class Meta:
@@ -1222,7 +1222,7 @@ class CarreraRevisorEdit(models.Model):
     instituciones de educación universitaria
     """
 
-    carrera_pre = models.ForeignKey("Carrera", on_delete=models.CASCADE)
+    carrera = models.ForeignKey("Carrera", on_delete=models.CASCADE)
     persona = models.ForeignKey("cuenta.Persona", on_delete=models.PROTECT)
 
     class Meta:
@@ -1235,7 +1235,7 @@ class CarreraSfc(models.Model):
     instituciones de educación universitaria
     """
 
-    carrera_pre = models.ForeignKey("Carrera", on_delete=models.CASCADE)
+    carrera = models.ForeignKey("Carrera", on_delete=models.CASCADE)
     sfc = models.ForeignKey(
         "oeuconfig.SoporteFormalCambio", on_delete=models.PROTECT, db_index=True
     )
