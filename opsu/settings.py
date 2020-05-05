@@ -28,7 +28,7 @@ GOOGLE_RECAPTCHA_SECRET_KEY = "6LevF1gUAAAAAPn3z8EswCgIk1S_jLKYdf4s62B9"
 PASSWORD_RESET_TIMEOUT_DAYS = 2
 
 
-ALLOWED_HOSTS = ["127.0.0.1", "localhost", "loe.terna.net"]
+ALLOWED_HOSTS = ["127.0.0.1", "localhost", "loe.terna.net", "admin.loe.terna.net"]
 
 ##################################### EMAIL CONFIG #####################################
 EMAIL_BACKEND = ENVIROMENT("EMAIL_BACKEND")

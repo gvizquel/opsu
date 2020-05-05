@@ -58,7 +58,7 @@ class ProgramaAcademicoViewSet(viewsets.ReadOnlyModelViewSet):
         * Parametros académicos:
             * **id_tipo_programa**: lista de valores (1,2,n) sin paréntesis tipo int que filtra las localidades del correspondiente
                 tipo de programa académico.
-            * **id_titulo**:  tipo int que filtra las localidades del correspondiente
+            * **id_titulo**:  lista de valores (1,2,n) sin paréntesis tipo que filtra las localidades del correspondiente
                 titulo de grado que otorga.
             * **area_conocimiento**: lista de valores (1,2,n) sin paréntesis tipo int que filtra las localidades de la correspondiente
                 area conocimiento.
