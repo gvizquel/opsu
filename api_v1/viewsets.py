@@ -2,6 +2,7 @@
 """
 # Standard Libraries
 import logging
+import math
 
 # Django Libraries
 from django.db.models import Q
@@ -17,7 +18,8 @@ from oeu.models import (
     TipoEspecificoInstitucion,
 )
 from oeuconfig.models import TipoCarrera, Titulo
-from rest_framework import viewsets
+from rest_framework import pagination, viewsets
+from rest_framework.response import Response
 
 # Local Folders Libraries
 from .serializers import (
@@ -36,6 +38,21 @@ from .serializers import (
 
 #  logging
 LOGGER = logging.getLogger("standart")
+
+
+class CustomPagination(pagination.PageNumberPagination):
+    def get_paginated_response(self, data):
+        return Response(
+            {
+                "count": self.page.paginator.count,
+                "countItemsOnPage": self.page_size,
+                "page": self.page.number,
+                "totalPages": math.ceil(self.page.paginator.count / self.page_size),
+                "next": self.get_next_link(),
+                "previous": self.get_previous_link(),
+                "results": data,
+            }
+        )
 
 
 # #################################################################################### #
@@ -177,6 +194,7 @@ class ProgramaAcademicoViewSet(viewsets.ReadOnlyModelViewSet):
                 localidad__ieu__institucion_ministerial__dep_admin=dep_admin
             )
 
+        self.pagination_class = CustomPagination
         page = self.paginate_queryset(queryset)
         serializer = self.get_serializer(page, many=True)
         return self.get_paginated_response(serializer.data)
@@ -224,6 +242,7 @@ class EstadoViewset(viewsets.ReadOnlyModelViewSet):
         if object_id:
             queryset = queryset.filter(pk__in=object_id.split(","))
 
+        self.pagination_class = CustomPagination
         page = self.paginate_queryset(queryset)
         serializer = self.get_serializer(page, many=True)
         return self.get_paginated_response(serializer.data)
@@ -277,6 +296,7 @@ class MunicipioViewset(viewsets.ReadOnlyModelViewSet):
         if id_estado:
             queryset = queryset.filter(estado__in=id_estado.split(","))
 
+        self.pagination_class = CustomPagination
         page = self.paginate_queryset(queryset)
         serializer = self.get_serializer(page, many=True)
         return self.get_paginated_response(serializer.data)
@@ -339,6 +359,7 @@ class ParroquiaViewset(viewsets.ReadOnlyModelViewSet):
         if id_parroquia:
             queryset = queryset.filter(pk__in=id_parroquia.split(","))
 
+        self.pagination_class = CustomPagination
         page = self.paginate_queryset(queryset)
         serializer = self.get_serializer(page, many=True)
         return self.get_paginated_response(serializer.data)
@@ -389,6 +410,7 @@ class TipoIeuViewSet(viewsets.ReadOnlyModelViewSet):
         if object_id:
             queryset = queryset.filter(pk__in=object_id.split(","))
 
+        self.pagination_class = CustomPagination
         page = self.paginate_queryset(queryset)
         serializer = self.get_serializer(page, many=True)
         return self.get_paginated_response(serializer.data)
@@ -454,6 +476,7 @@ class IeuViewSet(viewsets.ReadOnlyModelViewSet):
         if dep_admin:
             queryset = queryset.filter(institucion_ministerial__dep_admin=dep_admin)
 
+        self.pagination_class = CustomPagination
         page = self.paginate_queryset(queryset)
         serializer = self.get_serializer(page, many=True)
         return self.get_paginated_response(serializer.data)
@@ -563,6 +586,7 @@ class LocalidadViewSet(viewsets.ReadOnlyModelViewSet):
                 ieu__institucion_ministerial__dep_admin=dep_admin
             )
 
+        self.pagination_class = CustomPagination
         page = self.paginate_queryset(queryset)
         serializer = self.get_serializer(page, many=True)
         return self.get_paginated_response(serializer.data)
@@ -610,6 +634,7 @@ class AreaViewSet(viewsets.ReadOnlyModelViewSet):
         if object_id:
             queryset = queryset.filter(pk__in=object_id.split(","))
 
+        self.pagination_class = CustomPagination
         page = self.paginate_queryset(queryset)
         serializer = self.get_serializer(page, many=True)
         return self.get_paginated_response(serializer.data)
@@ -664,6 +689,7 @@ class SubAreaViewSet(viewsets.ReadOnlyModelViewSet):
         if id_area:
             queryset = queryset.filter(area_conocimiento__in=id_area.split(","))
 
+        self.pagination_class = CustomPagination
         page = self.paginate_queryset(queryset)
         serializer = self.get_serializer(page, many=True)
         return self.get_paginated_response(serializer.data)
@@ -711,6 +737,7 @@ class TituloViewSet(viewsets.ReadOnlyModelViewSet):
         if object_id:
             queryset = queryset.filter(pk__in=object_id.split(","))
 
+        self.pagination_class = CustomPagination
         page = self.paginate_queryset(queryset)
         serializer = self.get_serializer(page, many=True)
         return self.get_paginated_response(serializer.data)
@@ -758,6 +785,7 @@ class TipoProgramaViewSet(viewsets.ReadOnlyModelViewSet):
         if object_id:
             queryset = queryset.filter(pk__in=object_id.split(","))
 
+        self.pagination_class = CustomPagination
         page = self.paginate_queryset(queryset)
         serializer = self.get_serializer(page, many=True)
         return self.get_paginated_response(serializer.data)
