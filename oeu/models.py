@@ -563,7 +563,8 @@ class Ieu(models.Model):
 
     class Meta:
         ordering = [
-            "institucion_ministerial",
+            "tipo_especifico_ieu",
+            "institucion_ministerial__nombre",
         ]
         db_table = 'oeu"."ieu'
         verbose_name = "Insitución de Educación Universitaria"
