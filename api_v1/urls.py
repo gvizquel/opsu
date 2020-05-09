@@ -22,6 +22,9 @@ from .viewsets import (
 app_name = "api_v1"
 
 urlpatterns = [
+    path(
+        "test/", TemplateView.as_view(template_name="datatabletest.html"), name="test"
+    ),
     path("", TemplateView.as_view(template_name="api_v1_doc.html"), name="api-index"),
     # ###################### Programas Academicos de Pre Grado ####################### #
     path(
