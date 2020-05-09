@@ -195,8 +195,8 @@ class ProgramaAcademicoViewSet(viewsets.ReadOnlyModelViewSet):
             )
 
         self.pagination_class = CustomPagination
-        page = self.paginate_queryset(queryset)
-        serializer = self.get_serializer(page, many=True)
+        # page = self.paginate_queryset(queryset)
+        serializer = self.get_serializer(queryset, many=True)
         return self.get_paginated_response(serializer.data)
 
 
