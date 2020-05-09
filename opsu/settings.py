@@ -76,6 +76,7 @@ INSTALLED_APPS = [
     "ckeditor",
     "rest_framework",
     "corsheaders",
+    "rest_framework_datatables",
     # 'django.contrib.sites',
     # 'debug_toolbar',
 ]
@@ -160,8 +161,20 @@ SETTINGS_EXPORT = [
 ]
 
 ############################# Django Rest Framework Config #############################
+# REST_FRAMEWORK = {
+#     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+#     "PAGE_SIZE": 25,
+# }
 REST_FRAMEWORK = {
-    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+    "DEFAULT_RENDERER_CLASSES": (
+        "rest_framework.renderers.JSONRenderer",
+        "rest_framework.renderers.BrowsableAPIRenderer",
+        "rest_framework_datatables.renderers.DatatablesRenderer",
+    ),
+    "DEFAULT_FILTER_BACKENDS": (
+        "rest_framework_datatables.filters.DatatablesFilterBackend",
+    ),
+    "DEFAULT_PAGINATION_CLASS": "rest_framework_datatables.pagination.DatatablesPageNumberPagination",
     "PAGE_SIZE": 25,
 }
 
