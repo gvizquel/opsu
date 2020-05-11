@@ -194,9 +194,9 @@ class ProgramaAcademicoViewSet(viewsets.ReadOnlyModelViewSet):
                 localidad__ieu__institucion_ministerial__dep_admin=dep_admin
             )
 
-        # self.pagination_class = CustomPagination
-        # page = self.paginate_queryset(queryset)
-        serializer = self.get_serializer(queryset, many=True)
+        self.pagination_class = CustomPagination
+        page = self.paginate_queryset(queryset)
+        serializer = self.get_serializer(page, many=True)
         return self.get_paginated_response(serializer.data)
 
 

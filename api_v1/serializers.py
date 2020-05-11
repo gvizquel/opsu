@@ -89,16 +89,16 @@ class CarreraSerializer(serpy.Serializer):
     id = serpy.Field()
     nombre = serpy.Field()
     tipo_carrera = serpy.StrField(label="tipo_programa")
-    descripcion = serpy.Field()
+    # # descripcion = serpy.Field()
     titulo = serpy.StrField()
-    mercado_ocupacional = serpy.Field()
-    periodicidad = serpy.StrField()
-    duracion = serpy.Field()
-    prioritaria = serpy.Field()
-    cod_activacion = serpy.MethodField("activo", label="activo")
+    # # mercado_ocupacional = serpy.Field()
+    # # periodicidad = serpy.StrField()
+    # # duracion = serpy.Field()
+    # # prioritaria = serpy.Field()
+    # cod_activacion = serpy.MethodField("activo", label="activo")
     area_conocimiento = serpy.StrField()
     sub_area_conocimiento = serpy.StrField()
-    localidad = LocalidadSerializer()
+    localidad = serpy.StrField()
 
     def activo(self, Carrera):
         if Carrera.cod_activacion == "11111111" or Carrera.cod_activacion == "10111111":
