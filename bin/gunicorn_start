@@ -2,10 +2,11 @@
 
 NAME="LOEU"                             # Nombre de la aplicación
 DJANGODIR=~/opsu                        # Directorio del proyecto Django
-SOCKFILE=$DJANGODIR/run/gunicorn.sock       # Nos comunicaremos usando este socket unix
+SOCKFILE=$DJANGODIR/run/gunicorn.sock   # Nos comunicaremos usando este socket unix
 USER=loeu                               # El usuario que ejecuta la app
 GROUP=loeu                              # El grupo que ejecuta la app
 NUM_WORKERS=1                           # Cuantos trabajadores procesaran Gunicorn (cant. de procesadores + 1).
+TIMEOUT=120                             # Cantidad de segundos para la respuesta
 DJANGO_SETTINGS_MODULE=opsu.settings    # Que archivo de configuración usará Django
 DJANGO_WSGI_MODULE=opsu.wsgi            # Nombre del módulo WSGI
 
@@ -26,6 +27,7 @@ test -d $RUNDIR || mkdir -p $RUNDIR
 exec gunicorn ${DJANGO_WSGI_MODULE}:application \
   --name $NAME \
   --workers $NUM_WORKERS \
+  --timeout $TIMEOUT \
   --user=$USER --group=$GROUP \
   --bind=unix:$SOCKFILE \
   --log-level=debug \

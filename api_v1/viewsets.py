@@ -104,41 +104,10 @@ class ProgramaAcademicoViewSet(viewsets.ReadOnlyModelViewSet):
                         "id": identificador único de la carrera (int),
                         "nombre": nombre del programa académico (str) ,
                         "tipo_programa": tipo de programa académico (str),
-                        "descripcion": descripcion del programa académico (str),
                         "titulo": título de grado del programa académico (str),
-                        "mercado_ocupacional": sectores laborales para el egresado del programa académico (str),
-                        "periodicidad": periodos académicos del programa académico (str),
-                        "duracion": duración del programa académico (str),
-                        "prioritaria": indica si es programa académico es prioritario para el desarrollo económico de la nación (bool),
-                        "activo": indica si el programa académico está activo o no (bool),
                         "area_conocimiento": indica el área de conocimiento del programa académico (str),
                         "sub_area_conocimiento": indica la sub área del programa académico (str),
-                        "localidad": {
-                            "id": identificador único de la localidad (int),
-                            "tipo_localidad": tipo de localidad (str),
-                            "nombre": nombre de la localidad (str),
-                            "web_site": URL del web site de la localidad (str)",
-                            "direccion": dirección de la que pertenece el programa académico (str),
-                            "estado": estado de la localidad (str),
-                            "municipio": municipio de la localidad (str),
-                            "parroquia": parroquia de la localidad  (str),
-                            "centro_poblado": centro poblado de la localidad (str),
-                            "punto": punto georeferenciado de la localidad (str),
-                            "poligonal": poligonal georeferenciada de la localidad (str),
-                            "fachada": ruta de la fachada de la localidad (str),
-                            "activo": indica si la localidad de la IEU está activa o no (bool)
-                            "ieu": {
-                                "id": identificador único de la IEU (int),
-                                "nombre": nombre de la IEU (str),
-                                "siglas": siglas de la IEU (str),
-                                "dep_admin": indica si la IEU es publica o provada (str)
-                                "tipo_ieu": "Institutos Universitarios Militares",
-                                "logo": ruta de la imagen del logo de la IEU (str),
-                                "fachada": ruta de la imagen de la fachada de la IEU (str),
-                                "activo": false
-                                },
-                            },
-                        }
+                        "localidad": nombre de la localidad (str),
                     }
                 ]
             }
