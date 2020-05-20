@@ -754,7 +754,7 @@ class Localidad(models.Model):
         )
 
     class Meta:
-        ordering = ["ieu__institucion_ministerial", "tipo_localidad", "nombre"]
+        ordering = ["ieu__institucion_ministerial", "nombre"]
         db_table = 'oeu"."localidad'
         verbose_name = "Localidad"
         verbose_name_plural = "Localidades"
