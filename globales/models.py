@@ -60,7 +60,7 @@ class Municipio(models.Model):
 
     class Meta:
         db_table = "municipio"
-        ordering = ["estado__nombre, nombre"]
+        ordering = ["estado__nombre", "nombre"]
 
 
 class Parroquia(models.Model):
@@ -83,7 +83,7 @@ class Parroquia(models.Model):
 
     class Meta:
         db_table = "parroquia"
-        ordering = ["estado__nombre, municipio__nombre, nombre"]
+        ordering = ["estado__nombre", "municipio__nombre", "nombre"]
 
 
 class Etnia(models.Model):
