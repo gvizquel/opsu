@@ -100,7 +100,7 @@ class EstadoAutocomplete(autocomplete.Select2QuerySetView):
         qs = Estado.objects.all()
 
         if self.q:
-            qs = qs.filter(nombreestado__icontains=self.q).order_by("nombreestado")
+            qs = qs.filter(nombre__icontains=self.q).order_by("nombre")
 
         return qs
 
@@ -120,9 +120,7 @@ class MunicipioAutocomplete(autocomplete.Select2QuerySetView):
             qs = Municipio.objects.all()
 
         if self.q:
-            qs = qs.filter(nombremunicipio__icontains=self.q).order_by(
-                "nombremunicipio"
-            )
+            qs = qs.filter(nombre__icontains=self.q).order_by("nombre")
 
         return qs
 
@@ -137,9 +135,7 @@ class ParroquiaAutocomplete(autocomplete.Select2QuerySetView):
             qs = Parroquia.objects.all()
 
         if self.q:
-            qs = qs.filter(nombreparroquia__icontains=self.q).order_by(
-                "nombreparroquia"
-            )
+            qs = qs.filter(nombre__icontains=self.q).order_by("nombre")
 
         return qs
 

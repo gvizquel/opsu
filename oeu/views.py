@@ -63,7 +63,9 @@ class SubTipoIeuAutoComplete(autocomplete.Select2QuerySetView):
             queryset = queryset.filter(tipo_ieu=tipo_ieu_edit)
 
         if self.q:
-            queryset = queryset.filter(nombre__icontains=self.q)
+            queryset = queryset.filter(
+                Q(nombre__icontains=self.q) | Q(tipo_ieu__nombre__icontains=self.q)
+            )
 
         return queryset
 
@@ -86,7 +88,9 @@ class TipoEspecificoIeuAutocomplete(autocomplete.Select2QuerySetView):
 
         if self.q:
             print(self.q)
-            queryset = queryset.filter(nombre__icontains=self.q)
+            queryset = queryset.filter(
+                Q(nombre__icontains=self.q) | Q(sub_tipo_ieu__nombre__icontains=self.q)
+            )
 
         return queryset
 
