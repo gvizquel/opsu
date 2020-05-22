@@ -77,9 +77,9 @@ class ProgramaAcademicoViewSet(viewsets.ReadOnlyModelViewSet):
                 tipo de programa académico.
             * **id_titulo**:  lista de valores (1,2,n) sin paréntesis tipo que filtra las localidades del correspondiente
                 titulo de grado que otorga.
-            * **area_conocimiento**: lista de valores (1,2,n) sin paréntesis tipo int que filtra las localidades de la correspondiente
+            * **id_area**: lista de valores (1,2,n) sin paréntesis tipo int que filtra las localidades de la correspondiente
                 area conocimiento.
-            * **sub_area_conocimiento**: lista de valores (1,2,n) sin paréntesis tipo int que filtra las localidades de la
+            * **id_sub_area**: lista de valores (1,2,n) sin paréntesis tipo int que filtra las localidades de la
                 correspondiente sub area conocimiento.
         * Parametros institucionales:
             * **id_ieu**: lista de valores (1,2,n) sin paréntesis tipo int que filtra las localidades de la correspondiente
@@ -114,9 +114,7 @@ class ProgramaAcademicoViewSet(viewsets.ReadOnlyModelViewSet):
     """
 
     serializer_class = CarreraSerializer
-    queryset = Carrera.objects.filter(
-        Q(cod_activacion="11111111") | Q(cod_activacion="10111111")
-    )
+    queryset = Carrera.objects.filter()
 
     def list(self, request):
         """
@@ -135,6 +133,16 @@ class ProgramaAcademicoViewSet(viewsets.ReadOnlyModelViewSet):
         id_tipo_ieu = self.request.query_params.get("id_tipo_ieu", None)
         id_localidad = self.request.query_params.get("id_localidad", None)
         dep_admin = self.request.query_params.get("dep_admin", None)
+        activo = self.request.query_params.get("activo", None)
+
+        if activo == "0":
+            queryset = queryset.filter(
+                ~Q(cod_activacion="11111111"), ~Q(cod_activacion="10111111")
+            )
+        else:
+            queryset = queryset.filter(
+                Q(cod_activacion="11111111") | Q(cod_activacion="10111111")
+            )
 
         if id_estado:
             queryset = queryset.filter(localidad__estado__in=id_estado.split(","))
@@ -364,9 +372,7 @@ class TipoIeuViewSet(viewsets.ReadOnlyModelViewSet):
     """
 
     serializer_class = TipoIeuEspecificoSerializer
-    queryset = TipoEspecificoInstitucion.objects.filter(
-        Q(cod_activacion="11000111") | Q(cod_activacion="10000111")
-    )
+    queryset = TipoEspecificoInstitucion.objects.filter()
 
     def list(self, request):
         """
@@ -375,6 +381,16 @@ class TipoIeuViewSet(viewsets.ReadOnlyModelViewSet):
         queryset = self.filter_queryset(self.get_queryset())
 
         object_id = self.request.query_params.get("id", None)
+        activo = self.request.query_params.get("activo", None)
+
+        if activo == "0":
+            queryset = queryset.filter(
+                ~Q(cod_activacion="11000111"), ~Q(cod_activacion="10000111")
+            )
+        else:
+            queryset = queryset.filter(
+                Q(cod_activacion="11000111") | Q(cod_activacion="10000111")
+            )
 
         if object_id:
             queryset = queryset.filter(pk__in=object_id.split(","))
@@ -437,7 +453,16 @@ class IeuViewSet(viewsets.ReadOnlyModelViewSet):
         object_id = self.request.query_params.get("id", None)
         id_tipo_ieu = self.request.query_params.get("id_tipo_ieu", None)
         dep_admin = self.request.query_params.get("dep_admin", None)
+        activo = self.request.query_params.get("activo", None)
 
+        if activo == "0":
+            queryset = queryset.filter(
+                ~Q(cod_activacion="11001111"), ~Q(cod_activacion="10001111")
+            )
+        else:
+            queryset = queryset.filter(
+                Q(cod_activacion="11001111") | Q(cod_activacion="10001111")
+            )
         if object_id:
             queryset = queryset.filter(pk__in=object_id.split(","))
         if id_tipo_ieu:
@@ -535,6 +560,16 @@ class LocalidadViewSet(viewsets.ReadOnlyModelViewSet):
         id_tipo_ieu = self.request.query_params.get("id_tipo_ieu", None)
         object_id = self.request.query_params.get("id", None)
         dep_admin = self.request.query_params.get("dep_admin", None)
+        activo = self.request.query_params.get("activo", None)
+
+        if activo == "0":
+            queryset = queryset.filter(
+                ~Q(cod_activacion="11011111"), ~Q(cod_activacion="10011111")
+            )
+        else:
+            queryset = queryset.filter(
+                Q(cod_activacion="11011111") | Q(cod_activacion="10011111")
+            )
 
         if id_estado:
             queryset = queryset.filter(estado__in=id_estado.split(","))
