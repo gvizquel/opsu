@@ -58,8 +58,8 @@ class LocalidadSerializer(serpy.Serializer):
     """
 
     id = serpy.Field()
-    tipo_localidad = serpy.StrField()
-    nombre = serpy.Field()
+    nombre = serpy.MethodField("nombre_localidad")
+    ieu = serpy.MethodField("siglas_ieu", label="siglas")
     web_site = serpy.Field()
     direccion = serpy.Field()
     estado = serpy.StrField()
@@ -69,8 +69,10 @@ class LocalidadSerializer(serpy.Serializer):
     punto = serpy.Field()
     poligonal = serpy.Field()
     fachada = serpy.StrField()
+    ieu_edit = serpy.MethodField("logo", label="logo")
+    revisor = serpy.MethodField("ieu_dep_admin", label="dep_admin")
+    editor = serpy.MethodField("sede_principal", label="localidad_principal")
     cod_activacion = serpy.MethodField("activo", label="activo")
-    ieu = IeuSerializer()
 
     def activo(self, Localidad):
         if (
@@ -79,6 +81,27 @@ class LocalidadSerializer(serpy.Serializer):
         ):
             return True
         return False
+
+    def nombre_localidad(self, Localidad):
+        return "{} {} {}".format(
+            Localidad.ieu.institucion_ministerial,
+            Localidad.tipo_localidad,
+            Localidad.nombre,
+        )
+
+    def siglas_ieu(self, Localidad):
+        return Localidad.ieu.institucion_ministerial.siglas
+
+    def logo(self, Localidad):
+        return "{}".format(Localidad.ieu.logo)
+
+    def ieu_dep_admin(self, Localidad):
+        return "{}".format(Localidad.ieu.institucion_ministerial.dep_admin)
+
+    def sede_principal(self, Localidad):
+        if Localidad.id != Localidad.ieu.localidad_principal.id:
+            return False
+        return True
 
 
 class CarreraSerializer(serpy.Serializer):

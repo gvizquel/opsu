@@ -458,12 +458,6 @@ class Ieu(models.Model):
     """Este modelo sirve para almacenar las de IEU
     """
 
-    tipo_ieu = models.ForeignKey(
-        TipoInstitucion, on_delete=models.PROTECT, db_index=True
-    )
-    sub_tipo_ieu = models.ForeignKey(
-        "SubTipoInstitucion", on_delete=models.PROTECT, db_index=True
-    )
     tipo_especifico_ieu = models.ForeignKey(
         "TipoEspecificoInstitucion", on_delete=models.PROTECT, db_index=True
     )

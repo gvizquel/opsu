@@ -35,7 +35,7 @@
             </a>
             <ul class="treeview-menu">
                 <li class="{% if 'loeu/configuracion/pfa/tipo-de-periodicidad' in request.path %}active{% endif %}"><a href="{{ url('oeuconfig:listar-periodicidad') }}"><i class="fa fa-circle-o"></i> Periodicidad</a></li>
-                <li class="{% if 'loeu/configuracion/pfa/tipo-de-titulo' in request.path %}active{% endif %}"><a href="{{ url('oeuconfig:listar-tipo-titulo') }}"><i class="fa fa-circle-o"></i> Título</a></li>
+                <li class="{% if 'loeu/configuracion/pfa/tipo-de-titulo' in request.path %}active{% endif %}"><a href="{{ url('oeuconfig:listar-titulo') }}"><i class="fa fa-circle-o"></i> Título</a></li>
                 <li class="{% if 'loeu/configuracion/pfa/tipo-de-carrera' in request.path %}active{% endif %}"><a href="{{ url('oeuconfig:listar-tipo-carrera') }}"><i class="fa fa-circle-o"></i> Tipos de Programa</a></li>
                 <li class="{% if 'loeu/configuracion/pfa/tipo-turno-de-estudio' in request.path %}active{% endif %}"><a href="{{ url('oeuconfig:listar-tipo-turno-de-estudio') }}"><i class="fa fa-circle-o"></i> Turno de Estudio</a></li>
             </ul>
