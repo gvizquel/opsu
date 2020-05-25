@@ -136,8 +136,6 @@ class LocalidadIeuAutocomplete(autocomplete.Select2QuerySetView):
                 Q(nombre__icontains=self.q)
                 | Q(ieu__institucion_ministerial__nombre__icontains=self.q)
                 | Q(ieu__tipo_especifico_ieu__nombre__icontains=self.q)
-                | Q(ieu__sub_tipo_ieu__nombre__icontains=self.q)
-                | Q(ieu__tipo_ieu__nombre__icontains=self.q)
             )
 
         return queryset
