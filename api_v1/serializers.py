@@ -99,9 +99,9 @@ class LocalidadSerializer(serpy.Serializer):
         return "{}".format(Localidad.ieu.institucion_ministerial.dep_admin)
 
     def sede_principal(self, Localidad):
-        if Localidad.id != Localidad.ieu.localidad_principal.id:
-            return False
-        return True
+        if Localidad.id == Localidad.ieu.localidad_principal_id:
+            return True
+        return False
 
 
 class CarreraSerializer(serpy.Serializer):
