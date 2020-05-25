@@ -65,10 +65,6 @@
                                 <div class="row">
                                     <div class="col-md-8">
                                         <dl class="dl-horizontal">
-                                            <dt>Tipo de IEU:</dt>
-                                            <dd>{{ object.tipo_ieu }}</dd>
-                                            <dt>Sub Tipo de IEU:</dt>
-                                            <dd>{{ object.sub_tipo_ieu }}</dd>
                                             <dt>Tipo Específico de IEU:</dt>
                                             <dd>{{ object.tipo_especifico_ieu }}</dd>
                                             <dt>IEU:</dt>
@@ -450,7 +446,7 @@
     </script>
 
     {% for localidad in localidades %}
-        {% if localidad.pk == object.localidad_principal.pk %}
+        {% if localidad.pk == object.localidad_principal_id %}
             <script>
                 var coordenadas = {{ localidad.punto["coordinates"] }};
                 var lat = coordenadas[0];
