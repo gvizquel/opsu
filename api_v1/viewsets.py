@@ -515,9 +515,10 @@ class LocalidadViewSet(viewsets.ReadOnlyModelViewSet):
                 "previous": URL con la pagina anterior (25 objetos) de resultados del EndPoint,
                 "results": [
                     {
+
                         "id": identificador único de la localidad (int),
-                        "tipo_localidad": tipo de localidad (str),
-                        "nombre": nombre de la localidad (str),
+                        "nombre": "Colegio Universitario Dr. Rafael Belloso Chacín Localidad Maracaibo",
+                        "siglas": "Siglas de IEU a la que pertenece la localidad",
                         "web_site": URL del web site de la localidad (str)",
                         "direccion": dirección de la que pertenece el programa académico (str),
                         "estado": estado de la localidad (str),
@@ -526,18 +527,11 @@ class LocalidadViewSet(viewsets.ReadOnlyModelViewSet):
                         "centro_poblado": centro poblado de la localidad (str),
                         "punto": punto georeferenciado de la localidad (str),
                         "poligonal": poligonal georeferenciada de la localidad (str),
-                        "fachada": ruta de la fachada de la localidad (str),
-                        "activo": indica si la localidad de la IEU está activa o no (bool)
-                        "ieu": {
-                            "id": identificador único de la IEU (int),
-                            "nombre": nombre de la IEU (str),
-                            "siglas": siglas de la IEU (str),
-                            "dep_admin": indica si la IEU es publica o provada (str)
-                            "tipo_ieu": "Institutos Universitarios Militares",
-                            "logo": ruta de la imagen del logo de la IEU (str),
-                            "fachada": ruta de la imagen de la fachada de la IEU (str),
-                            "activo": false
-                            },
+                        "fachada": ruta de la imagen de la fachada de la localidad (str),
+                        "logo": ruta de la imagen del logo de la IEU (str),
+                        "dep_admin": indica si la IEU es publica o provada (str)
+                        "localidad_principal": Indica si la localidad es la localidad principal de la IEU (bool),
+                        "activo": Indica si la localidad esta activa o no (bool)
                         },
                     }
                 ]
