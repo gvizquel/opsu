@@ -566,8 +566,6 @@ class Ieu(models.Model):
 
     def clean(self):
         if self.pk is None:
-            self.tipo_ieu = self.tipo_ieu_edit
-            self.sub_tipo_ieu = self.sub_tipo_ieu_edit
             self.tipo_especifico_ieu = self.tipo_especifico_ieu_edit
             self.institucion_ministerial = self.institucion_ministerial_edit
             self.localidad_principal = self.localidad_principal_edit
@@ -576,8 +574,6 @@ class Ieu(models.Model):
 
     def save(self, *args, **kwargs):
         if self.pk is not None:
-            self.tipo_ieu_edit = self.tipo_ieu
-            self.sub_tipo_ieu_edit = self.sub_tipo_ieu
             self.tipo_especifico_ieu_edit = self.tipo_especifico_ieu
             self.institucion_ministerial_edit = self.institucion_ministerial
 
