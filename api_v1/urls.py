@@ -7,6 +7,7 @@ from django.views.generic import TemplateView
 # Local Folders Libraries
 from .viewsets import (
     AreaViewSet,
+    DetalleProgramaAcademicoViewSet,
     EstadoViewset,
     IeuViewSet,
     LocalidadViewSet,
@@ -31,6 +32,11 @@ urlpatterns = [
         "programa-academico/pre-grado/listar/",
         ProgramaAcademicoViewSet.as_view({"get": "list"}),
         name="pre-programa",
+    ),
+    path(
+        "programa-academico/pre-grado/detalle/",
+        DetalleProgramaAcademicoViewSet.as_view({"get": "retrieve"}),
+        name="detalle-pre-programa",
     ),
     path(
         "programa-academico/area-conocimiento/",

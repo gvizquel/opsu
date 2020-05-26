@@ -49,14 +49,14 @@ class CarreraPreGradoForm(ModelForm):
             "nombre_edit",
             "descripcion_edit",
             "tipo_carrera_edit",
-            "ieu_acreditadora_edit",
+            # "ieu_acreditadora_edit",
             "mercado_ocupacional_edit",
             "area_conocimiento_edit",
             "sub_area_conocimiento_edit",
             "titulo_edit",
             "periodicidad_edit",
             "duracion_edit",
-            "ieu_acreditadora_edit",
+            # "ieu_acreditadora_edit",
             "prioritaria_edit",
             "cod_activacion",
             "publicar",
@@ -69,7 +69,7 @@ class CarreraPreGradoForm(ModelForm):
             "descripcion_edit": ("Descripción"),
             "titulo_edit": ("Título"),
             "tipo_carrera_edit": ("Tipo de Programa"),
-            "ieu_acreditadora_edit": ("Institución Acreditadora"),
+            # "ieu_acreditadora_edit": ("Institución Acreditadora"),
             "mercado_ocupacional_edit": ("Mercado Ocupacional"),
             "area_conocimiento_edit": ("Área de Conocimiento"),
             "sub_area_conocimiento_edit": ("Sub Área de Conocimiento"),
@@ -104,13 +104,13 @@ class CarreraPreGradoForm(ModelForm):
                     "placeholder": "Seleccione Una Opción",
                 },
             ),
-            "ieu_acreditadora_edit": autocomplete.ModelSelect2(
-                url="oeuacademic:acreditadora",
-                attrs={
-                    "class": "form-control",
-                    "data-placeholder": "Institución Acreditadora",
-                },
-            ),
+            # "ieu_acreditadora_edit": autocomplete.ModelSelect2(
+            #     url="oeuacademic:acreditadora",
+            #     attrs={
+            #         "class": "form-control",
+            #         "data-placeholder": "Institución Acreditadora",
+            #     },
+            # ),
             "mercado_ocupacional_edit": forms.Textarea(
                 attrs={
                     "class": "form-control",

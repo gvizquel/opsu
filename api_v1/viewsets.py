@@ -6,6 +6,7 @@ import math
 
 # Django Libraries
 from django.db.models import Q
+from django.shortcuts import get_object_or_404
 
 # Thirdparty Libraries
 from globales.models import Estado, Municipio, Parroquia
@@ -25,6 +26,7 @@ from rest_framework.response import Response
 from .serializers import (
     AreaSerializer,
     CarreraSerializer,
+    DetalleCarreraSerializer,
     EstadoSerializer,
     IeuSerializer,
     LocalidadSerializer,
@@ -178,6 +180,48 @@ class ProgramaAcademicoViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 # #################################################################################### #
+class DetalleProgramaAcademicoViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    ## Programas Académicos
+    Este EndPoint puede devolver uno o una lista de los programas académicos de pregrado del subsistema
+    de educación universitaria.
+
+    * Method: **GET**
+    * Content-Type: **application/json**
+    * Url Params:
+        **dep_admin**: tipo str que filtra las localidades por su dependencia
+        adinstrativa ("PÚBLICA" o "PRIVADA").
+
+    * Respuesta exitosa:
+        * HTTP code: 200
+        * Objeto:
+
+            {\n
+                "count": Cantidad de objetos que devuelve el EndPoint,
+                "next": URL con la siguiente página (25 objetos) de resultados del EndPoint,
+                "previous": URL con la pagina anterior (25 objetos) de resultados del EndPoint,
+                "results": [
+                    {
+                        "id": identificador único de la carrera (int),
+                        "nombre": nombre del programa académico (str) ,
+                        "tipo_programa": tipo de programa académico (str),
+                        "titulo": título de grado del programa académico (str),
+                        "area_conocimiento": indica el área de conocimiento del programa académico (str),
+                        "sub_area_conocimiento": indica la sub área del programa académico (str),
+                        "localidad": nombre de la localidad (str),
+                    }
+                ]
+            }
+    """
+
+    def retrieve(self, request):
+        object_id = self.request.query_params.get("id", -1)
+        programa = get_object_or_404(Carrera, pk=object_id)
+        serializer = DetalleCarreraSerializer(programa)
+        return Response(serializer.data)
+
+
+# #################################################################################### #
 class EstadoViewset(viewsets.ReadOnlyModelViewSet):
     """
     ## Obtener Estado
@@ -186,7 +230,8 @@ class EstadoViewset(viewsets.ReadOnlyModelViewSet):
     * Method: **GET**
     * Content-Type: **application/json**
     * Url Params:
-        * **id**: lista de valores (1,2,n) sin paréntesis tipo int que filtra el correspondiente estado.
+        * **id**: lista de valores (1,2,n) sin paréntesis tipo int que filtra el
+        correspondiente estado.
 
     * Respuesta exitosa:
         * HTTP code: 200

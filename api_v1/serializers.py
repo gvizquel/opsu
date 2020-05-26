@@ -112,13 +112,7 @@ class CarreraSerializer(serpy.Serializer):
     id = serpy.Field()
     nombre = serpy.Field()
     tipo_carrera = serpy.StrField(label="tipo_programa")
-    # # descripcion = serpy.Field()
     titulo = serpy.StrField()
-    # # mercado_ocupacional = serpy.Field()
-    # # periodicidad = serpy.StrField()
-    # # duracion = serpy.Field()
-    # # prioritaria = serpy.Field()
-    # cod_activacion = serpy.MethodField("activo", label="activo")
     area_conocimiento = serpy.StrField()
     sub_area_conocimiento = serpy.StrField()
     localidad = serpy.StrField()
@@ -127,6 +121,44 @@ class CarreraSerializer(serpy.Serializer):
         if Carrera.cod_activacion == "11111111" or Carrera.cod_activacion == "10111111":
             return True
         return False
+
+
+class DetalleCarreraSerializer(serpy.Serializer):
+    """
+    Class to serilize academic programs detail
+    """
+
+    id = serpy.Field()
+    descripcion_edit = serpy.MethodField("id_ieu", label="id_ieu")
+    nombre_edit = serpy.MethodField("ieu", label="ieu")
+    localidad_edit = serpy.MethodField("id_localidad", label="id_localidad")
+    localidad = serpy.StrField()
+    nombre = serpy.Field()
+    area_conocimiento = serpy.StrField()
+    sub_area_conocimiento = serpy.StrField()
+    tipo_carrera = serpy.StrField(label="tipo_programa")
+    titulo = serpy.StrField()
+    descripcion = serpy.Field()
+    mercado_ocupacional = serpy.Field()
+    periodicidad = serpy.StrField()
+    duracion = serpy.Field()
+    prioritaria = serpy.Field()
+    cod_activacion = serpy.MethodField("activo", label="activo")
+    localidad = serpy.StrField()
+
+    def activo(self, Carrera):
+        if Carrera.cod_activacion == "11111111" or Carrera.cod_activacion == "10111111":
+            return True
+        return False
+
+    def id_localidad(self, Carrera):
+        return Carrera.localidad.pk
+
+    def id_ieu(self, Carrera):
+        return Carrera.localidad.ieu.institucion_ministerial.pk
+
+    def ieu(self, Carrera):
+        return Carrera.localidad.ieu.institucion_ministerial.nombre
 
 
 class EstadoSerializer(serpy.Serializer):
