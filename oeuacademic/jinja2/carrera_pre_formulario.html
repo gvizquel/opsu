@@ -57,7 +57,7 @@
                 <div class="col-lg-6">
                     <div class="box box-info">
                         <div class="box-header">
-                            <b>Tipo Específico IEU:</b> valores públicados
+                            <b>Programa Académico:</b> valores públicados
                         </div>
                         <!-- /.box-header -->
                         <div class="box-body">
@@ -65,7 +65,7 @@
                                 <dl class="dl-horizontal">
                                     <dt>Localidad:</dt>
                                     <dd>{{ object.localidad }}</dd>
-                                    <dt>Nombre de la Carrera</dt>
+                                    <dt>Nombre</dt>
                                     <dd>{{ object.nombre_edit }}</dd>
                                     <dt>Descripción</dt>
                                     <dd><p ALIGN="justify">{{ object.descripcion_edit }}</p></dd>
@@ -73,20 +73,12 @@
                                     <dd>{{ object.titulo_edit }}</dd>
                                     <dt>Tipo de Programa:</dt>
                                     <dd>{{ object.tipo_carrera_edit }}</dd>
-                                    <dt>Institución Acreditadora:</dt>
-                                    <dd>{{ object.ieu_acreditadora_edit }}</dd>
                                     <dt>Mercado Ocupacional</dt>
                                     <dd><p ALIGN="justify">{{ object.mercado_ocupacional_edit }}</p></dd>
                                     <dt>Área de Conocimiento:</dt>
                                     <dd>{{ object.area_conocimiento_edit }}</dd>
                                     <dt>Sub Área:</dt>
                                     <dd>{{ object.sub_area_conocimiento_edit }}</dd>
-                                    <!-- <dt>Campo Amplio</dt>
-                                    <dd>{{ object.cine_f_campo_amplio_edit }}</dd>
-                                    <dt>Campo Especifico</dt>
-                                    <dd>{{ object.cine_f_campo_especifico_edit }}</dd>
-                                    <dt>Campo Detallado</dt>
-                                    <dd>{{ object.cine_f_campo_detallado_edit }}</dd> -->
                                     <dt>Periodicidad:</dt>
                                     <dd>{{ object.periodicidad }}</dd>
                                     <dt>Duración:</dt>
@@ -132,7 +124,7 @@
                         <div class="box box-warning">
                             <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
                             <div class="box-header">
-                                <b>Tipo Específico IEU:</b> valores en revisión
+                                <b>Programa Académico:</b> valores en revisión
                             </div>
                             <!-- /.box-header -->
                             <div class="box-body">
