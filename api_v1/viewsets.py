@@ -203,12 +203,21 @@ class DetalleProgramaAcademicoViewSet(viewsets.ReadOnlyModelViewSet):
                 "results": [
                     {
                         "id": identificador único de la carrera (int),
-                        "nombre": nombre del programa académico (str) ,
-                        "tipo_programa": tipo de programa académico (str),
-                        "titulo": título de grado del programa académico (str),
+                        "id_ieu": identificador único de la IEU (int),
+                        "ieu": "Colegio Universitario de Administración y Mercadeo",
+                        "id_localidad": identificador único de la localidad (int),
+                        "localidad": nombre de la localidad (str),
+                        "nombre": nombre del programa académico (str),
                         "area_conocimiento": indica el área de conocimiento del programa académico (str),
                         "sub_area_conocimiento": indica la sub área del programa académico (str),
-                        "localidad": nombre de la localidad (str),
+                        "tipo_programa": tipo de programa académico (str),
+                        "titulo": título de grado del programa académico (str),
+                        "descripcion": Descripción del programa académico (str),
+                        "mercado_ocupacional": Mercado ocupacional para el egresa del programa académico (str),
+                        "periodicidad": Periodos academicos (str),
+                        "duracion": Cantidad de periodos académicos que dura el programa academico (int),
+                        "prioritaria": Indica si el programa academico es prioritario o no (bool),
+                        "activo": indica si el programa académico esta o no activo (bool)
                     }
                 ]
             }
