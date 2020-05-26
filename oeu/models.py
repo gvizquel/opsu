@@ -487,23 +487,6 @@ class Ieu(models.Model):
         null=True,
         db_column="persona_editor_id",
     )
-    tipo_ieu_edit = models.ForeignKey(
-        TipoInstitucion,
-        on_delete=models.SET_NULL,
-        blank=True,
-        null=True,
-        db_column="tipo_ieu_edit",
-        related_name="tipoInstitucionEdit",
-    )
-    sub_tipo_ieu_edit = models.ForeignKey(
-        SubTipoInstitucion,
-        on_delete=models.SET_NULL,
-        blank=True,
-        null=True,
-        db_column="sub_tipo_ieu_edit",
-        db_index=True,
-        related_name="sutipedi",
-    )
     tipo_especifico_ieu_edit = models.ForeignKey(
         TipoEspecificoInstitucion,
         db_column="tipo_especifico_ieu_edit",
