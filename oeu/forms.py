@@ -405,8 +405,6 @@ class IeuForm(ModelForm):
     class Meta:
         model = Ieu
         fields = (
-            # "tipo_ieu_edit",
-            # "sub_tipo_ieu_edit",
             "tipo_especifico_ieu_edit",
             "institucion_ministerial_edit",
             "localidad_principal_edit",
@@ -417,8 +415,6 @@ class IeuForm(ModelForm):
             "editor",
         )
         labels = {
-            # "tipo_ieu_edit": "Tipo IEU",
-            # "sub_tipo_ieu_edit": "Sub Tipo IEU",
             "tipo_especifico_ieu_edit": "Tipo Específico",
             "institucion_ministerial_edit": "Institución Ministerial",
             "localidad_principal_edit": "Localidad Principal",
@@ -426,18 +422,8 @@ class IeuForm(ModelForm):
             "fachada_edit": "Fachada",
         }
         widgets = {
-            # "tipo_ieu_edit": autocomplete.ModelSelect2(
-            #     url="oeu:tipo-ieu-au",
-            #     attrs={"class": "form-control", "data-placeholder": "Tipo IEU ..."},
-            # ),
-            # "sub_tipo_ieu_edit": autocomplete.ModelSelect2(
-            #     url="oeu:sub-tipo-ieu-au",
-            #     forward=["tipo_ieu_edit"],
-            #     attrs={"class": "form-control", "data-placeholder": "Sub Tipo IEU ..."},
-            # ),
             "tipo_especifico_ieu_edit": autocomplete.ModelSelect2(
                 url="oeu:tipo-especifico-ieu",
-                forward=["sub_tipo_ieu_edit"],
                 attrs={
                     "class": "form-control",
                     "data-placeholder": "Tipo Especifico IEU ...",
@@ -464,8 +450,6 @@ class IeuForm(ModelForm):
     def __init__(self, obj=None, *args, **kwargs):
         super(IeuForm, self).__init__(*args, **kwargs)
         if self.instance.pk:
-            # self.fields["tipo_ieu_edit"].widget.attrs["disabled"] = True
-            # self.fields["sub_tipo_ieu_edit"].widget.attrs["disabled"] = True
             self.fields["tipo_especifico_ieu_edit"].widget.attrs["disabled"] = True
             self.fields["institucion_ministerial_edit"].widget.attrs["disabled"] = True
 
