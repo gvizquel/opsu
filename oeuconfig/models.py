@@ -250,7 +250,7 @@ class Titulo(models.Model):
     """
 
     nombre = models.CharField(max_length=255)
-    descripcion = models.TextField()
+    descripcion = models.TextField(blank=True, null=True)
 
     def __str__(self):
         return self.nombre
