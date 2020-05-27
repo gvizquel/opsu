@@ -29,7 +29,7 @@
                 <div class="form-group">
                     <label for="{{ form.descripcion.id_for_label }}" class="col-sm-3 control-label">Descripción</label>
                     <div class="col-sm-9">
-                        <textarea name="{{ form.descripcion.name }}" placeholder="Descripción del {{ titulo }}" rows="5" required cols="40" class="form-control" id="{{ form.descripcion.id_for_label }}">{% if object %}{{ form.descripcion.value() }}{% endif %}</textarea>
+                        <textarea name="{{ form.descripcion.name }}" placeholder="Descripción del {{ titulo }}" rows="5" cols="40" class="form-control" id="{{ form.descripcion.id_for_label }}">{% if object %}{{ form.descripcion.value() }}{% endif %}</textarea>
                     </div>
                     <span class="help-block">
                         {% for error in form.descripcion.errors %}
