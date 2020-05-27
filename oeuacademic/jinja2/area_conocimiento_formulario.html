@@ -15,7 +15,7 @@
                 <div class="form-group">
                     <label for="{{ form.nombre.id_for_label }}" class="col-sm-3 control-label">Nombre</label>
                     <div class="col-sm-9">
-                        <input {% if object %}value="{{ form.nombre.value() }}"{% endif %} type="text" name="{{ form.nombre.name }}" required placeholder="Nombre del {{ titulo }}" class="form-control" id="{{ form.nombre.id_for_label }}" maxlength="50" />
+                        <input {% if object %}value="{{ form.nombre.value() }}"{% endif %} type="text" name="{{ form.nombre.name }}" required placeholder="Nombre del {{ titulo }}" class="form-control" id="{{ form.nombre.id_for_label }}"/>
                     </div>
                     <span class="help-block">
                         {% for error in form.nombre.errors %}
