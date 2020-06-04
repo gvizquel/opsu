@@ -25,4 +25,4 @@ Pipfile.lock
 log/
 .venv/
 media/
-static/
+/static
