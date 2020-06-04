@@ -76,4 +76,9 @@ urlpatterns = [
     path(
         "ieu/localidad/", LocalidadViewSet.as_view({"get": "list"}), name="localidad",
     ),
+    path(
+        "ieu/localidad/",
+        LocalidadViewSet.as_view({"get": "list"}),
+        name="detalle-localidad",
+    ),
 ]

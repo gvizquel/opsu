@@ -60,6 +60,7 @@ class LocalidadSerializer(serpy.Serializer):
     id = serpy.Field()
     nombre = serpy.MethodField("nombre_localidad")
     ieu = serpy.MethodField("siglas_ieu", label="siglas")
+    revisor_edit = serpy.MethodField("id_ieu", label="id_ieu")
     web_site = serpy.Field()
     direccion = serpy.Field()
     estado = serpy.StrField()
@@ -91,6 +92,9 @@ class LocalidadSerializer(serpy.Serializer):
 
     def siglas_ieu(self, Localidad):
         return Localidad.ieu.institucion_ministerial.siglas
+
+    def id_ieu(self, Localidad):
+        return Localidad.ieu.id
 
     def logo(self, Localidad):
         return "{}".format(Localidad.ieu.logo)

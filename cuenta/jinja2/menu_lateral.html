@@ -69,14 +69,6 @@
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu" data-widget="tree">
             <li class="header">NAVEGACIÓN PRINCIPAL</li>
-            {% if request.user.is_superuser %}
-                <li class="">
-                    <a href="{{ url('api_v1:api-index') }}">
-                        <i class="fa fa-cloud"></i>
-                        <span>LOEU API V1</span>
-                    </a>
-                </li>
-            {% endif %}
             {% if 'RevisorOEU' is in_user_group(request.user) %}
                 <li class="treeview {% if 'loeu' in request.path %}active{% endif %}">
                     <a href="#">
@@ -87,6 +79,20 @@
                         </span>
                     </a>
                     <ul class="treeview-menu">
+                        {% if request.user.is_superuser %}
+                            <li class="">
+                                <a href="{{ url('api_v1:api-index') }}">
+                                    <i class="fa fa-cloud"></i>
+                                    <span>LOEU API V1</span>
+                                </a>
+                            </li>
+                        {% endif %}
+                        <li class="">
+                            <a href="{{ url('oeu:tablero') }}">
+                                <i class="fa fa-dashboard"></i>
+                                <span>TABLERO</span>
+                            </a>
+                        </li>
                         {% include "oeu_menu.html" %}
                         {% include "oeuacademic_menu.html" %}
                         {% include "oeuconfig_menu.html" %}
