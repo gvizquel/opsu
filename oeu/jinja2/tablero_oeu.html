@@ -108,7 +108,7 @@
         type: 'doughnut',
         data: {
             datasets: [{
-                data: Object.values(JSON.parse('{{ programas | safe }}')),
+                data: Object.values(JSON.parse('{{ programas_tipo | safe }}')),
                 backgroundColor: [
                     window.chartColors.red,
                     window.chartColors.blue,
@@ -118,7 +118,7 @@
                 ],
                 label: 'Dataset 1'
             }],
-            labels: Object.keys(JSON.parse('{{ programas | safe }}')),
+            labels: Object.keys(JSON.parse('{{ programas_tipo | safe }}')),
         },
         options: {
             responsive: true,
