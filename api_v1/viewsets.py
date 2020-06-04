@@ -573,6 +573,7 @@ class LocalidadViewSet(viewsets.ReadOnlyModelViewSet):
                         "id": identificador único de la localidad (int),
                         "nombre": "Colegio Universitario Dr. Rafael Belloso Chacín Localidad Maracaibo",
                         "siglas": "Siglas de IEU a la que pertenece la localidad",
+                        "id_ieu": identificador de la IEU a la que pertenece la localidad (int),
                         "web_site": URL del web site de la localidad (str)",
                         "direccion": dirección de la que pertenece el programa académico (str),
                         "estado": estado de la localidad (str),

@@ -1,6 +1,7 @@
 """Vistas para el LOEU
 """
 # Standard Libraries
+import json
 import logging
 
 # Django Libraries
@@ -8,8 +9,10 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db import transaction
-from django.db.models import Q
+from django.db.models import Count, Q
+from django.db.models.functions import Cast
 from django.http import HttpResponseRedirect
+from django.shortcuts import render
 from django.utils.safestring import mark_safe
 from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 
@@ -832,3 +835,48 @@ class EliminarModeloComplejo(LoginRequiredMixin, SuccessMessageMixin, DeleteView
             )
 
         return str(self.success_url)
+
+
+def talero_oeu(request):
+    titulo = "Tablero Resumen"
+    dict_programa = {}
+    dict_ieu_gestion = {}
+
+    # ******************************************************************************** #
+    programas = (
+        Carrera.objects.filter(
+            Q(cod_activacion="11111111") | Q(cod_activacion="10111111")
+        )
+        .values("tipo_carrera__nombre")
+        .annotate(total=Count("id"))
+        .order_by("-total")
+    )
+
+    for programa in programas:
+        dict_programa[programa["tipo_carrera__nombre"]] = programa["total"]
+
+    serial_programa = json.dumps(dict_programa, ensure_ascii=False)
+
+    # ******************************************************************************** #
+
+    ieu_gestion = (
+        Ieu.objects.filter(Q(cod_activacion="11001111") | Q(cod_activacion="10001111"))
+        .values("institucion_ministerial__dep_admin")
+        .annotate(total=Count("id"))
+        .order_by("-total")
+    )
+
+    for ieu in ieu_gestion:
+        dict_ieu_gestion[ieu["institucion_ministerial__dep_admin"]] = ieu["total"]
+
+    serial_ieu_gestion = json.dumps(dict_ieu_gestion, ensure_ascii=False)
+
+    return render(
+        request,
+        "tablero_oeu.html",
+        {
+            "titulo": titulo,
+            "programas_tipo": serial_programa,
+            "ieu_gestion": serial_ieu_gestion,
+        },
+    )

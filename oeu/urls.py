@@ -54,11 +54,13 @@ from oeu.views import (
     SubTipoIeuAutoComplete,
     TipoEspecificoIeuAutocomplete,
     TipoIeuAutoComplete,
+    talero_oeu,
 )
 
 app_name = "oeu"
 
 urlpatterns = [
+    path("tablero/", talero_oeu, name="tablero"),
     # ######################### Servicios de auto completado ######################### #
     path("tipo-ieu-au/", TipoIeuAutoComplete.as_view(), name="tipo-ieu-au"),
     path("sub-tipo-ieu-au/", SubTipoIeuAutoComplete.as_view(), name="sub-tipo-ieu-au",),
