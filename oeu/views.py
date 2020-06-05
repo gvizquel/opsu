@@ -840,9 +840,20 @@ class EliminarModeloComplejo(LoginRequiredMixin, SuccessMessageMixin, DeleteView
 def talero_oeu(request):
     titulo = "Tablero Resumen"
     dict_programa = {}
+    dict_ieu_tipo = {}
     dict_ieu_gestion = {}
+    dict_localidad_gestion = {}
 
     # ******************************************************************************** #
+
+    total_programas = Carrera.objects.filter(
+        Q(cod_activacion="11111111") | Q(cod_activacion="10111111")
+    ).count()
+
+    total_localidades = Localidad.objects.filter(
+        Q(cod_activacion="11011111") | Q(cod_activacion="10011111")
+    ).count()
+
     programas = (
         Carrera.objects.filter(
             Q(cod_activacion="11111111") | Q(cod_activacion="10111111")
@@ -859,6 +870,28 @@ def talero_oeu(request):
 
     # ******************************************************************************** #
 
+    localidad_gestion = (
+        Localidad.objects.filter(
+            Q(cod_activacion="11011111") | Q(cod_activacion="10011111")
+        )
+        .values("ieu__institucion_ministerial__dep_admin")
+        .annotate(total=Count("id"))
+        .order_by("-total")
+    )
+
+    for localidad in localidad_gestion:
+        dict_localidad_gestion[
+            localidad["ieu__institucion_ministerial__dep_admin"]
+        ] = localidad["total"]
+
+    serial_localidad_gestion = json.dumps(dict_localidad_gestion, ensure_ascii=False)
+
+    # ******************************************************************************** #
+
+    total_ieu = Ieu.objects.filter(
+        Q(cod_activacion="11001111") | Q(cod_activacion="10001111")
+    ).count()
+
     ieu_gestion = (
         Ieu.objects.filter(Q(cod_activacion="11001111") | Q(cod_activacion="10001111"))
         .values("institucion_ministerial__dep_admin")
@@ -871,12 +904,47 @@ def talero_oeu(request):
 
     serial_ieu_gestion = json.dumps(dict_ieu_gestion, ensure_ascii=False)
 
+    # ******************************************************************************** #
+
+    ieu_tipo = (
+        Ieu.objects.filter(Q(cod_activacion="11001111") | Q(cod_activacion="10001111"))
+        .values("tipo_especifico_ieu", "institucion_ministerial__dep_admin")
+        .annotate(total=Count("id"))
+        .order_by("-total")
+    )
+
+    for ieu in ieu_tipo:
+        tipo = TipoEspecificoInstitucion.objects.get(pk=ieu["tipo_especifico_ieu"])
+        if tipo.nombre:
+            nombre = "{} ({})".format(
+                tipo.__str__(), ieu["institucion_ministerial__dep_admin"]
+            )
+            dict_ieu_tipo[nombre] = ieu["total"]
+        elif tipo.sub_tipo_ieu.nombre:
+            nombre = "{} ({})".format(
+                tipo.sub_tipo_ieu.__str__(), ieu["institucion_ministerial__dep_admin"]
+            )
+            dict_ieu_tipo[nombre] = ieu["total"]
+        else:
+            nombre = "{} ({})".format(
+                tipo.sub_tipo_ieu.tipo_ieu.__str__(),
+                ieu["institucion_ministerial__dep_admin"],
+            )
+            dict_ieu_tipo[nombre] = ieu["total"]
+
+    serial_ieu_tipo = json.dumps(dict_ieu_tipo, ensure_ascii=False)
+
     return render(
         request,
         "tablero_oeu.html",
         {
             "titulo": titulo,
             "programas_tipo": serial_programa,
+            "total_programas": total_programas,
             "ieu_gestion": serial_ieu_gestion,
+            "total_ieu": total_ieu,
+            "ieu_tipo": serial_ieu_tipo,
+            "total_localidades": total_localidades,
+            "localidad_gestion": serial_localidad_gestion,
         },
     )
