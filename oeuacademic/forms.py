@@ -4,6 +4,7 @@ from django.forms import ModelForm
 from django.forms.models import inlineformset_factory
 
 # Thirdparty Libraries
+from ckeditor.widgets import CKEditorWidget
 from dal import autocomplete
 from oeu.models import Carrera, CarreraSfc, CarreraTitulo, SubAreaConocimiento
 from oeuconfig.models import Titulo
@@ -56,7 +57,7 @@ class CarreraPreGradoForm(ModelForm):
             "titulo_edit",
             "periodicidad_edit",
             "duracion_edit",
-            # "ieu_acreditadora_edit",
+            "ieu_acreditadora_edit",
             "prioritaria_edit",
             "cod_activacion",
             "publicar",
@@ -69,7 +70,7 @@ class CarreraPreGradoForm(ModelForm):
             "descripcion_edit": ("Descripción"),
             "titulo_edit": ("Título"),
             "tipo_carrera_edit": ("Tipo de Programa"),
-            # "ieu_acreditadora_edit": ("Institución Acreditadora"),
+            "ieu_acreditadora_edit": ("Institución Acreditadora"),
             "mercado_ocupacional_edit": ("Mercado Ocupacional"),
             "area_conocimiento_edit": ("Área de Conocimiento"),
             "sub_area_conocimiento_edit": ("Sub Área de Conocimiento"),
@@ -91,13 +92,7 @@ class CarreraPreGradoForm(ModelForm):
                     "placeholder": "Escribe el nombre de la Carrera",
                 },
             ),
-            "descripcion_edit": forms.Textarea(
-                attrs={
-                    "class": "form-control",
-                    "placeholder": "Haz una descripción de la Carrera",
-                    "rows": 2,
-                },
-            ),
+            "descripcion_edit": CKEditorWidget(),
             "tipo_carrera_edit": forms.Select(
                 attrs={
                     "class": "form-control",
@@ -111,13 +106,7 @@ class CarreraPreGradoForm(ModelForm):
             #         "data-placeholder": "Institución Acreditadora",
             #     },
             # ),
-            "mercado_ocupacional_edit": forms.Textarea(
-                attrs={
-                    "class": "form-control",
-                    "placeholder": "Escribe el mercado ocupacional de la carrera",
-                    "rows": 2,
-                },
-            ),
+            "mercado_ocupacional_edit": CKEditorWidget(),
             "area_conocimiento_edit": autocomplete.ModelSelect2(
                 url="oeuacademic:area-conocimiento",
                 attrs={

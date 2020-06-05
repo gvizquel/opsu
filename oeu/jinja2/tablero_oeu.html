@@ -20,6 +20,12 @@
         overflow: hidden;
         text-overflow: ellipsis;
     }
+    .box-header>.fa, .box-header>.glyphicon, .box-header>.ion, .box-header .box-title {
+        display: inline-block;
+        font-size: 16px;
+        margin: 0;
+        line-height: 1;
+    }
 </style>
 {% endblock stylesheets %}
 
@@ -61,10 +67,10 @@
             <!-- Left col -->
             <div class="col-md-9">
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <div class="box box-default">
                             <div class="box-header with-border">
-                                <h3 class="box-title">Programas Tipo</h3>
+                                <h3 class="box-title">Tipos de Programas Académicos</h3>
                                 <div class="box-tools pull-right">
                                     <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
                                             class="fa fa-minus"></i>
@@ -89,10 +95,10 @@
                         </div>
                         <!-- /.box -->
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <div class="box box-default">
                             <div class="box-header with-border">
-                                <h3 class="box-title">IEU Gestión</h3>
+                                <h3 class="box-title">Gestíon de las IEU</h3>
                                 <div class="box-tools pull-right">
                                     <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
                                             class="fa fa-minus"></i>
@@ -110,10 +116,12 @@
                         </div>
                         <!-- /.box -->
                     </div>
-                    <div class="col-md-4">
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
                         <div class="box box-default">
                             <div class="box-header with-border">
-                                <h3 class="box-title">Localidades Gestion</h3>
+                                <h3 class="box-title">Gestión de las Localidades</h3>
                                 <div class="box-tools pull-right">
                                     <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
                                             class="fa fa-minus"></i>
@@ -125,6 +133,29 @@
                             <div class="box-body">
                                 <div id="canvas-holder">
                                     <canvas id="localidad_gestion"></canvas>
+                                </div>
+                            </div>
+                            <!-- /.box-body -->
+                        </div>
+                        <!-- /.box -->
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="box box-default">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">Programas Academicos por Área de Conocimiento</h3>
+                                <div class="box-tools pull-right">
+                                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                            class="fa fa-minus"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i
+                                            class="fa fa-times"></i></button>
+                                </div>
+                            </div>
+                            <div class="box-body">
+                                <div id="canvas-holder">
+                                    <canvas id="programa_area"></canvas>
                                 </div>
                             </div>
                             <!-- /.box-body -->
@@ -178,7 +209,7 @@
                 <div class="info-box bg-yellow">
                     <span class="info-box-icon"><i class="fa fa-fw fa-book"></i></span>
                     <div class="info-box-content">
-                        <span class="info-box-text">Programas Acdémicos</span>
+                        <span class="info-box-text">Programas Académicos</span>
                         <span class="info-box-number">{{ total_programas }}</span>
                     </div>
                     <!-- /.info-box-content -->
@@ -225,6 +256,8 @@
                 backgroundColor: [
                     window.chartColors.red,
                     window.chartColors.blue,
+                    window.chartColors.lightblue,
+                    window.chartColors.darkmagenta,
                 ],
             }],
             labels: Object.keys(JSON.parse('{{ programas_tipo | safe }}')),
@@ -355,6 +388,58 @@
         }
     };
 
+    var conf_programa_area = {
+        type: 'doughnut',
+        data: {
+            datasets: [{
+                data: Object.values(JSON.parse('{{ programa_area | safe }}')),
+                backgroundColor: [
+                window.chartColors.orange,
+                window.chartColors.blue,
+                window.chartColors.burlywood,
+                window.chartColors.greenyellow,
+                window.chartColors.steelblue,
+                window.chartColors.lightpink,
+                window.chartColors.lightblue,
+                window.chartColors.darkmagenta,
+                ],
+            }],
+            labels: Object.keys(JSON.parse('{{ programa_area | safe }}')),
+        },
+        options: {
+            responsive: true,
+            legend: {
+                position: 'left',
+                labels: {
+                    padding: 5,
+                    usePointStyle: true,
+                }
+            },
+            animation: {
+                animateScale: true,
+                animateRotate: true
+            },
+            plugins: {
+                labels: [{
+                        render: 'value',
+                        fontSize: 8,
+                        fontStyle: 'normal',
+                        fontColor: '#000',
+                        fontFamily: '"Lucida Console", Monaco, monospace'
+                    },
+                    {
+                        render: 'percentage',
+                        fontSize: 8,
+                        fontStyle: 'normal',
+                        fontColor: '#000',
+                        fontFamily: '"Lucida Console", Monaco, monospace',
+                        position: 'outside',
+                    }
+                ]
+            }
+        }
+    };
+
     var conf_ieu_tipo = {
         type: 'bar',
         data: {
@@ -368,6 +453,12 @@
                     window.chartColors.green,
                     window.chartColors.orange,
                     window.chartColors.blue,
+                    window.chartColors.burlywood,
+                    window.chartColors.greenyellow,
+                    window.chartColors.steelblue,
+                    window.chartColors.lightpink,
+                    window.chartColors.lightblue,
+                    window.chartColors.darkmagenta,
                 ],
             }],
             labels: Object.keys(JSON.parse('{{ ieu_tipo | safe }}')),
@@ -407,6 +498,8 @@
         chart_localidad_gestion = new Chart(ctx_localidad_gestion, conf_localidad_gestion);
         var ctx_ieu_tipo = document.getElementById('ieu_tipo').getContext('2d');
         chart_ieu_tipo = new Chart(ctx_ieu_tipo, conf_ieu_tipo);
+        var ctx_programa_area = document.getElementById('programa_area').getContext('2d');
+        chart_programa_area = new Chart(ctx_programa_area, conf_programa_area);
     };
 </script>
 {% endblock javascripts %}

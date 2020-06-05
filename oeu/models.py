@@ -12,6 +12,7 @@ import os
 from django.db import models
 
 # Thirdparty Libraries
+from ckeditor.fields import RichTextField
 from cuenta.libSobreEscribirImagen import SobreEscribirImagen
 from djgeojson.fields import PointField, PolygonField
 
@@ -1109,8 +1110,8 @@ class Carrera(models.Model):
         blank=True,
     )
     nombre_edit = models.CharField(max_length=255,)
-    descripcion_edit = models.TextField()
-    mercado_ocupacional_edit = models.TextField()
+    descripcion_edit = RichTextField()
+    mercado_ocupacional_edit = RichTextField()
     prioritaria_edit = models.BooleanField(default=False)
     periodicidad_edit = models.ForeignKey(
         "oeuconfig.Periodicidad",

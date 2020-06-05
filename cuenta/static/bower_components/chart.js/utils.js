@@ -5,9 +5,15 @@ window.chartColors = {
 	orange: 'rgb(255, 159, 64)',
 	yellow: 'rgb(255, 205, 86)',
 	green: 'rgb(75, 192, 192)',
+	greenyellow: '#adff2f',
 	blue: 'rgb(54, 162, 235)',
 	purple: 'rgb(153, 102, 255)',
-	grey: 'rgb(201, 203, 207)'
+	grey: 'rgb(201, 203, 207)',
+	burlywood: '#deb887',
+	steelblue: '#4682b4',
+	lightpink: '#ffb6c1',
+	lightblue: '#add8e6',
+	darkmagenta: '#8b008b',
 };
 //7777
 (function(global) {
