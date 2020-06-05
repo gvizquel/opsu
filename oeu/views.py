@@ -843,6 +843,7 @@ def talero_oeu(request):
     dict_ieu_tipo = {}
     dict_ieu_gestion = {}
     dict_localidad_gestion = {}
+    dict_programa_area = {}
 
     # ******************************************************************************** #
 
@@ -934,6 +935,24 @@ def talero_oeu(request):
 
     serial_ieu_tipo = json.dumps(dict_ieu_tipo, ensure_ascii=False)
 
+    # ******************************************************************************** #
+
+    programa_area = (
+        Carrera.objects.filter(
+            Q(cod_activacion="11111111") | Q(cod_activacion="10111111")
+        )
+        .values("area_conocimiento__nombre")
+        .annotate(total=Count("id"))
+        .order_by("-total")
+    )
+
+    for programa in programa_area:
+        dict_programa_area[programa["area_conocimiento__nombre"]] = programa["total"]
+
+    serial_programa_area = json.dumps(dict_programa_area, ensure_ascii=False)
+
+    # ******************************************************************************** #
+
     return render(
         request,
         "tablero_oeu.html",
@@ -946,5 +965,6 @@ def talero_oeu(request):
             "ieu_tipo": serial_ieu_tipo,
             "total_localidades": total_localidades,
             "localidad_gestion": serial_localidad_gestion,
+            "programa_area": serial_programa_area,
         },
     )

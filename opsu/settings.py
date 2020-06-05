@@ -309,3 +309,8 @@ LOGGING = {
 
 USE_DJANGO_JQUERY = False
 JQUERY_URL = False
+
+
+CKEDITOR_CONFIGS = {
+    "default": {"toolbar": "full", "height": 300, "width": 300},
+}
