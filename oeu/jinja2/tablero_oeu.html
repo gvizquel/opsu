@@ -13,6 +13,13 @@
     span {
         display: inline-block;
     }
+    .progress-description, .info-box-text {
+        display: block;
+        font-size: 12px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 </style>
 {% endblock stylesheets %}
 
@@ -57,7 +64,7 @@
                     <div class="col-md-4">
                         <div class="box box-default">
                             <div class="box-header with-border">
-                                <h3 class="box-title">Programas Académicos</h3>
+                                <h3 class="box-title">Programas Tipo</h3>
                                 <div class="box-tools pull-right">
                                     <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
                                             class="fa fa-minus"></i>
@@ -70,7 +77,80 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div id="canvas-holder">
-                                            <canvas id="programas_1"></canvas>
+                                            <canvas id="programas_tipo"></canvas>
+                                        </div>
+                                        <!-- ./chart-responsive -->
+                                    </div>
+                                    <!-- /.col -->
+                                </div>
+                                <!-- /.row -->
+                            </div>
+                            <!-- /.box-body -->
+                        </div>
+                        <!-- /.box -->
+                    </div>
+                    <div class="col-md-4">
+                        <div class="box box-default">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">IEU Gestión</h3>
+                                <div class="box-tools pull-right">
+                                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                            class="fa fa-minus"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i
+                                            class="fa fa-times"></i></button>
+                                </div>
+                            </div>
+                            <div class="box-body">
+                                <div id="canvas-holder">
+                                    <canvas id="ieu_gestion"></canvas>
+                                </div>
+                            </div>
+                            <!-- /.box-body -->
+                        </div>
+                        <!-- /.box -->
+                    </div>
+                    <div class="col-md-4">
+                        <div class="box box-default">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">Localidades Gestion</h3>
+                                <div class="box-tools pull-right">
+                                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                            class="fa fa-minus"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i
+                                            class="fa fa-times"></i></button>
+                                </div>
+                            </div>
+                            <div class="box-body">
+                                <div id="canvas-holder">
+                                    <canvas id="localidad_gestion"></canvas>
+                                </div>
+                            </div>
+                            <!-- /.box-body -->
+                        </div>
+                        <!-- /.box -->
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+
+                        <div class="box box-default">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">Instituciones de Educación Universitaria por Tipo</h3>
+                                <div class="box-tools pull-right">
+                                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                            class="fa fa-minus"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i
+                                            class="fa fa-times"></i></button>
+                                </div>
+                            </div>
+                            <div class="box-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div id="canvas-holder">
+                                            <canvas id="ieu_tipo"></canvas>
                                         </div>
                                         <!-- ./chart-responsive -->
                                     </div>
@@ -86,10 +166,44 @@
             </div>
             <!-- /.col -->
             <div class="col-md-3">
+                <div class="info-box bg-green">
+                    <span class="info-box-icon"><i class="fa fa-university"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Inst. Educación Univ.</span>
+                        <span class="info-box-number">{{ total_ieu }}</span>
+                    </div>
+                    <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+                <div class="info-box bg-yellow">
+                    <span class="info-box-icon"><i class="fa fa-fw fa-book"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Programas Acdémicos</span>
+                        <span class="info-box-number">{{ total_programas }}</span>
+                    </div>
+                    <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+                <div class="info-box bg-red">
+                    <span class="info-box-icon"><i class="fa fa-map-marker"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Localidades</span>
+                        <span class="info-box-number">{{ total_localidades }}</span>
+                    </div>
+                    <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+                <div class="info-box bg-aqua">
+                    <span class="info-box-icon"><i class=""></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text"></span>
+                        <span class="info-box-number"></span>
+                    </div>
+                    <!-- /.info-box-content -->
+                </div>
+                <!-- /.col -->
             </div>
-            <!-- /.col -->
-        </div>
-        <!-- /.row -->
+            <!-- /.row -->
     </section>
     <!-- /.content -->
     <div id="popup" class="modal fade" role="dialog"></div>
@@ -98,13 +212,12 @@
 {% endblock content %}
 
 {% block javascripts %}
+{{ super() }}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/emn178/chartjs-plugin-labels/src/chartjs-plugin-labels.js"></script>
 <script src="{{ static('bower_components/chart.js/utils.js') }}"></script>
 <script>
-    var randomScalingFactor = function () {
-        return Math.round(Math.random() * 100);
-    };
-    var config = {
+    var conf_programas_tipo = {
         type: 'doughnut',
         data: {
             datasets: [{
@@ -112,11 +225,7 @@
                 backgroundColor: [
                     window.chartColors.red,
                     window.chartColors.blue,
-                    window.chartColors.orange,
-                    window.chartColors.green,
-                    window.chartColors.yellow,
                 ],
-                label: 'Dataset 1'
             }],
             labels: Object.keys(JSON.parse('{{ programas_tipo | safe }}')),
         },
@@ -132,13 +241,172 @@
             animation: {
                 animateScale: true,
                 animateRotate: true
+            },
+            plugins: {
+                labels: [{
+                        render: 'value',
+                        fontSize: 8,
+                        fontStyle: 'normal',
+                        fontColor: '#000',
+                        fontFamily: '"Lucida Console", Monaco, monospace'
+                    },
+                    {
+                        render: 'percentage',
+                        fontSize: 8,
+                        fontStyle: 'normal',
+                        fontColor: '#000',
+                        fontFamily: '"Lucida Console", Monaco, monospace',
+                        position: 'outside'
+                    }
+                ]
             }
         }
     };
 
+    var conf_ieu_gestion = {
+        type: 'doughnut',
+        data: {
+            datasets: [{
+                data: Object.values(JSON.parse('{{ ieu_gestion | safe }}')),
+                backgroundColor: [
+                    window.chartColors.orange,
+                    window.chartColors.green,
+                ],
+            }],
+            labels: Object.keys(JSON.parse('{{ ieu_gestion | safe }}')),
+        },
+        options: {
+            responsive: true,
+            legend: {
+                position: 'left',
+                labels: {
+                    padding: 5,
+                    usePointStyle: true,
+                }
+            },
+            animation: {
+                animateScale: true,
+                animateRotate: true
+            },
+            plugins: {
+                labels: [{
+                        render: 'value',
+                        fontSize: 8,
+                        fontStyle: 'normal',
+                        fontColor: '#000',
+                        fontFamily: '"Lucida Console", Monaco, monospace'
+                    },
+                    {
+                        render: 'percentage',
+                        fontSize: 8,
+                        fontStyle: 'normal',
+                        fontColor: '#000',
+                        fontFamily: '"Lucida Console", Monaco, monospace',
+                        position: 'outside'
+                    }
+                ]
+            }
+        }
+    };
+
+    var conf_localidad_gestion = {
+        type: 'doughnut',
+        data: {
+            datasets: [{
+                data: Object.values(JSON.parse('{{ localidad_gestion | safe }}')),
+                backgroundColor: [
+                    window.chartColors.yellow,
+                    window.chartColors.purple,
+                ],
+            }],
+            labels: Object.keys(JSON.parse('{{ localidad_gestion | safe }}')),
+        },
+        options: {
+            responsive: true,
+            legend: {
+                position: 'left',
+                labels: {
+                    padding: 5,
+                    usePointStyle: true,
+                }
+            },
+            animation: {
+                animateScale: true,
+                animateRotate: true
+            },
+            plugins: {
+                labels: [{
+                        render: 'value',
+                        fontSize: 8,
+                        fontStyle: 'normal',
+                        fontColor: '#000',
+                        fontFamily: '"Lucida Console", Monaco, monospace'
+                    },
+                    {
+                        render: 'percentage',
+                        fontSize: 8,
+                        fontStyle: 'normal',
+                        fontColor: '#000',
+                        fontFamily: '"Lucida Console", Monaco, monospace',
+                        position: 'outside'
+                    }
+                ]
+            }
+        }
+    };
+
+    var conf_ieu_tipo = {
+        type: 'bar',
+        data: {
+            datasets: [{
+                data: Object.values(JSON.parse('{{ ieu_tipo | safe }}')),
+                backgroundColor: [
+                    window.chartColors.yellow,
+                    window.chartColors.purple,
+                    window.chartColors.red,
+                    window.chartColors.grey,
+                    window.chartColors.green,
+                    window.chartColors.orange,
+                    window.chartColors.blue,
+                ],
+            }],
+            labels: Object.keys(JSON.parse('{{ ieu_tipo | safe }}')),
+        },
+        options: {
+            responsive: true,
+            legend: {
+                display: false
+            },
+            animation: {
+                animateScale: true,
+                animateRotate: true
+            },
+            plugins: {
+                labels: [
+                    {
+                        render: 'value',
+                        fontSize: 8,
+                        fontStyle: 'normal',
+                        fontColor: '#000',
+                        fontFamily: '"Lucida Console", Monaco, monospace',
+                        position: 'outside'
+                    }
+                ]
+            }
+        }
+    };
+
+
+
     window.onload = function () {
-        var ctx = document.getElementById('programas_1').getContext('2d');
-        window.myDoughnut = new Chart(ctx, config);
+        var ctx_programas_tipo = document.getElementById('programas_tipo').getContext('2d');
+        chart_programas_tipo = new Chart(ctx_programas_tipo, conf_programas_tipo);
+        var ctx_ieu_gestion = document.getElementById('ieu_gestion').getContext('2d');
+        chart_ieu_gestion = new Chart(ctx_ieu_gestion, conf_ieu_gestion);
+        var ctx_localidad_gestion = document.getElementById('localidad_gestion').getContext('2d');
+        chart_localidad_gestion = new Chart(ctx_localidad_gestion, conf_localidad_gestion);
+        var ctx_ieu_tipo = document.getElementById('ieu_tipo').getContext('2d');
+        chart_ieu_tipo = new Chart(ctx_ieu_tipo, conf_ieu_tipo);
     };
 </script>
 {% endblock javascripts %}
