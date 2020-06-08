@@ -312,5 +312,33 @@ JQUERY_URL = False
 
 
 CKEDITOR_CONFIGS = {
-    "default": {"toolbar": "full", "height": 300, "width": 300},
+    "default": {
+        "toolbar_YourCustomToolbarConfig": [
+            {
+                "name": "basicstyles",
+                "items": [
+                    "Preview",
+                    "-",
+                    "Bold",
+                    "Italic",
+                    "Underline",
+                    "NumberedList",
+                    "BulletedList",
+                    "-",
+                    "Outdent",
+                    "Indent",
+                    "-",
+                    "JustifyLeft",
+                    "JustifyCenter",
+                    "JustifyRight",
+                    "JustifyBlock",
+                ],
+            },
+        ],
+        "toolbar": "YourCustomToolbarConfig",
+        "width": "100%",
+        "height": "150px",
+        "toolbarCanCollapse": False,
+        "tabSpaces": 4,
+    }
 }

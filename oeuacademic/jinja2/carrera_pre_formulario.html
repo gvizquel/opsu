@@ -68,13 +68,13 @@
                                     <dt>Nombre</dt>
                                     <dd>{{ object.nombre_edit }}</dd>
                                     <dt>Descripción</dt>
-                                    <dd><p ALIGN="justify">{{ object.descripcion_edit }}</p></dd>
+                                    <dd><p ALIGN="justify">{{ object.descripcion_edit|safe }}</p></dd>
                                     <dt>Título</dt>
                                     <dd>{{ object.titulo_edit }}</dd>
                                     <dt>Tipo de Programa:</dt>
                                     <dd>{{ object.tipo_carrera_edit }}</dd>
                                     <dt>Mercado Ocupacional</dt>
-                                    <dd><p ALIGN="justify">{{ object.mercado_ocupacional_edit }}</p></dd>
+                                    <dd><p ALIGN="justify">{{ object.mercado_ocupacional_edit|safe }}</p></dd>
                                     <dt>Área de Conocimiento:</dt>
                                     <dd>{{ object.area_conocimiento_edit }}</dd>
                                     <dt>Sub Área:</dt>
@@ -85,9 +85,9 @@
                                     <dd>{{ object.duracion }}</dd>
                                     <dt>Prioritaria</dt>
                                     {% if object.prioritaria_edit == True %}
-                                        <dd>Activo</dd>
+                                        <dd>Si</dd>
                                     {% else %}
-                                        <dd>Inactivo</dd>
+                                        <dd>No</dd>
                                     {% endif %}
                                     <dt>Revisor(es):</dt>
                                     <dd>
@@ -137,7 +137,7 @@
                                 </div>
                                 {% endif %}
                                 {% for field in form %}
-                                    {% if field.name != 'cod_activacion' and field.name != 'publicar' and field.name != 'editor' and field.name != 'prioritaria_edit' %}
+                                    {% if field.name != 'cod_activacion' and field.name != 'publicar' and field.name != 'editor' %}
                                         <div class="form-group">
                                             <label for="{{ field.id_for_label }}" class="col-sm-3 control-label">{{ field.label }}</label>
                                             <div class="col-sm-9">
@@ -153,32 +153,6 @@
                                         </div>
                                     {% endif %}
                                 {% endfor %}
-                                <div class="form-group">
-                                    <label for="{{ form.cod_activacion.id_for_label }}" class="col-sm-3 control-label">Prioritaria</label>
-                                    <div class="col-sm-9">
-                                        <div class="input-group">
-                                            <div class="radio">
-                                                <label>
-                                                    <input type="radio" name="{{ form.prioritaria_edit.name }}" id="{{ form.prioritaria_edit.id_for_label }}" value="True" {% if activo == True%} checked{% endif %}>
-                                                    Activo
-                                                </label>
-                                            </div>
-                                            <div class="radio">
-                                                <label>
-                                                    <input type="radio" name="{{ form.prioritaria_edit.name }}" id="{{ form.prioritaria_edit.id_for_label }}" value="False" {% if activo == False %} checked{% endif %}>
-                                                    Inactivo
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <span class="help-block">
-                                            {% for error in form.cod_activacion.errors %}
-                                                <ul>
-                                                    <li class="text-red">{{ error }}</li>
-                                                </ul>
-                                            {% endfor %}
-                                        </span>
-                                    </div>
-                                </div>
                                 {% if 'EditorOEU' is in_user_group(request.user) and not agregar %}
                                     <div class="form-group">
                                         <label for="{{ form.cod_activacion.id_for_label }}" class="col-sm-3 control-label">Estado</label>
@@ -304,6 +278,7 @@
 {% endblock content %}
 
 {% block javascripts %}
+{{ form.media.js }}
     {{ super() }}
     <!-- Auto Complete Light -->
     <script type="text/javascript" src="{{ static('autocomplete_light/jquery.init.js') }}"></script>
@@ -330,5 +305,8 @@
           $('#id_carrerasfc_set-0-sfc').select2();
 
         });
+        $(document).ready(function () {
+            $(".django-ckeditor-widget").css("width", "100%")
+         });
     </script>
 {% endblock javascripts %}
