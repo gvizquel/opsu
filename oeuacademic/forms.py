@@ -76,6 +76,7 @@ class CarreraPreGradoForm(ModelForm):
             "sub_area_conocimiento_edit": ("Sub Área de Conocimiento"),
             "duracion_edit": ("Duración"),
             "periodicidad_edit": ("Periodicidad"),
+            "prioritaria_edit": ("Prioritaria"),
         }
 
         widgets = {
@@ -92,7 +93,13 @@ class CarreraPreGradoForm(ModelForm):
                     "placeholder": "Escribe el nombre de la Carrera",
                 },
             ),
-            "descripcion_edit": CKEditorWidget(),
+            "descripcion_edit": CKEditorWidget(
+                attrs={
+                    "class": "form-control",
+                    "placeholder": "Escribe el mercado ocupacional de la carrera",
+                    "rows": 2,
+                },
+            ),
             "tipo_carrera_edit": forms.Select(
                 attrs={
                     "class": "form-control",
@@ -159,7 +166,7 @@ class CarreraPreGradoForm(ModelForm):
                 },
             ),
             "duracion_edit": forms.NumberInput(attrs={"class": "form-control"},),
-            "prioritaria_edit": forms.RadioSelect(),
+            "prioritaria_edit": forms.CheckboxInput(),
         }
 
     def __init__(self, obj=None, *args, **kwargs):
