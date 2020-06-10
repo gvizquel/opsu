@@ -112,7 +112,7 @@ class InstitucionMinisterial(models.Model):
     )
     DEP_ADMIN_CHOICES = (("PÚBLICA", "PÚBLICA"), ("PRIVADA", "PRIVADA"))
     nombre = models.CharField(max_length=100)
-    siglas = models.CharField(max_length=50)
+    siglas = models.CharField(max_length=10)
     rif = models.CharField(max_length=45)
     dep_admin = models.CharField(max_length=7, choices=DEP_ADMIN_CHOICES)
     tipo_institucion = models.CharField(max_length=37, choices=TIPO_INSTITUCION_CHOICES)

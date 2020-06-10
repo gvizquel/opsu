@@ -37,6 +37,7 @@ serpy = "==0.3.1"
 django-cors-headers = "==3.2.1"
 whitenoise = "*"
 djangorestframework-datatables = "*"
+drf-yasg = "*"
 
 [requires]
 python_version = "3.7.3"

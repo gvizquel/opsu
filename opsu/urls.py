@@ -8,7 +8,7 @@ from django.urls import path
 from django.views.static import serve
 
 urlpatterns = [
-    path("api-v1/", include("api_v1.urls")),
+    path("api/", include("api_v1.urls")),
     path("loeu/", include("oeu.urls")),
     path("loeu/configuracion/", include("oeuconfig.urls")),
     path("loeu/programas-academicos/", include("oeuacademic.urls")),

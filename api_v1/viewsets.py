@@ -9,6 +9,7 @@ from django.db.models import Q
 from django.shortcuts import get_object_or_404
 
 # Thirdparty Libraries
+from drf_yasg.utils import swagger_auto_schema
 from globales.models import Estado, Municipio, Parroquia
 from oeu.models import (
     AreaConocimiento,
@@ -118,6 +119,10 @@ class ProgramaAcademicoViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = CarreraSerializer
     queryset = Carrera.objects.filter()
 
+    @swagger_auto_schema(
+        operation_description="partial_update description override",
+        responses={404: "slug not found"},
+    )
     def list(self, request):
         """
         Viewset to list all academic programs

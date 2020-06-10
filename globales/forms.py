@@ -39,8 +39,7 @@ class InstitucionMinisterialForm(ModelForm):
                 attrs={
                     "class": "form-control",
                     "placeholder": "Escriba en Siglas el Nombre de la Institución Ministerial",
-                    "minlength": "4",
-                    "maxlength": "50",
+                    "maxlength": "10",
                 }
             ),
             "rif": forms.TextInput(
