@@ -840,10 +840,11 @@ class EliminarModeloComplejo(LoginRequiredMixin, SuccessMessageMixin, DeleteView
 def talero_oeu(request):
     titulo = "Tablero Resumen"
     dict_programa = {}
+    dict_programa_gestion = {}
+    dict_programa_area = {}
     dict_ieu_tipo = {}
     dict_ieu_gestion = {}
     dict_localidad_gestion = {}
-    dict_programa_area = {}
 
     # ******************************************************************************** #
 
@@ -953,6 +954,27 @@ def talero_oeu(request):
 
     # ******************************************************************************** #
 
+    programa_gestion = (
+        Carrera.objects.filter(
+            Q(cod_activacion="11111111") | Q(cod_activacion="10111111")
+        )
+        .values("localidad__ieu__institucion_ministerial__dep_admin")
+        .annotate(total=Count("id"))
+        .order_by("-total")
+    )
+    print(programa_gestion)
+    for programa in programa_gestion:
+        dict_programa_gestion[
+            programa["localidad__ieu__institucion_ministerial__dep_admin"]
+        ] = programa["total"]
+
+    print(dict_programa_gestion)
+
+    serial_programa_gestion = json.dumps(dict_programa_gestion, ensure_ascii=False)
+    print(serial_programa_gestion)
+
+    # ******************************************************************************** #
+
     return render(
         request,
         "tablero_oeu.html",
@@ -966,5 +988,6 @@ def talero_oeu(request):
             "total_localidades": total_localidades,
             "localidad_gestion": serial_localidad_gestion,
             "programa_area": serial_programa_area,
+            "programa_gestion": serial_programa_gestion,
         },
     )

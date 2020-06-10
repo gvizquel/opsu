@@ -77,6 +77,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "corsheaders",
     "rest_framework_datatables",
+    "drf_yasg",
     # 'django.contrib.sites',
     # 'debug_toolbar',
 ]
@@ -342,3 +343,7 @@ CKEDITOR_CONFIGS = {
         "tabSpaces": 4,
     }
 }
+
+
+############################# Logger and Debuguing Config ##############################
+SWAGGER_SETTINGS = {"DEFAULT_INFO": "import.path.to.urls.api_info"}

@@ -170,8 +170,8 @@ class EstadoSerializer(serpy.Serializer):
     Class to serilize Estados
     """
 
-    id = serpy.Field()
-    nombre = serpy.Field()
+    id = serpy.Field(required=False)
+    nombre = serpy.Field(required=False)
 
 
 class MunicipioSerializer(serpy.Serializer):

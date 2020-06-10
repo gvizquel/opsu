@@ -98,6 +98,29 @@
                     <div class="col-md-6">
                         <div class="box box-default">
                             <div class="box-header with-border">
+                                <h3 class="box-title">Gestíon de los Programas Académicos</h3>
+                                <div class="box-tools pull-right">
+                                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                            class="fa fa-minus"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i
+                                            class="fa fa-times"></i></button>
+                                </div>
+                            </div>
+                            <div class="box-body">
+                                <div id="canvas-holder">
+                                    <canvas id="programa_gestion"></canvas>
+                                </div>
+                            </div>
+                            <!-- /.box-body -->
+                        </div>
+                        <!-- /.box -->
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="box box-default">
+                            <div class="box-header with-border">
                                 <h3 class="box-title">Gestíon de las IEU</h3>
                                 <div class="box-tools pull-right">
                                     <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
@@ -116,8 +139,6 @@
                         </div>
                         <!-- /.box -->
                     </div>
-                </div>
-                <div class="row">
                     <div class="col-md-6">
                         <div class="box box-default">
                             <div class="box-header with-border">
@@ -281,6 +302,52 @@
                         fontSize: 8,
                         fontStyle: 'normal',
                         fontColor: '#000',
+                        fontFamily: '"Lucida Console", Monaco, monospace'
+                    },
+                    {
+                        render: 'percentage',
+                        fontSize: 8,
+                        fontStyle: 'normal',
+                        fontColor: '#000',
+                        fontFamily: '"Lucida Console", Monaco, monospace',
+                        position: 'outside'
+                    }
+                ]
+            }
+        }
+    };
+
+    var conf_programa_gestion = {
+        type: 'doughnut',
+        data: {
+            datasets: [{
+                data: Object.values(JSON.parse('{{ programa_gestion | safe }}')),
+                backgroundColor: [
+                    window.chartColors.darkmagenta,
+                    window.chartColors.steelblue,
+                ],
+            }],
+            labels: Object.keys(JSON.parse('{{ programa_gestion | safe }}')),
+        },
+        options: {
+            responsive: true,
+            legend: {
+                position: 'left',
+                labels: {
+                    padding: 5,
+                    usePointStyle: true,
+                }
+            },
+            animation: {
+                animateScale: true,
+                animateRotate: true
+            },
+            plugins: {
+                labels: [{
+                        render: 'value',
+                        fontSize: 8,
+                        fontStyle: 'normal',
+                        fontColor: '#fff',
                         fontFamily: '"Lucida Console", Monaco, monospace'
                     },
                     {
@@ -500,6 +567,8 @@
         chart_ieu_tipo = new Chart(ctx_ieu_tipo, conf_ieu_tipo);
         var ctx_programa_area = document.getElementById('programa_area').getContext('2d');
         chart_programa_area = new Chart(ctx_programa_area, conf_programa_area);
+        var ctx_programa_gestion = document.getElementById('programa_gestion').getContext('2d');
+        chart_programa_gestion = new Chart(ctx_programa_gestion, conf_programa_gestion);
     };
 </script>
 {% endblock javascripts %}
