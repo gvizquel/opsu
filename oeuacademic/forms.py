@@ -1,12 +1,13 @@
 # Django Libraries
 from django import forms
 from django.forms import ModelForm
-from django.forms.models import inlineformset_factory
+from django.forms.formsets import DELETION_FIELD_NAME
+from django.forms.models import BaseInlineFormSet, inlineformset_factory
 
 # Thirdparty Libraries
 from ckeditor.widgets import CKEditorWidget
 from dal import autocomplete
-from oeu.models import Carrera, CarreraSfc, CarreraTitulo, SubAreaConocimiento
+from oeu.models import Carrera, CarreraSfc, CarreraTituloEdit, SubAreaConocimiento
 from oeuconfig.models import Titulo
 
 
@@ -54,9 +55,9 @@ class CarreraPreGradoForm(ModelForm):
             "mercado_ocupacional_edit",
             "area_conocimiento_edit",
             "sub_area_conocimiento_edit",
-            "titulo_edit",
-            "periodicidad_edit",
-            "duracion_edit",
+            # "titulo_edit",
+            # "periodicidad_edit",
+            # "duracion_edit",
             # "ieu_acreditadora_edit",
             "prioritaria_edit",
             "cod_activacion",
@@ -167,6 +168,7 @@ class CarreraPreGradoForm(ModelForm):
             ),
             "duracion_edit": forms.NumberInput(attrs={"class": "form-control"},),
             "prioritaria_edit": forms.CheckboxInput(),
+            "cod_activacion": forms.RadioSelect(),
         }
 
     def __init__(self, obj=None, *args, **kwargs):
@@ -183,7 +185,7 @@ class CarreraPreGradoForm(ModelForm):
 """FormSet ajustado para ser manipulado en el formulario de las carreras
 de pre grado o programas academicos
 """
-CARRERA_FORMSET = inlineformset_factory(
+SFC_CARRERA_FORMSET = inlineformset_factory(
     Carrera,
     CarreraSfc,
     fields=["sfc"],
@@ -196,26 +198,38 @@ CARRERA_FORMSET = inlineformset_factory(
 )
 
 
+class BaseProductFormSet(BaseInlineFormSet):
+    def add_fields(self, form, index):
+        super().add_fields(form, index)
+        form.fields[DELETION_FIELD_NAME].label = ""
+        form.fields[DELETION_FIELD_NAME].widget = forms.HiddenInput(
+            attrs={"value": "false"},
+        )
+
+
 ##############################################################################
 """FormSet para asociar los titulos a los programas academicos de pregrado
 """
-CARRERA_TITULO_FORMSET = inlineformset_factory(
-    Titulo,
-    CarreraTitulo,
+
+TITULO_FORMSET = inlineformset_factory(
+    Carrera,
+    CarreraTituloEdit,
     fields=["titulo", "periodicidad", "duracion"],
     widgets={
-        "titulo": forms.Select(
-            attrs={"class": "form-control formset-select2", "style": "width:100%"}
+        "titulo": autocomplete.ModelSelect2(
+            url="oeuacademic:titulo",
+            attrs={
+                "class": "form-control formset-select2",
+                "style": "width:100%",
+                "data-placeholder": "Titulo de egreso",
+            },
         ),
         "periodicidad": forms.Select(
             attrs={"class": "form-control formset-select2", "style": "width:100%"}
         ),
-        "duracion": forms.NumberInput(
-            attrs={
-                "class": "form-control",
-                "placeholder": "Escribe el nombre de la Carrera",
-            },
-        ),
+        "duracion": forms.NumberInput(attrs={"class": "form-control"},),
     },
-    extra=1,
+    formset=BaseProductFormSet,
+    extra=0,
+    can_delete=True,
 )
