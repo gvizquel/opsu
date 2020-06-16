@@ -1123,6 +1123,12 @@ class Carrera(models.Model):
     publicar = models.BooleanField(default=False)
     cod_activacion = models.CharField(max_length=9, blank=True, null=True)
     sfc = models.ManyToManyField("oeuconfig.SoporteFormalCambio", through="CarreraSfc")
+    titula = models.ManyToManyField(
+        "oeuconfig.Titulo", through="CarreraTitulo", related_name="titula"
+    )
+    titula_edit = models.ManyToManyField(
+        "oeuconfig.Titulo", through="CarreraTituloEdit", related_name="titula_e"
+    )
     revisor = models.ManyToManyField(
         "cuenta.Persona",
         through="CarreraRevisor",
@@ -1232,6 +1238,21 @@ class CarreraTitulo(models.Model):
 
     class Meta:
         db_table = 'oeu"."carrera_titulo'
+
+
+# ########################################################################## #
+class CarreraTituloEdit(models.Model):
+    """Modelo para gestionar los soportes formales de cambio de los tipos de
+    instituciones de educación universitaria
+    """
+
+    carrera = models.ForeignKey("Carrera", on_delete=models.CASCADE)
+    titulo = models.ForeignKey("oeuconfig.Titulo", on_delete=models.PROTECT)
+    periodicidad = models.ForeignKey("oeuconfig.Periodicidad", on_delete=models.PROTECT)
+    duracion = models.SmallIntegerField()
+
+    class Meta:
+        db_table = 'oeu"."carrera_titulo_edit'
 
 
 # ########################################################################## #

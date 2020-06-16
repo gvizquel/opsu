@@ -15,7 +15,7 @@ from oeu.views import (
     EliminarModeloComplejo,
     ListarModeloComplejo,
 )
-from oeuacademic.forms import CARRERA_FORMSET, CarreraPreGradoForm
+from oeuacademic.forms import SFC_CARRERA_FORMSET, TITULO_FORMSET, CarreraPreGradoForm
 from oeuacademic.views import (
     AcreditadoraAutoComplete,
     AgregarSAC,
@@ -235,7 +235,7 @@ urlpatterns = [
             posicion=2,
             revisor_edit=CarreraRevisorEdit,
             relacion_id="carrera",
-            SfcFormSet=CARRERA_FORMSET,
+            SfcFormSet=SFC_CARRERA_FORMSET,
         ),
         name="agregar-carrera-pre-grado",
     ),
@@ -251,7 +251,8 @@ urlpatterns = [
             posicion=2,
             revisor_edit=CarreraRevisorEdit,
             relacion_id="carrera",
-            SfcFormSet=CARRERA_FORMSET,
+            SfcFormSet=SFC_CARRERA_FORMSET,
+            TituloFormSet=TITULO_FORMSET,
         ),
         name="editar-carrera-pre-grado",
     ),

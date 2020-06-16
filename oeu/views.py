@@ -430,6 +430,7 @@ class EditarModeloComplejo(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     RequisitoFormSet = None
     ServicioFormSet = None
     relacion_id = None
+    TituloFormSet = None
 
     def __init__(self, *args, **kwargs):
         super(EditarModeloComplejo, self).__init__(*args, **kwargs)
@@ -523,6 +524,11 @@ class EditarModeloComplejo(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
             registros en los FormSet
             en el template siempre que su modelo sea Localidad
             """
+            if self.model == Carrera:
+                contexto["titulo_form"] = self.TituloFormSet(
+                    self.request.POST, instance=self.object
+                )
+
             if self.model == Localidad:
                 contexto["ayuda_form"] = self.AyudaFormSet(
                     self.request.POST, instance=self.object
@@ -550,6 +556,10 @@ class EditarModeloComplejo(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
                 )
         else:
             contexto["sfc_form"] = self.SfcFormSet(instance=self.object)
+
+            if self.model == Carrera:
+                contexto["titulo_form"] = self.TituloFormSet(instance=self.object)
+
             if self.model == Localidad:
                 contexto["ayuda_form"] = self.AyudaFormSet(instance=self.object)
                 contexto["agrupacion_form"] = self.AgrupacionFormSet(
@@ -589,70 +599,47 @@ class EditarModeloComplejo(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     def post(self, request, *args, **kwargs):
         contexto = self.get_context_data(**kwargs)
         form = self.get_form(self.form_class)
-        sfc_form = contexto["sfc_form"]
+        formsets_form = [contexto["sfc_form"]]
 
-        """ en esta seccion del codigo se activa cuando el modelo es igual a Localidad,
-        el post recibe los datos nuevos y editados
+        """ distintos formsets que pueden llegar al formulario complejo
         """
-        if self.model == Localidad:
-            ayuda_form = contexto["ayuda_form"]
-            agrupacion_form = contexto["agrupacion_form"]
-            actividad_form = contexto["actividad_form"]
-            disciplina_form = contexto["disciplina_form"]
-            redsocial_form = contexto["redsocial_form"]
-            organizacion_form = contexto["organizacion_form"]
-            requisito_form = contexto["requisito_form"]
-            servicio_form = contexto["servicio_form"]
+        formsets_form.append(contexto.get("ayuda_form")) if contexto.get(
+            "ayuda_form"
+        ) else formsets_form
+        formsets_form.append(contexto.get("agrupacion_form")) if contexto.get(
+            "agrupacion_form"
+        ) else formsets_form
+        formsets_form.append(contexto.get("actividad_form")) if contexto.get(
+            "actividad_form"
+        ) else formsets_form
+        formsets_form.append(contexto.get("disciplina_form")) if contexto.get(
+            "disciplina_form"
+        ) else formsets_form
+        formsets_form.append(contexto.get("redsocial_form")) if contexto.get(
+            "redsocial_form"
+        ) else formsets_form
+        formsets_form.append(contexto.get("organizacion_form")) if contexto.get(
+            "organizacion_form"
+        ) else formsets_form
+        formsets_form.append(contexto.get("requisito_form")) if contexto.get(
+            "requisito_form"
+        ) else formsets_form
+        formsets_form.append(contexto.get("servicio_form")) if contexto.get(
+            "servicio_form"
+        ) else formsets_form
+        formsets_form.append(contexto.get("titulo_form")) if contexto.get(
+            "titulo_form"
+        ) else formsets_form
+        print(formsets_form)
 
-        """preguntamos el modelo que recibe por parametro para que retorne
-        la validez de los formularios segun se el caso
-        """
-        if self.model == Localidad:
-            if form.is_valid():
-                return self.form_valid(
-                    form,
-                    sfc_form,
-                    ayuda_form,
-                    agrupacion_form,
-                    actividad_form,
-                    disciplina_form,
-                    redsocial_form,
-                    organizacion_form,
-                    requisito_form,
-                    servicio_form,
-                )
-            else:
-                return self.form_invalid(
-                    form,
-                    sfc_form,
-                    ayuda_form,
-                    agrupacion_form,
-                    actividad_form,
-                    disciplina_form,
-                    redsocial_form,
-                    organizacion_form,
-                    requisito_form,
-                    servicio_form,
-                )
-        else:
-            if form.is_valid() and sfc_form.is_valid():
-                return self.form_valid(form, sfc_form)
-            else:
-                return self.form_invalid(form, sfc_form)
+        for formset in formsets_form:
+            if not formset.is_valid():
+                return self.form_invalid(form)
+                break
 
-    def form_valid(
-        self,
-        form,
-        sfc_form,
-        ayuda_form=None,
-        agrupacion_form=None,
-        actividad_form=None,
-        disciplina_form=None,
-        redsocial_form=None,
-        organizacion_form=None,
-        requisito_form=None,
-        servicio_form=None,
-    ):
+        return self.form_valid(form, formsets_form)
+
+    def form_valid(self, form, formsets_form):
 
         self.object = self.get_object()
         editor = self.object.editor
@@ -671,28 +658,13 @@ class EditarModeloComplejo(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
 
         with transaction.atomic():
             formulario.save()
-            sfc_form.instance = formulario
-            sfc_form.save()
 
             """ en este caso si se cumple la condicion que el formulario es valido
-            y que el modelo que esta recibiendo por url es Localidad, entonces se crea
-            una lista de todos los FormSet y se pregunta si no se encuentran vacios,
-            se instancia del formulario principal y se guardan los cambios
+            y se instancia del formulario principal y se guardan los cambios
             """
-            formset_general = [
-                ayuda_form,
-                agrupacion_form,
-                actividad_form,
-                disciplina_form,
-                redsocial_form,
-                organizacion_form,
-                requisito_form,
-                servicio_form,
-            ]
-            for formset in formset_general:
-                if formset is not None:
-                    formset.instance = formulario
-                    formset.save()
+            for formset in formsets_form:
+                formset.instance = formulario
+                formset.save()
         """ Ahora guardo el regisro en la tabla de revisores en caso de que
         el revisor ya no esté asociado. """
 
@@ -715,9 +687,9 @@ class EditarModeloComplejo(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
 
         return HttpResponseRedirect(self.get_success_url())
 
-        """cuando el formulario es invalido por causa de un campo no llenado se procede a enviar un mensaje de error,
-        y tomando en cuenta si el modelo es localidad los parametros que recibe la funcion se declaran None sino se dejan
-        normal
+        """cuando el formulario es invalido por causa de un campo no llenado se procede
+        a enviar un mensaje de error, y tomando en cuenta si el modelo es localidad los
+        parametros que recibe la funcion se declaran None sino se dejan normal
         """
 
     def get_success_url(self):
@@ -731,57 +703,12 @@ class EditarModeloComplejo(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
 
         return str(self.success_url)
 
-    def form_invalid(
-        self,
-        form,
-        sfc_form,
-        ayuda_form=None,
-        agrupacion_form=None,
-        actividad_form=None,
-        disciplina_form=None,
-        redsocial_form=None,
-        organizacion_form=None,
-        requisito_form=None,
-        servicio_form=None,
-    ):
+    def form_invalid(self, form):
 
         messages.error(
             self.request, "<b>Error en los siguientes campos del formulario:</b>"
         )
-
-        # cuando el formulario es invalido se pude interpretar que no se esta utilizando
-        # el modelo Localidad y se esta usando otro modelo y se compara que los FormSet
-        # se encuentren vacios y de acuerdo a la respuesta procede a realizar su funcion
-        # de retornar la respuesta a los distintos formularios
-
-        if (
-            ayuda_form is None
-            and agrupacion_form is None
-            and actividad_form is None
-            and disciplina_form is None
-            and redsocial_form is None
-            and organizacion_form is None
-            and requisito_form is None
-            and servicio_form is None
-        ):
-            return self.render_to_response(
-                self.get_context_data(form=form, sfc_form=sfc_form)
-            )
-        else:
-            return self.render_to_response(
-                self.get_context_data(
-                    form=form,
-                    sfc_form=sfc_form,
-                    ayuda_form=ayuda_form,
-                    agrupacion_form=agrupacion_form,
-                    actividad_form=actividad_form,
-                    disciplina_form=disciplina_form,
-                    redsocial_form=redsocial_form,
-                    organizacion_form=organizacion_form,
-                    requisito_form=requisito_form,
-                    servicio_form=servicio_form,
-                )
-            )
+        return self.render_to_response(self.get_context_data(form=form))
 
 
 # ########################################################################## #
@@ -962,16 +889,13 @@ def talero_oeu(request):
         .annotate(total=Count("id"))
         .order_by("-total")
     )
-    print(programa_gestion)
+
     for programa in programa_gestion:
         dict_programa_gestion[
             programa["localidad__ieu__institucion_ministerial__dep_admin"]
         ] = programa["total"]
 
-    print(dict_programa_gestion)
-
     serial_programa_gestion = json.dumps(dict_programa_gestion, ensure_ascii=False)
-    print(serial_programa_gestion)
 
     # ******************************************************************************** #
 
