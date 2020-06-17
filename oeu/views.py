@@ -21,6 +21,7 @@ from dal import autocomplete
 from oeu.models import (
     AreaConocimiento,
     Carrera,
+    CarreraTitulo,
     Ieu,
     Localidad,
     SubAreaConocimiento,
@@ -207,6 +208,7 @@ class AgregarModeloComplejo(LoginRequiredMixin, SuccessMessageMixin, CreateView)
     RequisitoFormSet = None
     ServicioFormSet = None
     relacion_id = None
+    TituloFormSet = None
 
     def get_cod_activacion(self):
         """Prepara la brekera del código de activación de cada uno los modelos
@@ -236,111 +238,48 @@ class AgregarModeloComplejo(LoginRequiredMixin, SuccessMessageMixin, CreateView)
             contexto["organizacion_form"] = self.OrganizacionFormSet()
             contexto["requisito_form"] = self.RequisitoFormSet()
             contexto["servicio_form"] = self.ServicioFormSet()
+        if self.model == Carrera:
+            contexto["titulo_form"] = self.TituloFormSet()
         return contexto
 
     def post(self, request, *args, **kwargs):
         self.object = None
         form = self.get_form(self.form_class)
-        sfc_form = self.SfcFormSet(self.request.POST)
+        formsets_form = [self.SfcFormSet(self.request.POST)]
 
-        # Aqui el formulario incluye los FormSet que son enviados por el metodo post
-        # unicamente con la condicion que su modelo es Localidad y de igual forma si el
-        # formulario es valido los envia para ser almacenados
+        """ distintos formsets que pueden llegar al formulario complejo
+        """
 
         if self.model == Localidad:
-            ayuda_form = self.AyudaFormSet(self.request.POST)
-            agrupacion_form = self.AgrupacionFormSet(self.request.POST)
-            actividad_form = self.ActividadFormSet(self.request.POST)
-            disciplina_form = self.DisciplinaFormSet(self.request.POST)
-            redsocial_form = self.RedSocialFormSet(self.request.POST)
-            organizacion_form = self.OrganizacionFormSet(self.request.POST)
-            requisito_form = self.RequisitoFormSet(self.request.POST)
-            servicio_form = self.ServicioFormSet(self.request.POST)
+            formsets_form.append(self.AyudaFormSet(self.request.POST))
+            formsets_form.append(self.AgrupacionFormSet(self.request.POST))
+            formsets_form.append(self.ActividadFormSet(self.request.POST))
+            formsets_form.append(self.DisciplinaFormSet(self.request.POST))
+            formsets_form.append(self.RedSocialFormSet(self.request.POST))
+            formsets_form.append(self.OrganizacionFormSet(self.request.POST))
+            formsets_form.append(self.RequisitoFormSet(self.request.POST))
+            formsets_form.append(self.ServicioFormSet(self.request.POST))
+        if self.model == Carrera:
+            formsets_form.append(self.TituloFormSet(self.request.POST))
 
-            if form.is_valid():
-                return self.form_valid(
-                    form,
-                    sfc_form,
-                    ayuda_form,
-                    agrupacion_form,
-                    actividad_form,
-                    disciplina_form,
-                    redsocial_form,
-                    organizacion_form,
-                    requisito_form,
-                    servicio_form,
-                )
-            else:
+        print(formsets_form)
 
-                return self.form_invalid(
-                    form,
-                    sfc_form,
-                    ayuda_form,
-                    agrupacion_form,
-                    actividad_form,
-                    disciplina_form,
-                    redsocial_form,
-                    organizacion_form,
-                    requisito_form,
-                    servicio_form,
-                )
-        else:
-            if form.is_valid() and sfc_form.is_valid():
-                return self.form_valid(form, sfc_form)
-            else:
-                return self.form_invalid(form, sfc_form)
+        for formset in formsets_form:
+            if not formset.is_valid():
+                return self.form_invalid(form, formsets_form)
 
-    def form_valid(
-        self,
-        form,
-        sfc_form,
-        ayuda_form=None,
-        agrupacion_form=None,
-        actividad_form=None,
-        disciplina_form=None,
-        redsocial_form=None,
-        organizacion_form=None,
-        requisito_form=None,
-        servicio_form=None,
-    ):
+        return self.form_valid(form, formsets_form)
+
+    def form_valid(self, form, formsets_form):
         self.object = form.save(commit=False)
         self.object.cod_activacion = self.get_cod_activacion()
         self.object.publicar = False
         with transaction.atomic():
             LOGGER.info("AQUI")
             self.object.save()
-            LOGGER.info("ALLÁ")
-            """
-            Aquí se pregunta el estados de los FormSet (vacios o no) y se les pasa en
-            forma de lista para ser guardados junto a la instancia del formulario
-            principal.
-            """
-            if (
-                ayuda_form is None
-                and agrupacion_form is None
-                and actividad_form is None
-                and disciplina_form is None
-                and redsocial_form is None
-                and organizacion_form is None
-                and servicio_form is None
-            ):
-                sfc_form.instance = self.object
-                sfc_form.save()
-            else:
-                form_general = [
-                    sfc_form,
-                    ayuda_form,
-                    agrupacion_form,
-                    actividad_form,
-                    disciplina_form,
-                    redsocial_form,
-                    organizacion_form,
-                    requisito_form,
-                    servicio_form,
-                ]
-                for formulario in form_general:
-                    formulario.instance = self.object
-                    formulario.save()
+            for formulario in formsets_form:
+                formulario.instance = self.object
+                formulario.save()
 
             # Ahora guardo el regisro en la tabla de revisores edit.
             filtro = {self.relacion_id: self.object, "persona": self.request.user}
@@ -361,52 +300,8 @@ class AgregarModeloComplejo(LoginRequiredMixin, SuccessMessageMixin, CreateView)
 
         return str(self.success_url)
 
-    def form_invalid(
-        self,
-        form,
-        sfc_form,
-        ayuda_form=None,
-        agrupacion_form=None,
-        actividad_form=None,
-        disciplina_form=None,
-        redsocial_form=None,
-        organizacion_form=None,
-        requisito_form=None,
-        servicio_form=None,
-    ):
-
-        """cuando el formulario es invalido se pude interpretar que no se esta
-        utilizando el modelo Localidad y se esta usando otro modelo y se compara que los
-        FormSet se encuentren vacios y de acuerdo a la respuesta procede a realizar su
-        funcion de retornar la respuesta a los distintos formularios
-        """
-        if (
-            ayuda_form is None
-            and agrupacion_form is None
-            and disciplina_form is None
-            and redsocial_form is None
-            and organizacion_form is None
-            and requisito_form is None
-            and servicio_form is None
-        ):
-            return self.render_to_response(
-                self.get_context_data(form=form, sfc_form=sfc_form)
-            )
-        else:
-            return self.render_to_response(
-                self.get_context_data(
-                    form=form,
-                    sfc_form=sfc_form,
-                    ayuda_form=ayuda_form,
-                    agrupacion_form=agrupacion_form,
-                    actividad_form=actividad_form,
-                    disciplina_form=disciplina_form,
-                    redsocial_form=redsocial_form,
-                    organizacion_form=organizacion_form,
-                    requisito_form=requisito_form,
-                    servicio_form=servicio_form,
-                )
-            )
+    def form_invalid(self, form):
+        return self.render_to_response(self.get_context_data(form=form))
 
 
 # ########################################################################## #
@@ -528,6 +423,7 @@ class EditarModeloComplejo(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
                 contexto["titulo_form"] = self.TituloFormSet(
                     self.request.POST, instance=self.object
                 )
+                contexto["titulo"] = CarreraTitulo.objects.filter(carrera=self.object)
 
             if self.model == Localidad:
                 contexto["ayuda_form"] = self.AyudaFormSet(
@@ -559,6 +455,7 @@ class EditarModeloComplejo(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
 
             if self.model == Carrera:
                 contexto["titulo_form"] = self.TituloFormSet(instance=self.object)
+                contexto["titulo"] = CarreraTitulo.objects.filter(carrera=self.object)
 
             if self.model == Localidad:
                 contexto["ayuda_form"] = self.AyudaFormSet(instance=self.object)
@@ -634,7 +531,7 @@ class EditarModeloComplejo(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
 
         for formset in formsets_form:
             if not formset.is_valid():
-                return self.form_invalid(form)
+                return self.form_invalid(form, formsets_form)
                 break
 
         return self.form_valid(form, formsets_form)
@@ -657,7 +554,6 @@ class EditarModeloComplejo(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
                 formulario.cod_activacion = self.get_revisado(self.cod_inac)
 
         with transaction.atomic():
-            formulario.save()
 
             """ en este caso si se cumple la condicion que el formulario es valido
             y se instancia del formulario principal y se guardan los cambios
@@ -665,6 +561,7 @@ class EditarModeloComplejo(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
             for formset in formsets_form:
                 formset.instance = formulario
                 formset.save()
+            formulario.save()
         """ Ahora guardo el regisro en la tabla de revisores en caso de que
         el revisor ya no esté asociado. """
 
@@ -708,6 +605,7 @@ class EditarModeloComplejo(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
         messages.error(
             self.request, "<b>Error en los siguientes campos del formulario:</b>"
         )
+
         return self.render_to_response(self.get_context_data(form=form))
 
 

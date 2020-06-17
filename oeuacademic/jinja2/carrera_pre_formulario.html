@@ -72,8 +72,13 @@
                             <dd>
                                 <p ALIGN="justify">{{ object.descripcion|safe }}</p>
                             </dd>
-                            <dt>Título</dt>
-                            <dd>{{ object.titulo }}</dd>
+                            <dt>Periodicidad:</dt>
+                            <dd>{{ object.periodicidad }}</dd>
+                            <dt>Título(s):</dt>
+                                {% for titulo in titulo %}
+                                <dd>{{ titulo }}</dd>
+                                {% endfor %}
+                            </dd>
                             <dt>Tipo de Programa:</dt>
                             <dd>{{ object.tipo_carrera }}</dd>
                             <dt>Mercado Ocupacional</dt>
@@ -84,10 +89,6 @@
                             <dd>{{ object.area_conocimiento }}</dd>
                             <dt>Sub Área:</dt>
                             <dd>{{ object.sub_area_conocimiento }}</dd>
-                            <dt>Periodicidad:</dt>
-                            <dd>{{ object.periodicidad }}</dd>
-                            <dt>Duración:</dt>
-                            <dd>{{ object.duracion }}</dd>
                             <dt>Prioritaria</dt>
                             {% if object.prioritaria == True %}
                             <dd>Si</dd>

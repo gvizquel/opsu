@@ -1038,7 +1038,11 @@ class Carrera(models.Model):
         null=True,
     )
     titulo = models.ForeignKey(
-        "oeuconfig.Titulo", on_delete=models.PROTECT, db_index=True
+        "oeuconfig.Titulo",
+        on_delete=models.PROTECT,
+        db_index=True,
+        blank=True,
+        null=True,
     )
     institucion_acreditadora = models.ForeignKey(
         "Ieu",
@@ -1053,9 +1057,13 @@ class Carrera(models.Model):
     mercado_ocupacional = models.TextField(blank=True, null=True)
     prioritaria = models.BooleanField(default=False)
     periodicidad = models.ForeignKey(
-        "oeuconfig.Periodicidad", on_delete=models.PROTECT, db_column="periodicidad",
+        "oeuconfig.Periodicidad",
+        on_delete=models.PROTECT,
+        db_column="periodicidad",
+        blank=True,
+        null=True,
     )
-    duracion = models.SmallIntegerField()
+    duracion = models.SmallIntegerField(blank=True, null=True)
     localidad_edit = models.ForeignKey(
         Localidad,
         db_column="localidad_edit",
@@ -1100,6 +1108,8 @@ class Carrera(models.Model):
         db_column="titulo_edit",
         on_delete=models.PROTECT,
         related_name="titulo",
+        blank=True,
+        null=True,
     )
     ieu_acreditadora_edit = models.ForeignKey(
         "Ieu",
@@ -1118,8 +1128,10 @@ class Carrera(models.Model):
         on_delete=models.PROTECT,
         related_name="periodicidad",
         db_column="periodicidad_edit",
+        blank=True,
+        null=True,
     )
-    duracion_edit = models.SmallIntegerField()
+    duracion_edit = models.SmallIntegerField(blank=True, null=True)
     publicar = models.BooleanField(default=False)
     cod_activacion = models.CharField(max_length=9, blank=True, null=True)
     sfc = models.ManyToManyField("oeuconfig.SoporteFormalCambio", through="CarreraSfc")
@@ -1236,8 +1248,14 @@ class CarreraTitulo(models.Model):
     periodicidad = models.ForeignKey("oeuconfig.Periodicidad", on_delete=models.PROTECT)
     duracion = models.SmallIntegerField()
 
+    def __str__(self):
+        return "{} ({} {})".format(
+            self.titulo, self.duracion, self.periodicidad.descripcion
+        )
+
     class Meta:
         db_table = 'oeu"."carrera_titulo'
+        ordering = ["id"]
 
 
 # ########################################################################## #
@@ -1253,6 +1271,7 @@ class CarreraTituloEdit(models.Model):
 
     class Meta:
         db_table = 'oeu"."carrera_titulo_edit'
+        ordering = ["id"]
 
 
 # ########################################################################## #
