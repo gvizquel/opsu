@@ -236,6 +236,7 @@ urlpatterns = [
             revisor_edit=CarreraRevisorEdit,
             relacion_id="carrera",
             SfcFormSet=SFC_CARRERA_FORMSET,
+            TituloFormSet=TITULO_FORMSET,
         ),
         name="agregar-carrera-pre-grado",
     ),
