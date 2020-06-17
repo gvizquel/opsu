@@ -56,7 +56,7 @@ class CarreraPreGradoForm(ModelForm):
             "area_conocimiento_edit",
             "sub_area_conocimiento_edit",
             # "titulo_edit",
-            # "periodicidad_edit",
+            "periodicidad_edit",
             # "duracion_edit",
             # "ieu_acreditadora_edit",
             "prioritaria_edit",
@@ -139,7 +139,7 @@ class CarreraPreGradoForm(ModelForm):
             ),
             "periodicidad_edit": forms.Select(
                 attrs={
-                    "class": "form-control",
+                    "class": "form-control select2",
                     "placeholder": "Seleccione Una Opción",
                 },
             ),
@@ -214,7 +214,7 @@ class BaseProductFormSet(BaseInlineFormSet):
 TITULO_FORMSET = inlineformset_factory(
     Carrera,
     CarreraTituloEdit,
-    fields=["titulo", "periodicidad", "duracion"],
+    fields=["titulo", "duracion"],
     widgets={
         "titulo": autocomplete.ModelSelect2(
             url="oeuacademic:titulo",
@@ -223,9 +223,6 @@ TITULO_FORMSET = inlineformset_factory(
                 "style": "width:100%",
                 "data-placeholder": "Titulo de egreso",
             },
-        ),
-        "periodicidad": forms.Select(
-            attrs={"class": "form-control formset-select2", "style": "width:100%"}
         ),
         "duracion": forms.NumberInput(attrs={"class": "form-control"},),
     },
