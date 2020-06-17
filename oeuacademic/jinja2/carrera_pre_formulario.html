@@ -263,7 +263,6 @@
                                 <thead>
                                     <tr>
                                         <th>Título</th>
-                                        <th>Periodicidad</th>
                                         <th>Duración</th>
                                         <th class="text-center">Eliminar</th>
                                     </tr>
@@ -274,16 +273,10 @@
                                         {% for field in inline_form.visible_fields() %}
                                         {% if field.name == "titulo" %}
                                         <td
-                                            class="{% if field.name %}field-{{ field.name }}{% endif %}{%if field.errors %} table-danger{% endif %} col-sm-7">
+                                            class="{% if field.name %}field-{{ field.name }}{% endif %}{%if field.errors %} table-danger{% endif %} col-sm-10">
                                             {% for hidden in inline_form.hidden_fields() %}
                                             {{ hidden }}
                                             {% endfor %}
-                                            {{ field }}
-                                        </td>
-                                        {% endif %}
-                                        {% if field.name == "periodicidad" %}
-                                        <td
-                                            class="{% if field.name %}field-{{ field.name }}{% endif %}{%if field.errors %} table-danger{% endif %} col-sm-3">
                                             {{ field }}
                                         </td>
                                         {% endif %}
@@ -308,16 +301,10 @@
 
                                         {% if field.name == "titulo" %}
                                         <td
-                                            class="{% if field.name %}field-{{ field.name }}{% endif %}{%if field.errors %} table-danger{% endif %} col-sm-7">
+                                            class="{% if field.name %}field-{{ field.name }}{% endif %}{%if field.errors %} table-danger{% endif %} col-sm-10">
                                             {% for hidden in titulo_form.empty_form.hidden_fields() %}
                                             {{ hidden }}
                                             {% endfor %}
-                                            {{ field }}
-                                        </td>
-                                        {% endif %}
-                                        {% if field.name == "periodicidad" %}
-                                        <td
-                                            class="{% if field.name %}field-{{ field.name }}{% endif %}{%if field.errors %} table-danger{% endif %} col-sm-3">
                                             {{ field }}
                                         </td>
                                         {% endif %}
@@ -328,10 +315,9 @@
                                         </td>
                                         {% endif %}
                                         {% endfor %}
-                                        <td id="{{ titulo_form.prefix }}-DELETE-__prefix__" class="field-DELETE text-center"><span
-                                                class="delete-row">
-                                                <li class="fa fa-trash" style="padding-right: 3px;"></li>
-                                            </span></td>
+                                        <td id="{{ titulo_form.prefix }}-DELETE-__prefix__" class="field-DELETE col-sm-1 text-center"><span class="delete-row">
+                                            <li class="fa fa-trash" style="padding-top: 9px;"></li>
+                                        </span></td>
                                     </tr>
                                 </tbody>
                                 <tfoot>
