@@ -423,7 +423,7 @@ class EditarModeloComplejo(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
                 contexto["titulo_form"] = self.TituloFormSet(
                     self.request.POST, instance=self.object
                 )
-                contexto["titulo"] = CarreraTitulo.objects.filter(carrera=self.object)
+                contexto["titula"] = CarreraTitulo.objects.filter(carrera=self.object)
 
             if self.model == Localidad:
                 contexto["ayuda_form"] = self.AyudaFormSet(
