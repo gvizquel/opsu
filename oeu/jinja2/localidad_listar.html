@@ -22,6 +22,8 @@
         line-height: 20px;
         vertical-align: middle;
         background-color: #bcd2ec;
+        padding-left: 10px;
+        padding-right: 10px;
      }
 </style>
 {% endblock stylesheets %}
@@ -81,7 +83,7 @@
                                             placeholder="Filtrar por localidad"></th>
                                     <th class="text-center"><input class="form-control" style="width: 90%;" type="text" id="column1_search"
                                             placeholder="Filtrar por Estado"></th>
-                                    <th class="text-center"><input class="form-control" style="width: 90%;" type="text" id="column2_search"
+                                    <th class="text-center"><input class="form-control" style="width: 100%;" type="text" id="column2_search"
                                             placeholder="Filtrar por Municipio"></th>
                                     <th class="text-center"><input class="form-control" style="width: 80%;" type="text" id="column3_search"
                                             placeholder="Filtrar por Parroquia"></th>
@@ -101,9 +103,9 @@
                                     <th class="text-center">ESTADO</th>
                                     <th class="text-center">MUNICIPIO</th>
                                     <th class="text-center">PARROQUIA</th>
-                                    <th class="text-center">&nbsp;&nbsp;&nbsp;ESTADO&nbsp;&nbsp;&nbsp;&nbsp;</th>
-                                    <th class="text-center">&nbsp;&nbsp;CARRERAS&nbsp;&nbsp;</th>
-                                    <th class="text-center">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ACCIONES&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                                    <th class="text-center">&nbsp;&nbsp;&nbsp;&nbsp;ESTADO&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                                    <th class="text-center">CARRERAS</th>
+                                    <th class="text-center">ACCIONES</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -139,10 +141,10 @@
                                                     onclick="return abrir_modal('{{ url('oeu:detalle-localidad', args=[ objeto.pk]) }}')"
                                                     data-toggle="tooltip" title="Ver este Sub Tipo de IEU" type="button"
                                                     class="btn btn-default btn-xs"><span
-                                                        class="fa fa-eye"></span></button>&nbsp;<button
+                                                        class="fa fa-eye"></span></button><button
                                                     onclick="window.location.href = '{{ url('''oeu:editar-localidad''', args=[ objeto.pk]) }}{% if '''filtro''' in request.GET %}?filtro={{request.GET.filtro}}{% endif %}';"
                                                     class="btn btn-primary btn-xs"><span
-                                                        class="fa fa-pencil"></span></button>&nbsp;<button
+                                                        class="fa fa-pencil"></span></button><button
                                                     onclick="return abrir_modal('{{ url('oeu:eliminar-localidad', args=[ objeto.pk]) }}{% if '''filtro''' in request.GET %}?filtro={{request.GET.filtro}}{% endif %}')"
                                                     data-toggle="tooltip" title="Eliminar este Sub Tipo de IEU"
                                                     type="button" class="btn btn-danger btn-xs"><span
