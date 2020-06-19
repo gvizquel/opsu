@@ -1,0 +1,4 @@
+<option value="">Parroquia...</option>
+{% for parroquia in parroquias %}
+<option value="{{ parroquia.pk }}">{{ parroquia.nombre }}</option>
+{% endfor %}
