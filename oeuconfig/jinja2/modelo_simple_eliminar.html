@@ -13,7 +13,7 @@
                         {% if not relacionado %}
                             <p>¿Está seguro de querer eliminar el {{ titulo }} <b>{{ object.nombre }}</b>?</p>
                         {% else %}
-                            <p>No es posible eliminar el {{ titulo }} <b>{{ object.nombre }}</b>, debido a que hay <u>localidades</u> que dependen de este registro. Elimine este {{ titulo }} de las localidades y regrese acá para eliminar este registro.</p>
+                            <p>No es posible eliminar el {{ titulo }} <b>{{ object.nombre }}</b>, debido a que hay <u>{{ dependiente }}</u> que dependen de este registro.</p>
                         {% endif %}
                     </div>
                     <div class="modal-footer">

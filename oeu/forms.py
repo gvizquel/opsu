@@ -272,7 +272,9 @@ class TipoIeuForm(ModelForm):
         fields = ("nombre_edit", "cod_activacion", "orden_edit", "publicar", "editor")
         labels = {"nombre_edit": "Nombre", "orden_edit": "Orden"}
         widgets = {
-            "nombre_edit": forms.TextInput(attrs={"class": "form-control"}),
+            "nombre_edit": forms.TextInput(
+                attrs={"style": "text-transform:uppercase;", "class": "form-control"}
+            ),
             "orden_edit": forms.NumberInput(attrs={"class": "form-control"}),
         }
 
@@ -351,7 +353,9 @@ class SubTipoIeuForm(ModelForm):
                 url="oeu:tipo-ieu-au",
                 attrs={"class": "form-control", "data-placeholder": "Tipo IEU ..."},
             ),
-            "nombre_edit": forms.TextInput(attrs={"class": "form-control"}),
+            "nombre_edit": forms.TextInput(
+                attrs={"style": "text-transform:uppercase;", "class": "form-control"}
+            ),
             "orden_edit": forms.NumberInput(attrs={"class": "form-control"}),
         }
 
@@ -391,7 +395,9 @@ class TipoEspecificoIeuForm(ModelForm):
                 attrs={"class": "form-control", "data-placeholder": "Sub Tipo IEU ..."},
             ),
             # 'sub_tipo_ieu_edit': forms.Select(attrs={'class':'form-control'}),
-            "nombre_edit": forms.TextInput(attrs={"class": "form-control"}),
+            "nombre_edit": forms.TextInput(
+                attrs={"style": "text-transform:uppercase;", "class": "form-control"}
+            ),
             "orden_edit": forms.NumberInput(attrs={"class": "form-control"}),
         }
 
@@ -515,7 +521,9 @@ class LocalidadForm(ModelForm):
                 attrs={"class": "form-control", "data-placeholder": "IEU ..."},
             ),
             "tipo_localidad_edit": forms.Select(attrs={"class": "form-control"}),
-            "nombre_edit": forms.TextInput(attrs={"class": "form-control"}),
+            "nombre_edit": forms.TextInput(
+                attrs={"style": "text-transform:uppercase;", "class": "form-control"}
+            ),
             "web_site_edit": forms.URLInput(attrs={"class": "form-control"}),
             "direccion_edit": forms.Textarea(
                 attrs={"class": "form-control", "rows": 2}
@@ -534,7 +542,9 @@ class LocalidadForm(ModelForm):
                 forward=["municipio_edit"],
                 attrs={"class": "form-control", "data-placeholder": "Estado ..."},
             ),
-            "centro_poblado_edit": forms.TextInput(attrs={"class": "form-control"}),
+            "centro_poblado_edit": forms.TextInput(
+                attrs={"style": "text-transform:uppercase;", "class": "form-control"}
+            ),
             "punto_edit": LeafletWidget(attrs=LEAFLET_WIDGET_POINT_ATTRS),
             "poligonal_edit": LeafletWidget(attrs=LEAFLET_WIDGET_POLYGON_ATTRS),
         }
@@ -642,7 +652,9 @@ LOCALIDADRS_FORMSET = inlineformset_factory(
     fields=["red_social", "enlace"],
     widgets={
         "red_social": forms.Select(attrs={"class": "form-control"}),
-        "enlace": forms.TextInput(attrs={"class": "form-control"}),
+        "enlace": forms.TextInput(
+            attrs={"style": "text-transform:uppercase;", "class": "form-control"}
+        ),
     },
     extra=1,
 )

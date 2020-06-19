@@ -266,7 +266,9 @@ class AgregarModeloComplejo(LoginRequiredMixin, SuccessMessageMixin, CreateView)
 
         for formset in formsets_form:
             if not formset.is_valid():
-                return self.form_invalid(form, formsets_form)
+                return self.form_invalid(form)
+        if not form.is_valid():
+            return self.form_invalid(form)
 
         return self.form_valid(form, formsets_form)
 
@@ -531,8 +533,9 @@ class EditarModeloComplejo(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
 
         for formset in formsets_form:
             if not formset.is_valid():
-                return self.form_invalid(form, formsets_form)
-                break
+                return self.form_invalid(form)
+        if not form.is_valid():
+            return self.form_invalid(form)
 
         return self.form_valid(form, formsets_form)
 

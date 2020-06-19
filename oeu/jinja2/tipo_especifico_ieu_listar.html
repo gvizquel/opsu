@@ -17,41 +17,12 @@
     span {
         display: inline-block;
     }
-
-    .form-inline .form-control-custom {
-        display: inline-block;
-        width: auto;
+    .header th {
+        height: 40px;
+        line-height: 20px;
         vertical-align: middle;
-    }
-
-    .form-control-custom:not(select) {
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        appearance: none;
-    }
-
-    .form-control-custom {
-        border-radius: 0;
-        box-shadow: none;
-        border-color: #d2d6de;
-    }
-
-    .form-control-custom {
-        display: block;
-        height: 34px;
-        padding: 6px 6px;
-        font-size: 12px;
-        line-height: 1.42857143;
-        color: #555;
-        background-color: #fff;
-        background-image: none;
-        border: 1px solid #ccc;
-        -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
-        box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
-        -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
-        -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-        transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-    }
+        background-color: #bcd2ec;
+     }
 </style>
 {% endblock stylesheets %}
 
@@ -101,16 +72,15 @@
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
-                        <table width="100%" id="example" class="table table-bordered table-striped dataTable"
-                            role="grid" aria-describedby="example1_info">
-                            <thead>
+                        <table width="100%" id="example" class="table-sm table-hover table-bordered table-striped dataTable">
+                            <thead class="header">
                                 <tr>
-                                    <th><input class="form-control-custom" type="text" id="column0_search"
+                                    <th class="text-center"><input class="form-control" style="width: 90%;" type="text" id="column0_search"
                                             placeholder="Filtrar por Sub Tipo IEU"></th>
-                                    <th><input class="form-control-custom" type="text" id="column1_search"
+                                    <th class="text-center"><input class="form-control" style="width: 90%;" type="text" id="column1_search"
                                             placeholder="Filtrar por Tipo Especifico IEU"></th>
                                     <th class="text-center">
-                                        <select class="form-control-custom" id="cod_act" name="cod_act">
+                                        <select class="form-control" style="width: 90%;" id="cod_act" name="cod_act">
                                             <option value="activo revisado">activo </option>
                                             <option value="inactivo">inactivo</option>
                                             <option value="nuevo">nuevo</option>
@@ -118,15 +88,14 @@
                                             <option value="todos">todos</option>
                                         </select>
                                     </th>
-                                    <th></th>
-                                    <th></th>
+                                    <th colspan="2"></th>
                                 </tr>
                                 <tr>
-                                    <th>Sub Tipos de IEU</th>
-                                    <th>Tipos Específicos de IEU</th>
-                                    <th class="text-center">Estado</th>
-                                    <th class="text-center">IEU</th>
-                                    <th class="text-center">Acciones</th>
+                                    <th class="text-center">SUB TIPOS DE IEU</th>
+                                    <th class="text-center">TIPOS ESPECÍFICOS DE IEU</th>
+                                    <th class="text-center">&nbsp;&nbsp;&nbsp;ESTADO&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                                    <th class="text-center">INSTITUCIONES</th>
+                                    <th class="text-center">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ACCIONES&nbsp;&nbsp;&nbsp;&
                                 </tr>
                             </thead>
                             <tbody>
@@ -152,8 +121,8 @@
                                     <td class="text-center"><span
                                             class="mytex btn-xs {{ cls }} color-palette">{{ act }}</span></td>
                                     <td class="text-center"><a
-                                            href="{{ url('oeu:listar-ieu') }}?filtro={{ objeto.pk }}">Ver
-                                            Instituciones</a></td>
+                                            href="{{ url('oeu:listar-ieu') }}?filtro={{ objeto.pk }}">
+                                            INSTITUCIONES</a></td>
                                     <td class="text-center">
                                         <div class="row">
                                             <div class="col-12">

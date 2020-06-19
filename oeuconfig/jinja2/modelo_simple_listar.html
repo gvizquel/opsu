@@ -119,9 +119,9 @@
                                             <td class="text-center">
                                                 <div class="row">
                                                     <div class="col-12">
-                                                        <button onclick="return abrir_modal('{{ url('''oeuconfig:editar-titulo''', args=[ object.pk ]) }}')" data-toggle="tooltip" title="Ver {{ titulo }}" type="button" class="btn btn-default btn-xs"><span class="fa fa-eye"></span></button>
-                                                        <button onclick="return abrir_modal('{{ url('''oeuconfig:detalle-titulo''', args=[ object.pk ]) }}')" data-toggle="tooltip" title="Editar {{ titulo }}" type="button" class="btn btn-primary btn-xs"><span class="fa fa-pencil"></span></button>
-                                                        <button onclick="return abrir_modal('{{ url('''oeuconfig:eliminar-titulo''', args=[ object.pk ]) }}')" data-toggle="tooltip" title="Eliminar {{ titulo }}" type="button" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span></button>
+                                                        <button onclick="return abrir_modal('{{ request.path }}/detalle/{{ object.pk }}')" data-toggle="tooltip" title="Ver {{ titulo }}" type="button" class="btn btn-default btn-xs"><span class="fa fa-eye"></span></button>
+                                                        <button onclick="return abrir_modal('{{ request.path }}/editar/{{ object.pk }}')" data-toggle="tooltip" title="Editar {{ titulo }}" type="button" class="btn btn-primary btn-xs"><span class="fa fa-pencil"></span></button>
+                                                        <button onclick="return abrir_modal('{{ request.path }}/eliminar/{{ object.pk }}')" data-toggle="tooltip" title="Eliminar {{ titulo }}" type="button" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span></button>
                                                     </div>
                                                 </div>
                                             </td>

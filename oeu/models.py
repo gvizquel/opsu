@@ -69,11 +69,10 @@ class SubAreaConocimiento(models.Model):
         AreaConocimiento,
         on_delete=models.PROTECT,
         db_index=True,
-        db_column="area_conocimiento",
         verbose_name="Área de conocimiento",
         related_name="areaConocimiento4",
     )
-    nombre = models.CharField(max_length=255, db_column="nombre_area_conocimiento")
+    nombre = models.CharField(max_length=255)
 
     def __str__(self):
         return self.nombre

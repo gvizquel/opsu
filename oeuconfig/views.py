@@ -57,6 +57,7 @@ class EliminarModeloSimple(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
     """
 
     relacion = None
+    relacion_edit = None
     relacion_id = None
 
     def __init__(self, *args, **kwargs):
@@ -71,6 +72,8 @@ class EliminarModeloSimple(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
 
             filtro = {self.relacion_id: self.kwargs["pk"]}
             self.relacionado = self.relacion.objects.filter(**filtro).exists()
+            if self.relacion_edit:
+                self.relacionado = self.relacion_edit.objects.filter(**filtro).exists()
 
         contexto["relacionado"] = self.relacionado
 

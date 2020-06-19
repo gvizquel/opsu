@@ -9,6 +9,9 @@ from oeu.models import (
     ActividadCulturalLocalidad,
     AgrupacionCivicaLocalidad,
     AyudaEconomicaLocalidad,
+    Carrera,
+    CarreraTitulo,
+    CarreraTituloEdit,
     DisciplinaDeportivaLocalidad,
     OrganizacionEstudiantilLocalidad,
     RedSocialLocalidad,
@@ -49,7 +52,7 @@ urlpatterns = [
         ListView.as_view(
             model=AyudaEconomica,
             template_name="modelo_simple_listar.html",
-            extra_context={"titulo": "Tipo Ayuda Económica"},
+            extra_context={"titulo": "Ayuda Económica"},
         ),
         name="listar-tipo-ayuda-economica",
     ),
@@ -59,7 +62,7 @@ urlpatterns = [
             model=AyudaEconomica,
             template_name="modelo_simple_detalle.html",
             context_object_name="detalle",
-            extra_context={"titulo": "Tipo Ayuda Económica"},
+            extra_context={"titulo": "Ayuda Económica"},
         ),
         name="detalle-tipo-ayuda-economica",
     ),
@@ -73,7 +76,7 @@ urlpatterns = [
             success_message="¡El tipo de ayuda económica se agregó"
             "\n"
             "de manera exitosa!",
-            extra_context={"titulo": "Tipo Ayuda Económica"},
+            extra_context={"titulo": "Ayuda Económica"},
         ),
         name="agregar-tipo-ayuda-economica",
     ),
@@ -87,7 +90,7 @@ urlpatterns = [
             success_message="¡El tipo de ayuda económica se actualizó"
             "\n"
             "de manera exitosa!",
-            extra_context={"titulo": "Tipo Ayuda Económica"},
+            extra_context={"titulo": "Ayuda Económica"},
         ),
         name="editar-tipo-ayuda-economica",
     ),
@@ -96,13 +99,13 @@ urlpatterns = [
         EliminarModeloSimple.as_view(
             model=AyudaEconomica,
             template_name="modelo_simple_eliminar.html",
-            success_url=reverse_lazy("oeuconfigeu:listar-tipo-ayuda-economica"),
+            success_url=reverse_lazy("oeuconfig:listar-tipo-ayuda-economica"),
             relacion=AyudaEconomicaLocalidad,
             relacion_id="ayuda_economica_id",
             success_message="¡El tipo de ayuda económica se eliminó"
             "\n"
             "de manera exitosa!",
-            extra_context={"titulo": "Tipo Ayuda Económica"},
+            extra_context={"titulo": "Ayuda Económica", "dependiente": ""},
         ),
         name="eliminar-tipo-ayuda-economica",
     ),
@@ -112,7 +115,7 @@ urlpatterns = [
         ListView.as_view(
             model=ActividadCultural,
             template_name="modelo_simple_listar.html",
-            extra_context={"titulo": "Tipo Actividad Cultural"},
+            extra_context={"titulo": "Actividad Cultural"},
         ),
         name="listar-tipo-actividad-cultural",
     ),
@@ -122,7 +125,7 @@ urlpatterns = [
             model=ActividadCultural,
             template_name="modelo_simple_detalle.html",
             context_object_name="detalle",
-            extra_context={"titulo": "Tipo Actividad Cultural"},
+            extra_context={"titulo": "Actividad Cultural"},
         ),
         name="detalle-tipo-actividad-cultural",
     ),
@@ -133,10 +136,10 @@ urlpatterns = [
             fields=["nombre", "descripcion"],
             template_name="modelo_simple_formulario.html",
             success_url=reverse_lazy("oeuconfig:listar-tipo-actividad-cultural"),
-            success_message="¡El tipo actividad cultural se agregó"
+            success_message="¡El actividad cultural se agregó"
             "\n"
             "de manera exitosa!",
-            extra_context={"titulo": "Tipo Actividad Cultural"},
+            extra_context={"titulo": "Actividad Cultural"},
         ),
         name="agregar-tipo-actividad-cultural",
     ),
@@ -147,10 +150,10 @@ urlpatterns = [
             fields=["nombre", "descripcion"],
             template_name="modelo_simple_formulario.html",
             success_url=reverse_lazy("oeuconfig:listar-tipo-actividad-cultural"),
-            success_message="¡El tipo actividad cultural se actualizó"
+            success_message="¡El actividad cultural se actualizó"
             "\n"
             "de manera exitosa!",
-            extra_context={"titulo": "Tipo Actividad Cultural"},
+            extra_context={"titulo": "Actividad Cultural"},
         ),
         name="editar-tipo-actividad-cultural",
     ),
@@ -165,7 +168,7 @@ urlpatterns = [
             success_message="¡El tipo de actividad cultural se eliminó"
             "\n"
             "de manera exitosa!",
-            extra_context={"titulo": "Tipo Actividad Cultural"},
+            extra_context={"titulo": "Actividad Cultural", "dependiente": ""},
         ),
         name="eliminar-tipo-actividad cultural",
     ),
@@ -175,7 +178,7 @@ urlpatterns = [
         ListView.as_view(
             model=DisciplinaDeportiva,
             template_name="modelo_simple_listar.html",
-            extra_context={"titulo": "Tipo Disciplina Deportiva"},
+            extra_context={"titulo": "Disciplina Deportiva"},
         ),
         name="listar-tipo-disciplina-deportiva",
     ),
@@ -185,7 +188,7 @@ urlpatterns = [
             model=DisciplinaDeportiva,
             template_name="modelo_simple_detalle.html",
             context_object_name="detalle",
-            extra_context={"titulo": "Tipo Disciplina Deportiva"},
+            extra_context={"titulo": "Disciplina Deportiva"},
         ),
         name="detalle-tipo-disciplina-deportiva",
     ),
@@ -196,10 +199,10 @@ urlpatterns = [
             fields=["nombre", "descripcion"],
             template_name="modelo_simple_formulario.html",
             success_url=reverse_lazy("oeuconfig:listar-tipo-disciplina-deportiva"),
-            success_message="¡El tipo disciplina deportiva se agregó"
+            success_message="¡El disciplina deportiva se agregó"
             "\n"
             "de manera exitosa!",
-            extra_context={"titulo": "Tipo Disciplina Deportiva"},
+            extra_context={"titulo": "Disciplina Deportiva"},
         ),
         name="agregar-tipo-disciplina-deportiva",
     ),
@@ -210,10 +213,10 @@ urlpatterns = [
             fields=["nombre", "descripcion"],
             template_name="modelo_simple_formulario.html",
             success_url=reverse_lazy("oeuconfig:listar-tipo-disciplina-deportiva"),
-            success_message="¡El tipo disciplina deportiva se actualizó"
+            success_message="¡El disciplina deportiva se actualizó"
             "\n"
             "de manera exitosa!",
-            extra_context={"titulo": "Tipo Disciplina Deportiva"},
+            extra_context={"titulo": "Disciplina Deportiva"},
         ),
         name="editar-tipo-disciplina-deportiva",
     ),
@@ -228,7 +231,7 @@ urlpatterns = [
             success_message="¡El tipo de disciplina deportiva se eliminó"
             "\n"
             "de manera exitosa!",
-            extra_context={"titulo": "Tipo Disciplina Deportiva"},
+            extra_context={"titulo": "Disciplina Deportiva", "dependiente": ""},
         ),
         name="eliminar-tipo-disciplina-deportiva",
     ),
@@ -238,7 +241,7 @@ urlpatterns = [
         ListView.as_view(
             model=OrganizacionEstudiantil,
             template_name="modelo_simple_listar.html",
-            extra_context={"titulo": "Tipo Organización Estudiantil"},
+            extra_context={"titulo": "Organización Estudiantil"},
         ),
         name="listar-tipo-organizacion-estudiantil",
     ),
@@ -248,7 +251,7 @@ urlpatterns = [
             model=OrganizacionEstudiantil,
             template_name="modelo_simple_detalle.html",
             context_object_name="detalle",
-            extra_context={"titulo": "Tipo Organización Estudiantil"},
+            extra_context={"titulo": "Organización Estudiantil"},
         ),
         name="detalle-tipo-organizacion-estudiantil",
     ),
@@ -259,10 +262,10 @@ urlpatterns = [
             fields=["nombre", "descripcion"],
             template_name="modelo_simple_formulario.html",
             success_url=reverse_lazy("oeu:listar-tipo-organizacion-estudiantil"),
-            success_message="¡El tipo organización estudiantil se agregó"
+            success_message="¡El organización estudiantil se agregó"
             "\n"
             "de manera exitosa!",
-            extra_context={"titulo": "Tipo Organización Estudiantil"},
+            extra_context={"titulo": "Organización Estudiantil"},
         ),
         name="agregar-tipo-organizacion-estudiantil",
     ),
@@ -273,10 +276,10 @@ urlpatterns = [
             fields=["nombre", "descripcion"],
             template_name="modelo_simple_formulario.html",
             success_url=reverse_lazy("oeuconfig:listar-tipo-organizacion-estudiantil"),
-            success_message="¡El tipo organización estudiantil se actualizó"
+            success_message="¡El organización estudiantil se actualizó"
             "\n"
             "de manera exitosa!",
-            extra_context={"titulo": "Tipo Organización Estudiantil"},
+            extra_context={"titulo": "Organización Estudiantil"},
         ),
         name="editar-tipo-organizacion-estudiantil",
     ),
@@ -291,7 +294,7 @@ urlpatterns = [
             success_message="¡El tipo de organización estudiantil se eliminó"
             "\n"
             "de manera exitosa!",
-            extra_context={"titulo": "Tipo Organización Estudiantil"},
+            extra_context={"titulo": "Organización Estudiantil", "dependiente": "",},
         ),
         name="eliminar-tipo-organizacion-estudiantil",
     ),
@@ -301,7 +304,7 @@ urlpatterns = [
         ListView.as_view(
             model=AgrupacionCivica,
             template_name="modelo_simple_listar.html",
-            extra_context={"titulo": "Tipo Agrupación Cívica"},
+            extra_context={"titulo": "Agrupación Cívica"},
         ),
         name="listar-tipo-agrupacion-civica",
     ),
@@ -311,7 +314,7 @@ urlpatterns = [
             model=AgrupacionCivica,
             template_name="modelo_simple_detalle.html",
             context_object_name="detalle",
-            extra_context={"titulo": "Tipo Agrupación Cívica"},
+            extra_context={"titulo": "Agrupación Cívica"},
         ),
         name="detalle-tipo-agrupacion-civica",
     ),
@@ -322,10 +325,8 @@ urlpatterns = [
             fields=["nombre", "descripcion"],
             template_name="modelo_simple_formulario.html",
             success_url=reverse_lazy("oeuconfig:listar-tipo-agrupacion-civica"),
-            success_message="¡El tipo agrupación cívica se agregó"
-            "\n"
-            "de manera exitosa!",
-            extra_context={"titulo": "Tipo Agrupación Cívica"},
+            success_message="¡El agrupación cívica se agregó" "\n" "de manera exitosa!",
+            extra_context={"titulo": "Agrupación Cívica"},
         ),
         name="agregar-tipo-agrupacion-civica",
     ),
@@ -336,10 +337,10 @@ urlpatterns = [
             fields=["nombre", "descripcion"],
             template_name="modelo_simple_formulario.html",
             success_url=reverse_lazy("oeuconfig:listar-tipo-agrupacion-civica"),
-            success_message="¡El tipo agrupación cívica se actualizó"
+            success_message="¡El agrupación cívica se actualizó"
             "\n"
             "de manera exitosa!",
-            extra_context={"titulo": "Tipo Agrupación Cívica"},
+            extra_context={"titulo": "Agrupación Cívica"},
         ),
         name="editar-tipo-agrupacion-civica",
     ),
@@ -354,7 +355,7 @@ urlpatterns = [
             success_message="¡El tipo de agrupación cívica se eliminó"
             "\n"
             "de manera exitosa!",
-            extra_context={"titulo": "Tipo Agrupación Cívica"},
+            extra_context={"titulo": "Agrupación Cívica", "dependiente": ""},
         ),
         name="eliminar-tipo-agrupacion-civica",
     ),
@@ -364,7 +365,7 @@ urlpatterns = [
         ListView.as_view(
             model=RedSocial,
             template_name="modelo_simple_listar.html",
-            extra_context={"titulo": "Tipo Redes Sociales"},
+            extra_context={"titulo": "Redes Sociales"},
         ),
         name="listar-tipo-redes-sociales",
     ),
@@ -374,7 +375,7 @@ urlpatterns = [
             model=RedSocial,
             template_name="modelo_simple_detalle.html",
             context_object_name="detalle",
-            extra_context={"titulo": "Tipo Redes Sociales"},
+            extra_context={"titulo": "Redes Sociales"},
         ),
         name="detalle-tipo-redes-sociales",
     ),
@@ -386,7 +387,7 @@ urlpatterns = [
             template_name="modelo_simple_formulario.html",
             success_url=reverse_lazy("oeuconfig:listar-tipo-redes-sociales"),
             success_message="¡El tipo red social se agregó de manera exitosa!",
-            extra_context={"titulo": "Tipo Redes Sociales"},
+            extra_context={"titulo": "Redes Sociales"},
         ),
         name="agregar-tipo-redes-sociales",
     ),
@@ -398,7 +399,7 @@ urlpatterns = [
             template_name="modelo_simple_formulario.html",
             success_url=reverse_lazy("oeuconfig:listar-tipo-redes-sociales"),
             success_message="¡El tipo red social se actualizó de manera exitosa!",
-            extra_context={"titulo": "Tipo Redes Sociales"},
+            extra_context={"titulo": "Redes Sociales"},
         ),
         name="editar-tipo-redes-sociales",
     ),
@@ -411,7 +412,7 @@ urlpatterns = [
             relacion=RedSocialLocalidad,
             relacion_id="red_social_id",
             success_message="¡El tipo de red social se eliminó de manera exitosa!",
-            extra_context={"titulo": "Tipo Redes Sociales"},
+            extra_context={"titulo": "Redes Sociales", "dependiente": ""},
         ),
         name="eliminar-tipo-redes-sociales",
     ),
@@ -466,7 +467,7 @@ urlpatterns = [
             template_name="modelo_simple_eliminar.html",
             success_url=reverse_lazy("oeuconfig:listar-tipo-de-localidad"),
             success_message="¡El tipo de localidad se eliminó de manera exitosa!",
-            extra_context={"titulo": "Tipo de Localidad"},
+            extra_context={"titulo": "Tipo de Localidad", "dependiente": ""},
         ),
         name="eliminar-tipo-de-localidad",
     ),
@@ -476,7 +477,7 @@ urlpatterns = [
         ListView.as_view(
             model=RequisitoIngreso,
             template_name="modelo_simple_listar.html",
-            extra_context={"titulo": "Tipo Requisito de Ingreso"},
+            extra_context={"titulo": "Requisito de Ingreso"},
         ),
         name="listar-tipo-de-requisito-ingreso",
     ),
@@ -486,7 +487,7 @@ urlpatterns = [
             model=RequisitoIngreso,
             template_name="modelo_simple_detalle.html",
             context_object_name="detalle",
-            extra_context={"titulo": "Tipo Requisito de Ingreso"},
+            extra_context={"titulo": "Requisito de Ingreso"},
         ),
         name="detalle-tipo-de-requisito-ingreso",
     ),
@@ -497,10 +498,10 @@ urlpatterns = [
             fields=["nombre", "descripcion"],
             template_name="modelo_simple_formulario.html",
             success_url=reverse_lazy("oeuconfig:listar-tipo-de-requisito-ingreso"),
-            success_message="¡El tipo requisito de ingreso se agregó"
+            success_message="¡El requisito de ingreso se agregó"
             "\n"
             "de manera exitosa!",
-            extra_context={"titulo": "Tipo Requisito de Ingreso"},
+            extra_context={"titulo": "Requisito de Ingreso"},
         ),
         name="agregar-tipo-de-requisito-ingreso",
     ),
@@ -511,10 +512,10 @@ urlpatterns = [
             fields=["nombre", "descripcion"],
             template_name="modelo_simple_formulario.html",
             success_url=reverse_lazy("oeuconfig:listar-tipo-de-requisito-ingreso"),
-            success_message="¡El tipo requisito de ingreso se actualizó"
+            success_message="¡El requisito de ingreso se actualizó"
             "\n"
             "de manera exitosa!",
-            extra_context={"titulo": "Tipo Requisito de Ingreso"},
+            extra_context={"titulo": "Requisito de Ingreso"},
         ),
         name="editar-tipo-de-requisito-ingreso",
     ),
@@ -527,7 +528,7 @@ urlpatterns = [
             success_message="¡El tipo turno de estudio se eliminó de"
             "\n"
             "manera exitosa!",
-            extra_context={"titulo": "Tipo Requisito de Ingreso"},
+            extra_context={"titulo": "Requisito de Ingreso", "dependiente": ""},
         ),
         name="eliminar-tipo-de-requisito-ingreso",
     ),
@@ -588,7 +589,10 @@ urlpatterns = [
             success_message="¡El tipo de soporte formal de cambio se"
             "\n"
             "eliminó de manera exitosa!",
-            extra_context={"titulo": "Tipo Soporte Formal de Cambio"},
+            extra_context={
+                "titulo": "Tipo Soporte Formal de Cambio",
+                "dependiente": "",
+            },
         ),
         name="eliminar-tipo-sfc",
     ),
@@ -643,7 +647,12 @@ urlpatterns = [
             template_name="modelo_simple_eliminar.html",
             success_url=reverse_lazy("oeuconfig:listar-periodicidad"),
             success_message="¡La periodicidad se eliminó de manera exitosa!",
-            extra_context={"titulo": "Periodicidad"},
+            relacion=Carrera,
+            relacion_id="periodicidad",
+            extra_context={
+                "titulo": "Periodicidad",
+                "dependiente": "Programas Académicos",
+            },
         ),
         name="eliminar-tipo-de-periodicidad",
     ),
@@ -653,7 +662,7 @@ urlpatterns = [
         ListView.as_view(
             model=Titulo,
             template_name="modelo_simple_listar.html",
-            extra_context={"titulo": "Tipo de Título"},
+            extra_context={"titulo": "Título de Grado"},
         ),
         name="listar-titulo",
     ),
@@ -663,7 +672,7 @@ urlpatterns = [
             model=Titulo,
             template_name="modelo_simple_detalle.html",
             context_object_name="detalle",
-            extra_context={"titulo": "Tipo de Título"},
+            extra_context={"titulo": "Título de Grado"},
         ),
         name="detalle-titulo",
     ),
@@ -675,7 +684,7 @@ urlpatterns = [
             template_name="modelo_simple_formulario.html",
             success_url=reverse_lazy("oeuconfig:listar-titulo"),
             success_message="¡El tipo de título se agregó de manera exitosa!",
-            extra_context={"titulo": "Tipo de Título"},
+            extra_context={"titulo": "Título de Grado"},
         ),
         name="agregar-titulo",
     ),
@@ -687,7 +696,7 @@ urlpatterns = [
             template_name="modelo_simple_formulario.html",
             success_url=reverse_lazy("oeuconfig:listar-titulo"),
             success_message="¡El tipo de título se actualizó de manera exitosa!",
-            extra_context={"titulo": "Tipo de Título"},
+            extra_context={"titulo": "Título de Grado"},
         ),
         name="editar-titulo",
     ),
@@ -698,7 +707,13 @@ urlpatterns = [
             template_name="modelo_simple_eliminar.html",
             success_url=reverse_lazy("oeuconfig:listar-titulo"),
             success_message="¡El tipo de título se eliminó de manera exitosa!",
-            extra_context={"titulo": "Tipo de Título"},
+            relacion=CarreraTitulo,
+            relacion_edit=CarreraTituloEdit,
+            relacion_id="titulo",
+            extra_context={
+                "titulo": "Título de Grado",
+                "dependiente": "Programas Académicos",
+            },
         ),
         name="eliminar-titulo",
     ),
@@ -753,7 +768,7 @@ urlpatterns = [
             template_name="modelo_simple_eliminar.html",
             success_url=reverse_lazy("oeuconfig:listar-tipo-carrera"),
             success_message="¡El tipo de carrera se eliminó de manera exitosa!",
-            extra_context={"titulo": "Tipo de Carrera"},
+            extra_context={"titulo": "Tipo de Carrera", "dependiente": ""},
         ),
         name="eliminar-tipo-carrera",
     ),
@@ -808,7 +823,7 @@ urlpatterns = [
             template_name="modelo_simple_eliminar.html",
             success_url=reverse_lazy("oeuconfig:listar-tipo-servicio"),
             success_message="¡El tipo de servicio se eliminó de manera exitosa!",
-            extra_context={"titulo": "Tipo de Servicio"},
+            extra_context={"titulo": "Tipo de Servicio", "dependiente": ""},
         ),
         name="eliminar-tipo-servicio",
     ),
@@ -869,7 +884,7 @@ urlpatterns = [
             success_message="¡El tipo turno de estudio se eliminó de manera"
             "\n"
             "exitosa!",
-            extra_context={"titulo": "Tipo Turnos de Estudios"},
+            extra_context={"titulo": "Tipo Turnos de Estudios", "dependiente": ""},
         ),
         name="eliminar-tipo-turno-de-estudio",
     ),
@@ -930,7 +945,10 @@ urlpatterns = [
             success_message="¡El tipo de instancia administrativa se eliminó"
             "\n"
             "de manera exitosa!",
-            extra_context={"titulo": "Tipo Instancia Administrativa"},
+            extra_context={
+                "titulo": "Tipo Instancia Administrativa",
+                "dependiente": "",
+            },
         ),
         name="eliminar-tipo-instancia-administrativa",
     ),
@@ -983,7 +1001,7 @@ urlpatterns = [
             success_message="¡El soporte formal de cambio se eliminó"
             "\n"
             "de manera exitosa!",
-            extra_context={"titulo": "Soporte Formal de Cambio"},
+            extra_context={"titulo": "Soporte Formal de Cambio", "dependiente": ""},
         ),
         name="eliminar-soporte-formal-cambio",
     ),

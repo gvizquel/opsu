@@ -31,14 +31,28 @@ class SfcForm(ModelForm):
         )
         widgets = {
             "tipo_sfc": forms.Select(attrs={"class": "form-control"}),
-            "nombre": forms.TextInput(attrs={"class": "form-control"}),
+            "nombre": forms.TextInput(
+                attrs={"style": "text-transform:uppercase;", "class": "form-control"}
+            ),
             "numero": forms.TextInput(
-                attrs={"class": "form-control", "minlength": "4", "maxlength": "10",}
+                attrs={
+                    "style": "text-transform:uppercase;",
+                    "class": "form-control",
+                    "minlength": "4",
+                    "maxlength": "10",
+                }
             ),
             "numero_gaceta": forms.TextInput(
-                attrs={"class": "form-control", "minlength": "4", "maxlength": "10",}
+                attrs={
+                    "style": "text-transform:uppercase;",
+                    "class": "form-control",
+                    "minlength": "4",
+                    "maxlength": "10",
+                }
             ),
-            "fecha_gaceta": forms.TextInput(attrs={"class": "form-control"}),
+            "fecha_gaceta": forms.TextInput(
+                attrs={"style": "text-transform:uppercase;", "class": "form-control"}
+            ),
         }
 
     def clean(self):
