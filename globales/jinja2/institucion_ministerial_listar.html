@@ -15,6 +15,15 @@
         span {
             display: inline-block;
         }
+        .header th {
+            height: 40px;
+            line-height: 20px;
+            vertical-align: middle;
+            background-color: #bcd2ec;
+            border-width: 0px;
+            padding-left: 10px;
+            padding-right: 10px;
+         }
     </style>
 {% endblock stylesheets %}
 
@@ -61,27 +70,26 @@
                         </div>
                         <!-- /.box-header -->
                         <div class="box-body">
-                            <table id="example" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
-                                <thead>
+                            <table width="100%" id="example" class="table-sm table-hover table-bordered table-striped dataTable">
+                                <thead class="header">
                                     <tr>
-                                        <th><input type="text" id="column0_search" placeholder="Buscar {{ titulo }}"></th>
-                                        <th></th>
+                                        <th colspan="5"><input class="form-control" style="width: 90%;" type="text" id="column0_search" placeholder="Buscar {{ titulo }}"></th>
                                     </tr>
                                     <tr>
-                                        <th> {{ titulo }}</th>
-                                        <th> Rif </th>
-                                        <th> Tipo</th>
-                                        <th> Dependencia Administrativa</th>
-                                        <th class="text-center">Acciones</th>
+                                        <th class="text-center"> {{ titulo|upper }}</th>
+                                        <th class="text-center"> RIF </th>
+                                        <th class="text-center"> TIPO</th>
+                                        <th class="text-center"> DEPENDENCIA ADMINISTRATIVA</th>
+                                        <th class="text-center">&nbsp;&nbsp;&nbsp;&nbsp;ESTADO&nbsp;&nbsp;&nbsp;&nbsp;</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {% for object in object_list %}
                                         <tr>
                                             <td class="text-left">{{ object.nombre }}</td>
-                                            <td class="text-left">{{ object.rif }}</td>
-                                            <td class="text-left">{{ object.tipo_institucion }}</td>
-                                            <td class="text-left">{{ object.dep_admin }}</td>
+                                            <td class="text-center">{{ object.rif }}</td>
+                                            <td class="text-center">{{ object.tipo_institucion }}</td>
+                                            <td class="text-center">{{ object.dep_admin }}</td>
                                             <td class="text-center">
                                                 <button onclick="return abrir_modal('{{ request.path }}detalle/{{ object.pk }}')" data-toggle="tooltip" title="Ver {{ titulo }}" type="button" class="btn btn-default btn-xs"><span class="fa fa-eye"></span></button>
                                                 <a href="{{ url('globales:editar-institucion-ministerial', args=[ object.pk]) }}" type="button" class="btn btn-primary btn-xs"><span class="fa fa-pencil"></span></a>
