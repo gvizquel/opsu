@@ -11,6 +11,7 @@ from django.utils.safestring import mark_safe
 
 # Thirdparty Libraries
 from dal import autocomplete
+from globales.models import Municipio, Parroquia
 from leaflet.forms.widgets import LeafletWidget
 from oeu.models import (
     Ieu,
@@ -520,7 +521,13 @@ class LocalidadForm(ModelForm):
                 url="oeu:ieu",
                 attrs={"class": "form-control", "data-placeholder": "IEU ..."},
             ),
-            "tipo_localidad_edit": forms.Select(attrs={"class": "form-control"}),
+            "tipo_localidad_edit": forms.Select(
+                attrs={
+                    "class": "form-control select2",
+                    "style": "width:100%",
+                    "data-placeholder": "Tipo de Localidad",
+                }
+            ),
             "nombre_edit": forms.TextInput(
                 attrs={"style": "text-transform:uppercase;", "class": "form-control"}
             ),
@@ -528,19 +535,26 @@ class LocalidadForm(ModelForm):
             "direccion_edit": forms.Textarea(
                 attrs={"class": "form-control", "rows": 2}
             ),
-            "estado_edit": autocomplete.ModelSelect2(
-                url="globales:estadoAutoComplete",
-                attrs={"class": "form-control", "data-placeholder": "Estado ..."},
+            "estado_edit": forms.Select(
+                attrs={
+                    "class": "form-control select2",
+                    "style": "width:100%",
+                    "data-placeholder": "Estado...",
+                }
             ),
-            "municipio_edit": autocomplete.ModelSelect2(
-                url="globales:municipioAutoComplete",
-                forward=["estado_edit"],
-                attrs={"class": "form-control", "data-placeholder": "Estado ..."},
+            "municipio_edit": forms.Select(
+                attrs={
+                    "class": "form-control select2",
+                    "style": "width:100%",
+                    "data-placeholder": "Municipio...",
+                }
             ),
-            "parroquia_edit": autocomplete.ModelSelect2(
-                url="globales:parroquiaAutoComplete",
-                forward=["municipio_edit"],
-                attrs={"class": "form-control", "data-placeholder": "Estado ..."},
+            "parroquia_edit": forms.Select(
+                attrs={
+                    "class": "form-control select2",
+                    "style": "width:100%",
+                    "data-placeholder": "Parroquia...",
+                }
             ),
             "centro_poblado_edit": forms.TextInput(
                 attrs={"style": "text-transform:uppercase;", "class": "form-control"}
@@ -553,8 +567,36 @@ class LocalidadForm(ModelForm):
         super(LocalidadForm, self).__init__(*args, **kwargs)
         self.fields["web_site_edit"].required = False
         self.fields["centro_poblado_edit"].required = False
+        self.fields["municipio_edit"].queryset = Municipio.objects.none()
+        self.fields["parroquia_edit"].queryset = Parroquia.objects.none()
         if self.instance.pk:
             del self.fields["ieu_edit"]
+
+        if "municipio_edit" in self.data:
+            try:
+                estado_edit = int(self.data.get("estado_edit"))
+                self.fields["municipio_edit"].queryset = Municipio.objects.filter(
+                    estado=estado_edit
+                ).order_by("nombre")
+            except (ValueError, TypeError):
+                pass  # invalid input from the client; ignore and fallback to empty City queryset
+        elif self.instance.pk:
+            self.fields[
+                "municipio_edit"
+            ].queryset = self.instance.estado_edit.municipio_set.order_by("nombre")
+
+        if "parroquia_edit" in self.data:
+            try:
+                municipio_edit = int(self.data.get("municipio_edit"))
+                self.fields["parroquia_edit"].queryset = Parroquia.objects.filter(
+                    municipio=municipio_edit
+                ).order_by("nombre")
+            except (ValueError, TypeError):
+                pass  # invalid input from the client; ignore and fallback to empty City queryset
+        elif self.instance.pk:
+            self.fields[
+                "parroquia_edit"
+            ].queryset = self.instance.municipio_edit.parroquia_set.order_by("nombre")
 
 
 ##############################################################################

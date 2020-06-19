@@ -9,11 +9,13 @@ from django.views.generic import DetailView, ListView
 # Thirdparty Libraries
 from globales.models import InstitucionMinisterial
 from globales.views import (
+    AgregarInstitucionMinisterial,
+    EditarInstitucionMinisterial,
     EstadoAutocomplete,
     MunicipioAutocomplete,
     ParroquiaAutocomplete,
-    AgregarInstitucionMinisterial,
-    EditarInstitucionMinisterial,
+    load_municipio,
+    load_parroquia,
 )
 from oeuconfig.views import EliminarModeloSimple
 
@@ -59,11 +61,13 @@ urlpatterns = [
         MunicipioAutocomplete.as_view(),
         name="municipioAutoComplete",
     ),
+    path("ajax/load-municipios/", views.load_municipio, name="ajax-load-municipios"),
     path(
         "parroquiaAutoComplete/",
         ParroquiaAutocomplete.as_view(),
         name="parroquiaAutoComplete",
     ),
+    path("ajax/load-parroquias/", views.load_parroquia, name="ajax-load-parroquias"),
     ###################### Instituciones Ministeriales #######################
     path(  # Listar
         "institucion-ministerial",

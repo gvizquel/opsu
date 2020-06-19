@@ -125,6 +125,14 @@ class MunicipioAutocomplete(autocomplete.Select2QuerySetView):
         return qs
 
 
+def load_municipio(request):
+    estado_id = request.GET.get("estado")
+    municipios = Municipio.objects.filter(estado=estado_id).order_by("nombre")
+    return render(
+        request, "municipio_dropdown_list_options.html", {"municipios": municipios}
+    )
+
+
 ##############################################################################
 class ParroquiaAutocomplete(autocomplete.Select2QuerySetView):
     def get_queryset(self):
@@ -138,6 +146,14 @@ class ParroquiaAutocomplete(autocomplete.Select2QuerySetView):
             qs = qs.filter(nombre__icontains=self.q).order_by("nombre")
 
         return qs
+
+
+def load_parroquia(request):
+    municipio_id = request.GET.get("municipio")
+    parroquias = Parroquia.objects.filter(municipio=municipio_id).order_by("nombre")
+    return render(
+        request, "parroquia_dropdown_list_options.html", {"parroquias": parroquias}
+    )
 
 
 ##############################################################################

@@ -69,7 +69,7 @@
                         <div class="box-body">
                             {% if object %}
                                 <div class="row">
-                                    <div class="col-md-8">
+                                    <div class="col-md-9">
                                         <dl class="dl-horizontal">
                                             <dt>Tipo Específico de IEU:</dt>
                                             <dd>{{ object.ieu.tipo_especifico_ieu }}</dd>
@@ -81,6 +81,14 @@
                                             <dd>{{ object.ieu.institucion_ministerial.dep_admin }}</dd>
                                             <dt>Localidad:</dt>
                                             <dd>{{ object }}</dd>
+                                            <dt>Estado:</dt>
+                                            <dd>{{ object.estado }}</dd>
+                                            <dt>Municipio:</dt>
+                                            <dd>{{ object.municipio }}</dd>
+                                            <dt>Parroquia:</dt>
+                                            <dd>{{ object.parroquia }}</dd>
+                                            <dt>Dirección:</dt>
+                                            <dd>{{ object.direccion }}</dd>
                                             <dt>Revisor(es):</dt>
                                             <dd>
                                                 {% for revisor in object.revisor.all() %}
@@ -106,7 +114,7 @@
                                             {% endif %}
                                         </dl>
                                     </div>
-                                    <div class="col-md-4"><a href="{{ object.ieu.logo.url }}" target="blank"><img class="img-responsive" src="{{ object.ieu.logo.url }}" alt="{{ object }}"></a></div>
+                                    <div class="col-md-3"><a href="{{ object.ieu.logo.url }}" target="blank"><img class="img-responsive" src="{{ object.ieu.logo.url }}" alt="{{ object }}"></a></div>
                                 </div>
                             {% endif %}
                         </div>
@@ -622,15 +630,9 @@
 {% block javascripts %}
     {{ form.media.js }}
     {{ super() }}
-    <!-- Auto Complete Light -->
-    <script type="text/javascript" src="{{ static('autocomplete_light/jquery.init.js') }}"></script>
-    <script type="text/javascript" src="{{ static('autocomplete_light/autocomplete.init.js') }}"></script>
-    <script type="text/javascript" src="{{ static('autocomplete_light/vendor/select2/dist/js/select2.full.js') }}"></script>
-    <script type="text/javascript" src="{{ static('autocomplete_light/select2.js') }}"></script>
     <!-- Leaflet -->
     <script src="/static/leaflet/leaflet.js" type="text/javascript"></script>
     <script src="/static/leaflet/leaflet.extras.js" type="text/javascript"></script>
-    <!-- <script type="text/javascript" src="/static/js/GeoLocalidadIeu.js" charset="utf-8"></script> -->
     <script type="text/javascript" src="/static/leaflet/draw/leaflet.draw.js"></script>
     <script type="text/javascript" src="/static/leaflet/leaflet.forms.js"></script>
     <script type="text/javascript">
@@ -726,6 +728,9 @@
           $('#id_localidadayudaeconomica_set-0-ayuda_economica').select2();
           $('#id_tipo_localidad_edit').select2();
           $('.select2ieu').select2();
+          $('#id_estado_edit').select2();
+          $('#id_municipio_edit').select2();
+          $('#id_parroquia_edit').select2();
 
         });
 
@@ -758,6 +763,40 @@
         $(function() {
             bs_input_file2();
         });
+
+
+        $("#id_estado_edit").change(function () {
+            var url = "{{ url('globales:ajax-load-municipios') }}";  // get the url of the `load_cities` view
+            var estadoId = $(this).val();  // get the selected estado ID from the HTML input
+
+            $.ajax({                       // initialize an AJAX request
+              url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+              data: {
+                'estado': estadoId       // add the country id to the GET parameters
+              },
+              success: function (data) {   // `data` is the return of the `load_cities` view function
+                $("#id_municipio_edit").html(data);  // replace the contents of the city input with the data that came from the server
+              }
+            });
+
+          });
+
+
+          $("#id_municipio_edit").change(function () {
+              var url = "{{ url('globales:ajax-load-parroquias') }}";  // get the url of the `load_cities` view
+              var municipioId = $(this).val();  // get the selected estado ID from the HTML input
+
+              $.ajax({                       // initialize an AJAX request
+                url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+                data: {
+                  'municipio': municipioId       // add the country id to the GET parameters
+                },
+                success: function (data) {   // `data` is the return of the `load_cities` view function
+                  $("#id_parroquia_edit").html(data);  // replace the contents of the city input with the data that came from the server
+                }
+              });
+
+            });
     </script>
 
 {% endblock javascripts %}
