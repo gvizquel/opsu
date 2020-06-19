@@ -40,16 +40,32 @@ class PerfilForm(ModelForm):
             "sexo",
         )
         widgets = {
-            "first_name": TextInput(attrs={"class": "form-control"}),
-            "otros_nombres": TextInput(attrs={"class": "form-control"}),
-            "last_name": TextInput(attrs={"class": "form-control"}),
-            "otros_apellidos": TextInput(attrs={"class": "form-control"}),
-            "email_secundario": TextInput(attrs={"class": "form-control"}),
+            "first_name": TextInput(
+                attrs={"style": "text-transform:uppercase;", "class": "form-control"}
+            ),
+            "otros_nombres": TextInput(
+                attrs={"style": "text-transform:uppercase;", "class": "form-control"}
+            ),
+            "last_name": TextInput(
+                attrs={"style": "text-transform:uppercase;", "class": "form-control"}
+            ),
+            "otros_apellidos": TextInput(
+                attrs={"style": "text-transform:uppercase;", "class": "form-control"}
+            ),
+            "email_secundario": TextInput(
+                attrs={"style": "text-transform:uppercase;", "class": "form-control"}
+            ),
             "letra_cedula_identidad": Select(attrs={"class": "form-control"}),
             "cedula_identidad": NumberInput(attrs={"class": "form-control"}),
-            "telefono": TextInput(attrs={"class": "form-control"}),
-            "celular": TextInput(attrs={"class": "form-control"}),
-            "fecha_nacimiento": TextInput(attrs={"class": "form-control"}),
+            "telefono": TextInput(
+                attrs={"style": "text-transform:uppercase;", "class": "form-control"}
+            ),
+            "celular": TextInput(
+                attrs={"style": "text-transform:uppercase;", "class": "form-control"}
+            ),
+            "fecha_nacimiento": TextInput(
+                attrs={"style": "text-transform:uppercase;", "class": "form-control"}
+            ),
             "sexo": Select(attrs={"class": "form-control"}),
         }
 

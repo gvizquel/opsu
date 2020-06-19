@@ -29,21 +29,21 @@ class InstitucionMinisterialForm(ModelForm):
         widgets = {
             "nombre": forms.TextInput(
                 attrs={
+                    "style": "text-transform:uppercase;",
                     "class": "form-control",
                     "placeholder": "Escriba el Nombre completo de la Institución Ministerial",
-                    "minlength": "30",
-                    "maxlength": "100",
                 }
             ),
             "siglas": forms.TextInput(
                 attrs={
+                    "style": "text-transform:uppercase;",
                     "class": "form-control",
                     "placeholder": "Escriba en Siglas el Nombre de la Institución Ministerial",
-                    "maxlength": "10",
                 }
             ),
             "rif": forms.TextInput(
                 attrs={
+                    "style": "text-transform:uppercase;",
                     "class": "form-control",
                     "placeholder": "Escriba el R.I.F incluyendo la letra G ó J",
                 }

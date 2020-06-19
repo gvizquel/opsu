@@ -15,6 +15,12 @@
         span {
             display: inline-block;
         }
+        .header th {
+            height: 40px;
+            line-height: 20px;
+            vertical-align: middle;
+            background-color: #bcd2ec;
+         }
     </style>
 {% endblock stylesheets %}
 
@@ -61,12 +67,12 @@
                         </div>
                         <!-- /.box-header -->
                         <div class="box-body">
-                            <table id="example" class="table table-striped table-bordered dt-responsive nowrap">
-                                <thead>
+                            <table width="100%" id="example" class="table-sm table-hover table-bordered table-striped dataTable">
+                                <thead class="header">
                                     <tr>
-                                        <th><input type="text" id="column0_search" placeholder="Filtrar por Tipo IEU"></th>
+                                        <th class="text-center"><input class="form-control" style="width: 90%;" type="text" id="column0_search" placeholder="Filtrar por Tipo IEU"></th>
                                         <th class="text-center">
-                                            <select id="cod_act" name="cod_act" class="form-control">
+                                            <select id="cod_act" class="form-control" style="width: 90%;" name="cod_act" class="form-control">
                                                 <option value="activo revisado">activo </option>
                                                 <option value="inactivo">inactivo</option>
                                                 <option value="nuevo">nuevo</option>
@@ -74,14 +80,13 @@
                                                 <option value="todos">todos</option>
                                             </select>
                                         </th>
-                                        <th></th>
-                                        <th></th>
+                                        <th colspan="2"></th>
                                     </tr>
                                     <tr>
-                                        <th>Tipos de Institución de Educación Universitaria</th>
-                                        <th class="text-center">Estado de publicación</th>
-                                        <th class="text-center">Sub Tipos de IEU</th>
-                                        <th class="text-center">Acciones</th>
+                                        <th class="text-center">TIPOS DE INSTITUCIÓN DE EDUCACIÓN UNIVERSITARIA</th>
+                                        <th class="text-center">&nbsp;&nbsp;&nbsp;ESTADO&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                                        <th class="text-center">SUB TIPOS DE IEU</th>
+                                        <th class="text-center">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ACCIONES&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -102,7 +107,7 @@
                                         <tr>
                                             <td class="text-left">{{  objeto.nombre }}</td>
                                             <td class="text-center"><span class="mytex btn-xs {{ cls }} color-palette">{{ act }}</span></td>
-                                            <td class="text-center"><a href="{{ url('oeu:listar-sub-tipo-ieu') }}?filtro={{ objeto.pk }}">Ver Sub Tipos</a></td>
+                                            <td class="text-center"><a href="{{ url('oeu:listar-sub-tipo-ieu') }}?filtro={{ objeto.pk }}">SUB TIPOS DE IEU</a></td>
                                             <td class="text-center">
                                                 <button onclick="return abrir_modal('{{ url('oeu:detalle-tipo-ieu', args=[ objeto.pk]) }}')" data-toggle="tooltip" title="Ver esta vivienda" type="button" class="btn btn-default btn-xs"><span class="fa fa-eye"></span></button>
                                                 <a data-toggle="tooltip" title="Editar este tipo IEU" href="{{ url('oeu:editar-tipo-ieu', args=[ objeto.pk]) }}" class="btn btn-primary btn-xs"><span class="fa fa-pencil"></span></a>

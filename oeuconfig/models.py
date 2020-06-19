@@ -29,6 +29,10 @@ class RequisitoIngreso(models.Model):
         verbose_name = "Requisito de Ingreso"
         verbose_name_plural = "Requisitos de Ingreso"
 
+    def save(self, *args, **kwargs):
+        self.nombre = self.nombre.upper()
+        super().save(*args, **kwargs)
+
 
 ##############################################################################
 class Servicio(models.Model):
@@ -38,7 +42,7 @@ class Servicio(models.Model):
     """
 
     nombre = models.CharField(max_length=100)
-    descripcion = models.TextField(blank=True, null=True)
+    descripcion = RichTextField(blank=True, null=True)
 
     def __str__(self):
         return self.nombre
@@ -58,7 +62,7 @@ class DependenciaAdministrativa(models.Model):
     """
 
     nombre = models.CharField(max_length=100)
-    descripcion = models.TextField()
+    descripcion = RichTextField(blank=True, null=True)
 
     def __str__(self):
         return self.nombre
@@ -68,6 +72,10 @@ class DependenciaAdministrativa(models.Model):
         verbose_name = "Dependencia Administrativa"
         verbose_name_plural = "Dependencias Administrativas"
 
+    def save(self, *args, **kwargs):
+        self.nombre = self.nombre.upper()
+        super().save(*args, **kwargs)
+
 
 ##############################################################################
 class TipoSoporteFormalCambio(models.Model):
@@ -75,7 +83,7 @@ class TipoSoporteFormalCambio(models.Model):
     """
 
     nombre = models.CharField(max_length=100)
-    descripcion = models.TextField()
+    descripcion = RichTextField(blank=True, null=True)
 
     def __str__(self):
         return self.nombre
@@ -84,6 +92,10 @@ class TipoSoporteFormalCambio(models.Model):
         db_table = 'oeu"."tipo_sfc'
         verbose_name = "Tipo SFC"
         verbose_name_plural = "Tipos SFC"
+
+    def save(self, *args, **kwargs):
+        self.nombre = self.nombre.upper()
+        super().save(*args, **kwargs)
 
 
 ##############################################################################
@@ -117,6 +129,10 @@ class SoporteFormalCambio(models.Model):
         db_table = 'oeu"."soporte_formal_cambio'
         verbose_name = "Soporte Formal de Cambio"
         verbose_name_plural = "Soportes Formales de Cambio"
+
+    def save(self, *args, **kwargs):
+        self.nombre = self.nombre.upper()
+        super().save(*args, **kwargs)
 
 
 ##############################################################################
@@ -169,6 +185,10 @@ class InstanciaAdministrativa(models.Model):
         verbose_name = "Instancia Administrativa"
         verbose_name_plural = "Instancias Administrativas"
 
+    def save(self, *args, **kwargs):
+        self.nombre = self.nombre.upper()
+        super().save(*args, **kwargs)
+
 
 ##############################################################################
 class Periodicidad(models.Model):
@@ -178,7 +198,7 @@ class Periodicidad(models.Model):
     """
 
     nombre = models.CharField(max_length=100)
-    descripcion = models.TextField()
+    descripcion = RichTextField(blank=True, null=True)
 
     def __str__(self):
         return self.nombre
@@ -191,6 +211,10 @@ class Periodicidad(models.Model):
         verbose_name = "Régimen de Estudio"
         verbose_name_plural = "Regímenes de Estudio"
 
+    def save(self, *args, **kwargs):
+        self.nombre = self.nombre.upper()
+        super().save(*args, **kwargs)
+
 
 ##############################################################################
 class AyudaEconomica(models.Model):
@@ -198,7 +222,7 @@ class AyudaEconomica(models.Model):
     """
 
     nombre = models.CharField(max_length=100)
-    descripcion = models.TextField()
+    descripcion = RichTextField(blank=True, null=True)
 
     def __str__(self):
         return self.nombre
@@ -209,6 +233,10 @@ class AyudaEconomica(models.Model):
         verbose_name = "Ayuda Económica"
         verbose_name_plural = "Ayudas Económicas"
 
+    def save(self, *args, **kwargs):
+        self.nombre = self.nombre.upper()
+        super().save(*args, **kwargs)
+
 
 ##############################################################################
 class TipoCarrera(models.Model):
@@ -216,7 +244,7 @@ class TipoCarrera(models.Model):
     """
 
     nombre = models.CharField(max_length=100)
-    descripcion = models.TextField(blank=True, null=True)
+    descripcion = RichTextField(blank=True, null=True)
 
     def __str__(self):
         return self.nombre
@@ -226,6 +254,10 @@ class TipoCarrera(models.Model):
         verbose_name = "Tipo de Programa Académico"
         verbose_name_plural = "Tipos de Programa Académico"
 
+    def save(self, *args, **kwargs):
+        self.nombre = self.nombre.upper()
+        super().save(*args, **kwargs)
+
 
 ##############################################################################
 class TipoLocalidad(models.Model):
@@ -233,7 +265,7 @@ class TipoLocalidad(models.Model):
     """
 
     nombre = models.CharField(max_length=100)
-    descripcion = models.TextField(blank=True, null=True)
+    descripcion = RichTextField(blank=True, null=True)
 
     def __str__(self):
         return self.nombre
@@ -243,6 +275,10 @@ class TipoLocalidad(models.Model):
         verbose_name = "Tipo de localidad"
         verbose_name_plural = "Tipos de localidad"
 
+    def save(self, *args, **kwargs):
+        self.nombre = self.nombre.upper()
+        super().save(*args, **kwargs)
+
 
 ##############################################################################
 class Titulo(models.Model):
@@ -250,7 +286,7 @@ class Titulo(models.Model):
     """
 
     nombre = models.CharField(max_length=255)
-    descripcion = models.TextField(blank=True, null=True)
+    descripcion = RichTextField(blank=True, null=True)
 
     def __str__(self):
         return self.nombre
@@ -263,6 +299,10 @@ class Titulo(models.Model):
         verbose_name = "Título"
         verbose_name_plural = "Títulos"
 
+    def save(self, *args, **kwargs):
+        self.nombre = self.nombre.upper()
+        super().save(*args, **kwargs)
+
 
 ##############################################################################
 class TipoTurnoDeEstudio(models.Model):
@@ -271,7 +311,7 @@ class TipoTurnoDeEstudio(models.Model):
     """
 
     nombre = models.CharField(max_length=100)
-    descripcion = models.TextField()
+    descripcion = RichTextField(blank=True, null=True)
 
     def __str__(self):
         return self.nombre
@@ -281,6 +321,10 @@ class TipoTurnoDeEstudio(models.Model):
         verbose_name = "Turno de Estudio"
         verbose_name_plural = "Turnos de Estudio"
 
+    def save(self, *args, **kwargs):
+        self.nombre = self.nombre.upper()
+        super().save(*args, **kwargs)
+
 
 ##############################################################################
 class ActividadCultural(models.Model):
@@ -289,7 +333,7 @@ class ActividadCultural(models.Model):
     """
 
     nombre = models.CharField(max_length=100)
-    descripcion = models.TextField()
+    descripcion = RichTextField(blank=True, null=True)
 
     def __str__(self):
         return self.nombre
@@ -299,6 +343,10 @@ class ActividadCultural(models.Model):
         verbose_name = "Actividad Cultural"
         verbose_name_plural = "Actividades Culturales"
 
+    def save(self, *args, **kwargs):
+        self.nombre = self.nombre.upper()
+        super().save(*args, **kwargs)
+
 
 ##############################################################################
 class DisciplinaDeportiva(models.Model):
@@ -307,7 +355,7 @@ class DisciplinaDeportiva(models.Model):
     """
 
     nombre = models.CharField(max_length=100)
-    descripcion = models.TextField()
+    descripcion = RichTextField(blank=True, null=True)
 
     def __str__(self):
         return self.nombre
@@ -317,6 +365,10 @@ class DisciplinaDeportiva(models.Model):
         verbose_name = "Disciplina Deportiva"
         verbose_name_plural = "Disciplinas Deportivas"
 
+    def save(self, *args, **kwargs):
+        self.nombre = self.nombre.upper()
+        super().save(*args, **kwargs)
+
 
 ##############################################################################
 class OrganizacionEstudiantil(models.Model):
@@ -325,7 +377,7 @@ class OrganizacionEstudiantil(models.Model):
     """
 
     nombre = models.CharField(max_length=100)
-    descripcion = models.TextField()
+    descripcion = RichTextField(blank=True, null=True)
 
     def __str__(self):
         return self.nombre
@@ -335,6 +387,10 @@ class OrganizacionEstudiantil(models.Model):
         verbose_name = "Organizacion Estudiantil"
         verbose_name_plural = "Organizaciones Estudiantiles"
 
+    def save(self, *args, **kwargs):
+        self.nombre = self.nombre.upper()
+        super().save(*args, **kwargs)
+
 
 ##############################################################################
 class AgrupacionCivica(models.Model):
@@ -343,7 +399,7 @@ class AgrupacionCivica(models.Model):
     """
 
     nombre = models.CharField(max_length=100)
-    descripcion = models.TextField()
+    descripcion = RichTextField(blank=True, null=True)
 
     def __str__(self):
         return self.nombre
@@ -353,6 +409,10 @@ class AgrupacionCivica(models.Model):
         verbose_name = "Agrupación Civica"
         verbose_name_plural = "Agrupaciones Civicas"
 
+    def save(self, *args, **kwargs):
+        self.nombre = self.nombre.upper()
+        super().save(*args, **kwargs)
+
 
 ##############################################################################
 class RedSocial(models.Model):
@@ -361,7 +421,7 @@ class RedSocial(models.Model):
     """
 
     nombre = models.CharField(max_length=100)
-    descripcion = models.TextField()
+    descripcion = RichTextField(blank=True, null=True)
 
     def __str__(self):
         return self.nombre
@@ -370,3 +430,7 @@ class RedSocial(models.Model):
         db_table = 'oeu"."red_social'
         verbose_name = "Red Social"
         verbose_name_plural = "Redes Sociales"
+
+    def save(self, *args, **kwargs):
+        self.nombre = self.nombre.upper()
+        super().save(*args, **kwargs)

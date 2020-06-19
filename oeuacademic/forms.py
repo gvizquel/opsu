@@ -29,6 +29,7 @@ class SubAreaConocimientoForm(ModelForm):
             "area_conocimiento": forms.Select(attrs={"class": "form-control"}),
             "nombre": forms.TextInput(
                 attrs={
+                    "style": "text-transform:uppercase;",
                     "class": "form-control",
                     "placeholder": "Escribe la sub área de conocimiento asociada",
                 }
@@ -90,6 +91,7 @@ class CarreraPreGradoForm(ModelForm):
             ),
             "nombre_edit": forms.TextInput(
                 attrs={
+                    "style": "text-transform:uppercase;",
                     "class": "form-control",
                     "placeholder": "Escribe el nombre de la Carrera",
                 },
