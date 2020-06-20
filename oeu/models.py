@@ -1250,9 +1250,7 @@ class CarreraTitulo(models.Model):
     duracion = models.SmallIntegerField()
 
     def __str__(self):
-        return "{} ({} {})".format(
-            self.titulo, self.duracion, self.periodicidad.descripcion
-        )
+        return "{}".format(self.titulo)
 
     class Meta:
         db_table = 'oeu"."carrera_titulo'

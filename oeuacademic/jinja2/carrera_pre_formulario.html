@@ -76,7 +76,7 @@
                             <dd>{{ object.periodicidad }}</dd>
                             <dt>Título(s):</dt>
                                 {% for titulo in titula %}
-                                <dd>{{ titulo }}</dd>
+                                <dd>{{ titulo }} ({{ titulo.duracion }} {{ object.periodicidad.descripcion }})</dd>
                                 {% endfor %}
                             </dd>
                             <dt>Tipo de Programa:</dt>
