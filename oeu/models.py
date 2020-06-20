@@ -1244,9 +1244,6 @@ class CarreraTitulo(models.Model):
 
     carrera = models.ForeignKey("Carrera", on_delete=models.CASCADE)
     titulo = models.ForeignKey("oeuconfig.Titulo", on_delete=models.PROTECT)
-    periodicidad = models.ForeignKey(
-        "oeuconfig.Periodicidad", blank=True, null=True, on_delete=models.PROTECT
-    )
     duracion = models.SmallIntegerField()
 
     def __str__(self):
@@ -1265,9 +1262,6 @@ class CarreraTituloEdit(models.Model):
 
     carrera = models.ForeignKey("Carrera", on_delete=models.CASCADE)
     titulo = models.ForeignKey("oeuconfig.Titulo", on_delete=models.PROTECT)
-    periodicidad = models.ForeignKey(
-        "oeuconfig.Periodicidad", blank=True, null=True, on_delete=models.PROTECT
-    )
     duracion = models.SmallIntegerField()
 
     class Meta:
