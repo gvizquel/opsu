@@ -444,21 +444,34 @@ class IeuForm(ModelForm):
                     "data-placeholder": "Institución Ministerial ...",
                 },
             ),
-            "localidad_principal_edit": autocomplete.ModelSelect2(
-                url="oeu:localidad-ieu",
-                forward=["institucion_ministerial_edit"],
+            "localidad_principal_edit": forms.Select(
                 attrs={
-                    "class": "form-control",
-                    "data-placeholder": "Localidad Principal ...",
-                },
+                    "class": "form-control select2",
+                    "style": "width:100%",
+                    "data-placeholder": "Localidad Principal...",
+                }
             ),
         }
 
     def __init__(self, obj=None, *args, **kwargs):
         super(IeuForm, self).__init__(*args, **kwargs)
+        self.fields["localidad_principal_edit"].queryset = Municipio.objects.none()
         if self.instance.pk:
             self.fields["tipo_especifico_ieu_edit"].widget.attrs["disabled"] = True
             self.fields["institucion_ministerial_edit"].widget.attrs["disabled"] = True
+
+        if "localidad_principal_edit" in self.data:
+            try:
+                ieu_id = self.instance.pk
+                self.fields[
+                    "localidad_principal_edit"
+                ].queryset = Localidad.objects.filter(ieu=ieu_id).order_by("nombre")
+            except (ValueError, TypeError):
+                pass  # invalid input from the client; ignore and fallback to empty City queryset
+        elif self.instance.pk:
+            self.fields[
+                "localidad_principal_edit"
+            ].queryset = self.instance.localidad_set.order_by("nombre")
 
 
 # ########################################################################## #
