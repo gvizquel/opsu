@@ -1135,7 +1135,7 @@ class Carrera(models.Model):
     cod_activacion = models.CharField(max_length=9, blank=True, null=True)
     sfc = models.ManyToManyField("oeuconfig.SoporteFormalCambio", through="CarreraSfc")
     titula = models.ManyToManyField(
-        "oeuconfig.Titulo", through="CarreraTitulo", related_name="titula"
+        "oeuconfig.Titulo", through="CarreraTitulo", related_name="titula",
     )
     titula_edit = models.ManyToManyField(
         "oeuconfig.Titulo", through="CarreraTituloEdit", related_name="titula_e"

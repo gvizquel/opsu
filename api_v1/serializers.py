@@ -6,50 +6,58 @@ import logging
 
 # Thirdparty Libraries
 import serpy
+from oeu.models import Carrera, Ieu
+from rest_framework import serializers
 
 #  logging
 logging.basicConfig(level=logging.DEBUG)
 LOGGER = logging.getLogger("services")
 
 
-class InstitucionMinisterialSerializer(serpy.Serializer):
-    """
-    Class to serilize academic programs
-    """
-
-    nombre = serpy.Field()
-    siglas = serpy.Field()
-    rif = serpy.Field()
-    dep_admin = serpy.Field()
-
-
-class IeuSerializer(serpy.Serializer):
-    """
-    Class to serilize academic programs
+class IeuSerializer(serializers.ModelSerializer):
+    """Serializador para las Instituciones de Educación Universitaria.
+    'activo' representa un metodo para identificar si un registro de este modelo de
+    datos esta activo o no.
     """
 
-    id = serpy.Field()
-    institucion_ministerial = serpy.MethodField("ieu_nombre", label="nombre")
-    siglas = serpy.MethodField("ieu_siglas", label="siglas")
-    dep_admin = serpy.MethodField("ieu_dep_admin", label="dep_admin")
-    tipo_especifico_ieu = serpy.StrField(label="tipo_ieu")
-    logo = serpy.StrField()
-    fachada = serpy.StrField()
-    cod_activacion = serpy.MethodField("activo", label="activo")
+    ieu_nombre = serializers.CharField(
+        read_only=True, source="institucion_ministerial.nombre"
+    )
+    siglas = serializers.CharField(
+        read_only=True, source="institucion_ministerial.siglas"
+    )
+    dep_admin = serializers.CharField(
+        read_only=True, source="institucion_ministerial.dep_admin"
+    )
+    activo = serializers.SerializerMethodField("registro_activo")
 
-    def activo(self, Ieu):
-        if Ieu.cod_activacion == "11001111" or Ieu.cod_activacion == "10001111":
+    class Meta:
+        model = Ieu
+        fields = [
+            "id",
+            "ieu_nombre",
+            "siglas",
+            "dep_admin",
+            "tipo_especifico_ieu",
+            "logo",
+            "fachada",
+            "activo",
+        ]
+        read_only_fields = [
+            "id",
+            "ieu_nombre",
+            "siglas",
+            "dep_admin",
+            "tipo_especifico_ieu",
+            "logo",
+            "fachada",
+            "activo",
+        ]
+
+    def registro_activo(self, obj):
+        if obj.cod_activacion == "11001111" or obj.cod_activacion == "10001111":
             return True
         return False
-
-    def ieu_nombre(self, Ieu):
-        return Ieu.institucion_ministerial.nombre
-
-    def ieu_siglas(self, Ieu):
-        return Ieu.institucion_ministerial.siglas
-
-    def ieu_dep_admin(self, Ieu):
-        return Ieu.institucion_ministerial.dep_admin
 
 
 class LocalidadSerializer(serpy.Serializer):
@@ -108,21 +116,60 @@ class LocalidadSerializer(serpy.Serializer):
         return False
 
 
-class CarreraSerializer(serpy.Serializer):
-    """
-    Class to serilize academic programs
+# class CarreraSerializer(serpy.Serializer):
+#     """
+#     Class to serilize academic programs
+#     """
+
+#     id = serpy.Field()
+#     nombre = serpy.Field()
+#     tipo_carrera = serpy.StrField(label="tipo_programa")
+#     titulo = serpy.StrField()
+#     area_conocimiento = serpy.StrField()
+#     sub_area_conocimiento = serpy.StrField()
+#     localidad = serpy.StrField()
+
+#     def activo(self, Carrera):
+#         if Carrera.cod_activacion == "11111111" or Carrera.cod_activacion == "10111111":
+#             return True
+#         return False
+
+
+class CarreraSerializer(serializers.ModelSerializer):
+    """Serializador para los programas academicos.
+    'activo' representa un metodo para identificar si un registro de este modelo de
+    datos esta activo o no.
     """
 
-    id = serpy.Field()
-    nombre = serpy.Field()
-    tipo_carrera = serpy.StrField(label="tipo_programa")
-    titulo = serpy.StrField()
-    area_conocimiento = serpy.StrField()
-    sub_area_conocimiento = serpy.StrField()
-    localidad = serpy.StrField()
+    tipo_programa = serializers.CharField(source="tipo_carrera")
+    titulo = serializers.StringRelatedField(many=True, source="titula")
+    activo = serializers.SerializerMethodField("registro_activo")
 
-    def activo(self, Carrera):
-        if Carrera.cod_activacion == "11111111" or Carrera.cod_activacion == "10111111":
+    class Meta:
+        model = Carrera
+        fields = [
+            "id",
+            "nombre",
+            "tipo_programa",
+            "titulo",
+            "area_conocimiento",
+            "sub_area_conocimiento",
+            "localidad",
+            "activo",
+        ]
+        read_only_fields = [
+            "id",
+            "nombre",
+            "tipo_programa",
+            "titulo",
+            "area_conocimiento",
+            "sub_area_conocimiento",
+            "localidad",
+            "activo",
+        ]
+
+    def registro_activo(self, obj):
+        if obj.cod_activacion == "11111111" or obj.cod_activacion == "10111111":
             return True
         return False
 
