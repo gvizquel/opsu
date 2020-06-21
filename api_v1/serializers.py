@@ -116,25 +116,6 @@ class LocalidadSerializer(serpy.Serializer):
         return False
 
 
-# class CarreraSerializer(serpy.Serializer):
-#     """
-#     Class to serilize academic programs
-#     """
-
-#     id = serpy.Field()
-#     nombre = serpy.Field()
-#     tipo_carrera = serpy.StrField(label="tipo_programa")
-#     titulo = serpy.StrField()
-#     area_conocimiento = serpy.StrField()
-#     sub_area_conocimiento = serpy.StrField()
-#     localidad = serpy.StrField()
-
-#     def activo(self, Carrera):
-#         if Carrera.cod_activacion == "11111111" or Carrera.cod_activacion == "10111111":
-#             return True
-#         return False
-
-
 class CarreraSerializer(serializers.ModelSerializer):
     """Serializador para los programas academicos.
     'activo' representa un metodo para identificar si un registro de este modelo de
@@ -174,42 +155,68 @@ class CarreraSerializer(serializers.ModelSerializer):
         return False
 
 
-class DetalleCarreraSerializer(serpy.Serializer):
-    """
-    Class to serilize academic programs detail
+class DetalleCarreraSerializer(serializers.ModelSerializer):
+    """Serializador para los programas academicos.
+    'activo' representa un metodo para identificar si un registro de este modelo de
+    datos esta activo o no.
     """
 
-    id = serpy.Field()
-    descripcion_edit = serpy.MethodField("id_ieu", label="id_ieu")
-    nombre_edit = serpy.MethodField("ieu", label="ieu")
-    localidad_edit = serpy.MethodField("id_localidad", label="id_localidad")
-    localidad = serpy.StrField()
-    nombre = serpy.Field()
-    area_conocimiento = serpy.StrField()
-    sub_area_conocimiento = serpy.StrField()
-    tipo_carrera = serpy.StrField(label="tipo_programa")
-    titulo = serpy.StrField()
-    descripcion = serpy.Field()
-    mercado_ocupacional = serpy.Field()
-    periodicidad = serpy.StrField()
-    duracion = serpy.Field()
-    prioritaria = serpy.Field()
-    cod_activacion = serpy.MethodField("activo", label="activo")
-    localidad = serpy.StrField()
+    tipo_programa = serializers.CharField(source="tipo_carrera")
+    titulo = serializers.StringRelatedField(many=True, source="titula")
+    activo = serializers.SerializerMethodField("registro_activo")
+    id_ieu = serializers.CharField(
+        source="localidad.ieu.institucion_ministerial.pk", read_only=True,
+    )
+    ieu = serializers.CharField(
+        source="localidad.ieu.institucion_ministerial.nombre", read_only=True,
+    )
+    id_localidad = serializers.CharField(source="localidad.pk", read_only=True,)
 
-    def activo(self, Carrera):
-        if Carrera.cod_activacion == "11111111" or Carrera.cod_activacion == "10111111":
+    class Meta:
+        model = Carrera
+        fields = [
+            "id",
+            "id_ieu",
+            "ieu",
+            "id_localidad",
+            "localidad",
+            "nombre",
+            "area_conocimiento",
+            "sub_area_conocimiento",
+            "tipo_programa",
+            "titulo",
+            "descripcion",
+            "mercado_ocupacional",
+            "periodicidad",
+            "duracion",
+            "prioritaria",
+            "activo",
+            "localidad",
+        ]
+        read_only_fields = [
+            "id",
+            "id_ieu",
+            "ieu",
+            "id_localidad",
+            "localidad",
+            "nombre",
+            "area_conocimiento",
+            "sub_area_conocimiento",
+            "tipo_programa",
+            "titulo",
+            "descripcion",
+            "mercado_ocupacional",
+            "periodicidad",
+            "duracion",
+            "prioritaria",
+            "activo",
+            "localidad",
+        ]
+
+    def registro_activo(self, obj):
+        if obj.cod_activacion == "11111111" or obj.cod_activacion == "10111111":
             return True
         return False
-
-    def id_localidad(self, Carrera):
-        return Carrera.localidad.pk
-
-    def id_ieu(self, Carrera):
-        return Carrera.localidad.ieu.institucion_ministerial.pk
-
-    def ieu(self, Carrera):
-        return Carrera.localidad.ieu.institucion_ministerial.nombre
 
 
 class EstadoSerializer(serpy.Serializer):
