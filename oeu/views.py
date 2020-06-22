@@ -229,6 +229,7 @@ class AgregarModeloComplejo(LoginRequiredMixin, SuccessMessageMixin, CreateView)
         # los FormSet unicamente se mostraran en el template de localidad IEU cuando el
         # parametro del modelo sea igual a Localidad entendiendose que la clase es
         # generica
+        contexto["form"] = self.form_class(filtro=self.request.GET.get("filtro", None))
         if self.model == Localidad:
             contexto["ayuda_form"] = self.AyudaFormSet()
             contexto["agrupacion_form"] = self.AgrupacionFormSet()
@@ -261,8 +262,6 @@ class AgregarModeloComplejo(LoginRequiredMixin, SuccessMessageMixin, CreateView)
             formsets_form.append(self.ServicioFormSet(self.request.POST))
         if self.model == Carrera:
             formsets_form.append(self.TituloFormSet(self.request.POST))
-
-        print(formsets_form)
 
         for formset in formsets_form:
             if not formset.is_valid():
