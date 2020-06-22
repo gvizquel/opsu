@@ -126,6 +126,12 @@ class InstitucionMinisterial(models.Model):
         verbose_name = "Ente Adscrito"
         verbose_name_plural = "Entes Adscritos"
 
+    def save(self, *args, **kwargs):
+        self.nombre = self.nombre.upper()
+        self.siglas = self.siglas.upper()
+        self.rif = self.rif.upper()
+        super().save(*args, **kwargs)
+
 
 ##############################################################################
 class CorreoInstitucion(models.Model):

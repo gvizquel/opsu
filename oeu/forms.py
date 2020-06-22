@@ -530,9 +530,12 @@ class LocalidadForm(ModelForm):
             "fachada_edit": "Fachada",
         }
         widgets = {
-            "ieu_edit": autocomplete.ModelSelect2(
-                url="oeu:ieu",
-                attrs={"class": "form-control", "data-placeholder": "IEU ..."},
+            "ieu_edit": forms.Select(
+                attrs={
+                    "class": "form-control select2",
+                    "style": "width:100%",
+                    "data-placeholder": "IEU...",
+                }
             ),
             "tipo_localidad_edit": forms.Select(
                 attrs={

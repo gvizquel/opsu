@@ -1181,7 +1181,7 @@ class Carrera(models.Model):
             self.area_conocimiento = self.area_conocimiento_edit
             self.sub_area_conocimiento = self.sub_area_conocimiento_edit
             self.institucion_acreditadora = self.ieu_acreditadora_edit
-            self.nombre = self.nombre_edit
+            self.nombre = self.nombre_edit.upper()
             self.descripcion = self.descripcion_edit
             self.titulo = self.titulo_edit
             self.periodicidad = self.periodicidad_edit

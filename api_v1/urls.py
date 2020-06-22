@@ -32,7 +32,7 @@ schema_view = get_schema_view(
         default_version="v1",
         description="Oportunidades de Estudio en Venezuela",
         terms_of_service="https://www.google.com/policies/terms/",
-        contact=openapi.Contact(email="contact@snippets.local"),
+        contact=openapi.Contact(email="gvizquel@gmail.com"),
         license=openapi.License(name="BSD License"),
     ),
     public=True,
