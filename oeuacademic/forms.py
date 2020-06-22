@@ -207,7 +207,7 @@ class CarreraPreGradoForm(ModelForm):
                 self.fields[
                     "sub_area_conocimiento_edit"
                 ].queryset = SubAreaConocimiento.objects.filter(
-                    estado=area_conocimiento_edit
+                    area_conocimiento=area_conocimiento_edit
                 ).order_by(
                     "nombre"
                 )
