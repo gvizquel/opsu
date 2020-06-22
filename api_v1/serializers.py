@@ -5,8 +5,9 @@ Serializers for oeu app
 import logging
 
 # Thirdparty Libraries
-import serpy
-from oeu.models import Carrera, Ieu
+from globales.models import Estado, Municipio, Parroquia
+from oeu.models import AreaConocimiento, Carrera, Ieu, Localidad, SubAreaConocimiento
+from oeuconfig.models import TipoCarrera, Titulo
 from rest_framework import serializers
 
 #  logging
@@ -60,58 +61,75 @@ class IeuSerializer(serializers.ModelSerializer):
         return False
 
 
-class LocalidadSerializer(serpy.Serializer):
-    """
-    Class to serilize academic programs
+class LocalidadSerializer(serializers.ModelSerializer):
+    """Serializador para las Instituciones de Educación Universitaria.
+    'activo' representa un metodo para identificar si un registro de este modelo de
+    datos esta activo o no.
     """
 
-    id = serpy.Field()
-    nombre = serpy.MethodField("nombre_localidad")
-    ieu = serpy.MethodField("siglas_ieu", label="siglas")
-    revisor_edit = serpy.MethodField("id_ieu", label="id_ieu")
-    web_site = serpy.Field()
-    direccion = serpy.Field()
-    estado = serpy.StrField()
-    municipio = serpy.StrField()
-    parroquia = serpy.StrField()
-    centro_poblado = serpy.Field()
-    punto = serpy.Field()
-    poligonal = serpy.Field()
-    fachada = serpy.StrField()
-    ieu_edit = serpy.MethodField("logo", label="logo")
-    revisor = serpy.MethodField("ieu_dep_admin", label="dep_admin")
-    editor = serpy.MethodField("sede_principal", label="localidad_principal")
-    cod_activacion = serpy.MethodField("activo", label="activo")
+    id_ieu = serializers.IntegerField(read_only=True, source="ieu.id")
+    logo = serializers.CharField(read_only=True, source="ieu.logo")
+    siglas = serializers.CharField(
+        read_only=True, source="ieu.institucion_ministerial.siglas"
+    )
+    dep_admin = serializers.CharField(
+        read_only=True, source="ieu.institucion_ministerial.dep_admin"
+    )
+    activo = serializers.SerializerMethodField("registro_activo")
+    nombre_localidad = serializers.SerializerMethodField("get_nombre_localidad")
+    localidad_principal = serializers.SerializerMethodField("get_localidad_principal")
 
-    def activo(self, Localidad):
-        if (
-            Localidad.cod_activacion == "11011111"
-            or Localidad.cod_activacion == "10011111"
-        ):
+    class Meta:
+        model = Localidad
+        fields = [
+            "nombre_localidad",
+            "siglas",
+            "id_ieu",
+            "web_site",
+            "direccion",
+            "estado",
+            "municipio",
+            "parroquia",
+            "centro_poblado",
+            "punto",
+            "poligonal",
+            "fachada",
+            "logo",
+            "dep_admin",
+            "localidad_principal",
+            "activo",
+        ]
+        read_only_fields = [
+            "nombre_localidad",
+            "siglas",
+            "id_ieu",
+            "web_site",
+            "direccion",
+            "estado",
+            "municipio",
+            "parroquia",
+            "centro_poblado",
+            "punto",
+            "poligonal",
+            "fachada",
+            "logo",
+            "dep_admin",
+            "localidad_principal",
+            "activo",
+        ]
+
+    def registro_activo(self, obj):
+        if obj.cod_activacion == "11011111" or obj.cod_activacion == "10011111":
             return True
         return False
 
-    def nombre_localidad(self, Localidad):
+    def get_nombre_localidad(self, obj):
         return "{} {} {}".format(
-            Localidad.ieu.institucion_ministerial,
-            Localidad.tipo_localidad,
-            Localidad.nombre,
+            obj.ieu.institucion_ministerial, obj.tipo_localidad, obj.nombre,
         )
 
-    def siglas_ieu(self, Localidad):
-        return Localidad.ieu.institucion_ministerial.siglas
-
-    def id_ieu(self, Localidad):
-        return Localidad.ieu.id
-
-    def logo(self, Localidad):
-        return "{}".format(Localidad.ieu.logo)
-
-    def ieu_dep_admin(self, Localidad):
-        return "{}".format(Localidad.ieu.institucion_ministerial.dep_admin)
-
-    def sede_principal(self, Localidad):
-        if Localidad.id == Localidad.ieu.localidad_principal_id:
+    def get_localidad_principal(self, obj):
+        if obj.id == obj.ieu.localidad_principal_id:
             return True
         return False
 
@@ -219,96 +237,126 @@ class DetalleCarreraSerializer(serializers.ModelSerializer):
         return False
 
 
-class EstadoSerializer(serpy.Serializer):
-    """
-    Class to serilize Estados
-    """
-
-    id = serpy.Field(required=False)
-    nombre = serpy.Field(required=False)
-
-
-class MunicipioSerializer(serpy.Serializer):
-    """
-    Class to serilize Municipios
+class EstadoSerializer(serializers.ModelSerializer):
+    """Serializador para los Estados.
+    'activo' representa un metodo para identificar si un registro de este modelo de
+    datos esta activo o no.
     """
 
-    id = serpy.Field()
-    nombre = serpy.Field()
-    estado = serpy.MethodField("estado_method")
-
-    def estado_method(self, Parroquia):
-        return Parroquia.estado.id
-
-
-class ParroquiaSerializer(serpy.Serializer):
-    """
-    Class to serilize parroquias
-    """
-
-    id = serpy.Field()
-    nombre = serpy.Field()
-    municipio = serpy.MethodField("municipio_method")
-    estado = serpy.MethodField("estado_method")
-
-    def estado_method(self, Parroquia):
-        return Parroquia.estado.id
-
-    def municipio_method(self, Parroquia):
-        return Parroquia.municipio.id
+    class Meta:
+        model = Estado
+        fields = [
+            "id",
+            "nombre",
+        ]
+        read_only_fields = [
+            "id",
+            "nombre",
+        ]
 
 
-class TipoIeuEspecificoSerializer(serpy.Serializer):
-    """
-    Class to serilize parroquias
+class MunicipioSerializer(serializers.ModelSerializer):
+    """Serializador para los Estados.
+    'activo' representa un metodo para identificar si un registro de este modelo de
+    datos esta activo o no.
     """
 
-    id = serpy.Field()
-    tipo = serpy.MethodField("tipo_ieu_method", label="nombre")
+    class Meta:
+        model = Municipio
+        fields = [
+            "id",
+            "nombre",
+            "estado",
+        ]
+        read_only_fields = [
+            "id",
+            "nombre",
+            "estado",
+        ]
 
-    def tipo_ieu_method(self, TipoEspecificoInstitucion):
 
-        if TipoEspecificoInstitucion.nombre:
-            nombre_tipo_ieu = "{} {}".format(
-                TipoEspecificoInstitucion.sub_tipo_ieu, TipoEspecificoInstitucion.nombre
-            )
+class ParroquiaSerializer(serializers.ModelSerializer):
+    """Serializador para los Parroquias.
+    'activo' representa un metodo para identificar si un registro de este modelo de
+    datos esta activo o no.
+    """
+
+    class Meta:
+        model = Parroquia
+        fields = [
+            "id",
+            "nombre",
+            "estado",
+            "municipio",
+        ]
+        read_only_fields = [
+            "id",
+            "nombre",
+            "estado",
+            "municipio",
+        ]
+
+
+class TipoIeuEspecificoSerializer(serializers.ModelSerializer):
+    """
+    Class to serilize tipo especu¿ifico
+    """
+
+    tipo = serializers.SerializerMethodField("get_tipo_especifico_ieu")
+
+    class Meta:
+        model = Parroquia
+        fields = ["id", "tipo"]
+        read_only_fields = ["id", "tipo"]
+
+    def get_tipo_especifico_ieu(self, obj):
+
+        if obj.nombre:
+            nombre_tipo_ieu = "{} {}".format(obj.sub_tipo_ieu, obj.nombre)
         else:
-            nombre_tipo_ieu = "%s" % (TipoEspecificoInstitucion.sub_tipo_ieu)
+            nombre_tipo_ieu = "%s" % (obj.sub_tipo_ieu)
         return nombre_tipo_ieu
 
 
-class AreaSerializer(serpy.Serializer):
+class AreaSerializer(serializers.ModelSerializer):
     """
     Class to serilize Areas de conocimiento
     """
 
-    id = serpy.Field()
-    nombre = serpy.Field()
+    class Meta:
+        model = AreaConocimiento
+        fields = ["id", "nombre"]
+        read_only_fields = ["id", "nombre"]
 
 
-class SubAreaSerializer(serpy.Serializer):
+class SubAreaSerializer(serializers.ModelSerializer):
     """
     Class to serilize Subareas de conocimiento
     """
 
-    id = serpy.Field()
-    nombre = serpy.Field()
-    area_conocimiento = serpy.StrField()
+    class Meta:
+        model = SubAreaConocimiento
+        fields = ["id", "nombre", "area_conocimiento"]
+        read_only_fields = ["id", "nombre", "area_conocimiento"]
 
 
-class TituloSerializer(serpy.Serializer):
+class TituloSerializer(serializers.ModelSerializer):
     """
-    Class to serilize Areas de conocimiento
-    """
-
-    id = serpy.Field()
-    nombre = serpy.Field()
-
-
-class TipoProgramaSerializer(serpy.Serializer):
-    """
-    Class to serilize Areas de conocimiento
+    Class to serilize Titulo
     """
 
-    id = serpy.Field()
-    nombre = serpy.Field()
+    class Meta:
+        model = Titulo
+        fields = ["id", "nombre"]
+        read_only_fields = ["id", "nombre"]
+
+
+class TipoProgramaSerializer(serializers.ModelSerializer):
+    """
+    Class to serilize Titulo
+    """
+
+    class Meta:
+        model = TipoCarrera
+        fields = ["id", "nombre"]
+        read_only_fields = ["id", "nombre"]
