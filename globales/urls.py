@@ -61,13 +61,13 @@ urlpatterns = [
         MunicipioAutocomplete.as_view(),
         name="municipioAutoComplete",
     ),
-    path("ajax/load-municipios/", views.load_municipio, name="ajax-load-municipios"),
+    path("ajax/load-municipios/", load_municipio, name="ajax-load-municipios"),
     path(
         "parroquiaAutoComplete/",
         ParroquiaAutocomplete.as_view(),
         name="parroquiaAutoComplete",
     ),
-    path("ajax/load-parroquias/", views.load_parroquia, name="ajax-load-parroquias"),
+    path("ajax/load-parroquias/", load_parroquia, name="ajax-load-parroquias"),
     ###################### Instituciones Ministeriales #######################
     path(  # Listar
         "institucion-ministerial",

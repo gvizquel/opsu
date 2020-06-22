@@ -1,6 +1,7 @@
 # Django Libraries
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
+from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView
 
@@ -80,6 +81,18 @@ class SubAreaConocimientoAutoComplete(autocomplete.Select2QuerySetView):
             queryset = queryset.filter(nombre__icontains=self.q)
 
         return queryset
+
+
+def load_sub_area_conocimiento(request):
+    area_conocimiento_id = request.GET.get("area_conocimiento_id")
+    subareas = SubAreaConocimiento.objects.filter(
+        area_conocimiento=area_conocimiento_id
+    ).order_by("nombre")
+    return render(
+        request,
+        "sub_area_conocimiento_dropdown_list_options.html",
+        {"subareas": subareas},
+    )
 
 
 ##############################################################################

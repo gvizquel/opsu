@@ -82,12 +82,12 @@ class CarreraPreGradoForm(ModelForm):
         }
 
         widgets = {
-            "localidad_edit": autocomplete.ModelSelect2(
-                url="oeu:localidad-ieu",
+            "localidad_edit": forms.Select(
                 attrs={
-                    "class": "form-control",
-                    "data-placeholder": "Selecciona la Localidad",
-                },
+                    "class": "form-control select2",
+                    "style": "width:100%",
+                    "data-placeholder": "Localidad...",
+                }
             ),
             "nombre_edit": forms.TextInput(
                 attrs={
@@ -105,9 +105,10 @@ class CarreraPreGradoForm(ModelForm):
             ),
             "tipo_carrera_edit": forms.Select(
                 attrs={
-                    "class": "form-control",
-                    "placeholder": "Seleccione Una Opción",
-                },
+                    "class": "form-control select2",
+                    "style": "width:100%",
+                    "data-placeholder": "Tipo de Programa...",
+                }
             ),
             # "ieu_acreditadora_edit": autocomplete.ModelSelect2(
             #     url="oeuacademic:acreditadora",
@@ -117,20 +118,19 @@ class CarreraPreGradoForm(ModelForm):
             #     },
             # ),
             "mercado_ocupacional_edit": CKEditorWidget(),
-            "area_conocimiento_edit": autocomplete.ModelSelect2(
-                url="oeuacademic:area-conocimiento",
-                attrs={
-                    "class": "form-control",
-                    "data-placeholder": "Área de Conocimiento",
-                },
-            ),
-            "sub_area_conocimiento_edit": autocomplete.ModelSelect2(
-                url="oeuacademic:sub-area-conocimiento",
-                forward=["area_conocimiento_edit"],
+            "area_conocimiento_edit": forms.Select(
                 attrs={
                     "class": "form-control select2",
-                    "data-placeholder": "Sub Área de Conocimiento",
-                },
+                    "style": "width:100%",
+                    "data-placeholder": "Área de Conocimiento...",
+                }
+            ),
+            "sub_area_conocimiento_edit": forms.Select(
+                attrs={
+                    "class": "form-control select2",
+                    "style": "width:100%",
+                    "data-placeholder": "Sub Área de Conocimiento...",
+                }
             ),
             "titulo_edit": autocomplete.ModelSelect2(
                 url="oeuacademic:titulo",
@@ -142,8 +142,9 @@ class CarreraPreGradoForm(ModelForm):
             "periodicidad_edit": forms.Select(
                 attrs={
                     "class": "form-control select2",
-                    "placeholder": "Seleccione Una Opción",
-                },
+                    "style": "width:100%",
+                    "data-placeholder": "Periodicidad...",
+                }
             ),
             "cine_f_campo_amplio_edit": autocomplete.ModelSelect2(
                 url="oeuacademic:cine-f-campo-amplio",
@@ -179,8 +180,30 @@ class CarreraPreGradoForm(ModelForm):
         registro no pueda ser manipulado
         """
         super().__init__(*args, **kwargs)
+        self.fields[
+            "sub_area_conocimiento_edit"
+        ].queryset = SubAreaConocimiento.objects.none()
         if self.instance.pk:
             del self.fields["localidad_edit"]
+
+        if "sub_area_conocimiento_edit" in self.data:
+            try:
+                area_conocimiento_edit = int(self.data.get("area_conocimiento_edit"))
+                self.fields[
+                    "sub_area_conocimiento_edit"
+                ].queryset = SubAreaConocimiento.objects.filter(
+                    estado=area_conocimiento_edit
+                ).order_by(
+                    "nombre"
+                )
+            except (ValueError, TypeError):
+                pass  # invalid input from the client; ignore and fallback to empty City queryset
+        elif self.instance.pk:
+            self.fields[
+                "sub_area_conocimiento_edit"
+            ].queryset = self.instance.area_conocimiento_edit.areaConocimiento4.order_by(
+                "nombre"
+            )
 
 
 ##############################################################################
