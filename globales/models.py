@@ -74,9 +74,9 @@ class Parroquia(models.Model):
     id_parroquia_ine = models.CharField(max_length=2)
     nombre = models.CharField(max_length=255)
     municipio = models.ForeignKey(
-        Municipio, on_delete=models.PROTECT, db_column="municipio"
+        Municipio, on_delete=models.PROTECT, db_column="municipio_id"
     )
-    estado = models.ForeignKey(Estado, on_delete=models.PROTECT, db_column="estado")
+    estado = models.ForeignKey(Estado, on_delete=models.PROTECT, db_column="estado_id")
 
     def __str__(self):
         return self.nombre
