@@ -186,16 +186,17 @@ class CarreraPreGradoForm(ModelForm):
         """
         self.filtro = kwargs.pop("filtro", None)
         super(CarreraPreGradoForm, self).__init__(*args, **kwargs)
-        print(self.filtro)
         self.fields[
             "sub_area_conocimiento_edit"
         ].queryset = SubAreaConocimiento.objects.none()
         if self.instance.pk:
             del self.fields["localidad_edit"]
         else:
+
             if self.filtro:
+                print(self.filtro)
                 self.fields["localidad_edit"].queryset = Localidad.objects.filter(
-                    ieu=self.filtro
+                    id=self.filtro
                 )
             else:
                 self.fields["localidad_edit"].queryset = Localidad.objects.all()
