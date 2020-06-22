@@ -7,8 +7,13 @@ from django.forms.models import BaseInlineFormSet, inlineformset_factory
 # Thirdparty Libraries
 from ckeditor.widgets import CKEditorWidget
 from dal import autocomplete
-from oeu.models import Carrera, CarreraSfc, CarreraTituloEdit, SubAreaConocimiento
-from oeuconfig.models import Titulo
+from oeu.models import (
+    Carrera,
+    CarreraSfc,
+    CarreraTituloEdit,
+    Localidad,
+    SubAreaConocimiento,
+)
 
 
 class SubAreaConocimientoForm(ModelForm):
@@ -174,17 +179,26 @@ class CarreraPreGradoForm(ModelForm):
             "cod_activacion": forms.RadioSelect(),
         }
 
-    def __init__(self, obj=None, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         """Inicializa la clase en modo consulta de registro este pueda colocar
         el campo localidad_edit como no editable, esto se hace para que dicho
         registro no pueda ser manipulado
         """
-        super().__init__(*args, **kwargs)
+        self.filtro = kwargs.pop("filtro", None)
+        super(CarreraPreGradoForm, self).__init__(*args, **kwargs)
+        print(self.filtro)
         self.fields[
             "sub_area_conocimiento_edit"
         ].queryset = SubAreaConocimiento.objects.none()
         if self.instance.pk:
             del self.fields["localidad_edit"]
+        else:
+            if self.filtro:
+                self.fields["localidad_edit"].queryset = Localidad.objects.filter(
+                    ieu=self.filtro
+                )
+            else:
+                self.fields["localidad_edit"].queryset = Localidad.objects.all()
 
         if "sub_area_conocimiento_edit" in self.data:
             try:
