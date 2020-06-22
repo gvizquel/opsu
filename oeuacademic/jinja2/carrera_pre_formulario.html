@@ -409,13 +409,17 @@
         //Initialize Select2 Elements
         $('#id_carrerasfc_set-0-sfc').select2();
         $('#id_carreratitulo_set-0-titulo').select2();
+        $('#id_localidad_edit').select2();
+        $('#id_tipo_carrera_edit').select2();
+        $('#id_area_conocimiento_edit').select2();
+        $('#id_sub_area_conocimiento_edit').select2();
+        $('#id_periodicidad_edit').select2();
 
     });
     $(document).ready(function () {
         $(".django-ckeditor-widget").css("width", "100%")
     });
-</script>
-<script type="text/javascript">
+
     /* ========================= Add Título ========================= */
     $('#add-new-titulo').click(function () {
         // New line init
@@ -444,5 +448,24 @@
             $(this).css("background-color", !!(index & 1) ? "inherit" : "rgba(249, 249, 249, 1)");
         });
     });
+
+
+
+
+    $("#id_area_conocimiento_edit").change(function () {
+        var url = "{{ url('oeuacademic:ajax-load-sub-area-conocimiento') }}";  // get the url of the `load_cities` view
+        var areaConocimientoId = $(this).val();  // get the selected estado ID from the HTML input
+
+        $.ajax({                       // initialize an AJAX request
+          url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+          data: {
+            'area_conocimiento_id': areaConocimientoId       // add the country id to the GET parameters
+          },
+          success: function (data) {   // `data` is the return of the `load_cities` view function
+            $("#id_sub_area_conocimiento_edit").html(data);  // replace the contents of the city input with the data that came from the server
+          }
+        });
+
+      });
 </script>
 {% endblock javascripts %}

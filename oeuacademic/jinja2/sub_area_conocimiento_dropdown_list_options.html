@@ -1,0 +1,4 @@
+<option value="">Sub Área de Conocimiento...</option>
+{% for subarea in subareas %}
+<option value="{{ subarea.pk }}">{{ subarea.nombre }}</option>
+{% endfor %}

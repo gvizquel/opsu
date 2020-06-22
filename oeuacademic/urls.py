@@ -27,6 +27,7 @@ from oeuacademic.views import (
     LocalidadesAutoComplete,
     SubAreaConocimientoAutoComplete,
     TituloAutoComplete,
+    load_sub_area_conocimiento,
 )
 from oeuconfig.views import (
     AgregarModeloSimple,
@@ -168,6 +169,11 @@ urlpatterns = [
         "sub_area_conocimiento/",
         SubAreaConocimientoAutoComplete.as_view(),
         name="sub-area-conocimiento",
+    ),
+    path(
+        "ajax/load-sub-area-conocimiento/",
+        load_sub_area_conocimiento,
+        name="ajax-load-sub-area-conocimiento",
     ),
     ##############################################################################
     #########          Clase del autocomplete para cine_f_campo         ##########
