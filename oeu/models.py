@@ -46,7 +46,7 @@ class AreaConocimiento(models.Model):
     """
 
     nombre = models.CharField(verbose_name="Área de Conocimiento", max_length=100)
-    descripcion = models.TextField()
+    descripcion = RichTextField(blank=True, null=True)
 
     def __str__(self):
         return self.nombre
@@ -58,6 +58,9 @@ class AreaConocimiento(models.Model):
         db_table = 'oeu"."area_conocimiento'
         verbose_name = "Área de Conocimiento"
         verbose_name_plural = "Áreas de Conocimiento"
+
+    def clean(self):
+        self.nombre = self.nombre.upper()
 
 
 # ########################################################################## #
@@ -73,6 +76,7 @@ class SubAreaConocimiento(models.Model):
         related_name="areaConocimiento4",
     )
     nombre = models.CharField(max_length=255)
+    descripcion = RichTextField(blank=True, null=True)
 
     def __str__(self):
         return self.nombre
@@ -84,6 +88,9 @@ class SubAreaConocimiento(models.Model):
         db_table = 'oeu"."sub_area_conocimiento'
         verbose_name = "Sub Área de Conocimiento"
         verbose_name_plural = "Sub Áreas de Conocimiento"
+
+    def clean(self):
+        self.nombre = self.nombre.upper()
 
 
 # ########################################################################## #
@@ -167,6 +174,7 @@ class TipoInstitucion(models.Model):
         return self.nombre
 
     def clean(self):
+        self.nombre_edit = self.nombre_edit.upper()
         if self.pk is None:
             self.nombre = self.nombre_edit
             self.orden = self.orden_edit
@@ -282,6 +290,7 @@ class SubTipoInstitucion(models.Model):
         verbose_name_plural = "Sub Tipos IEU"
 
     def clean(self):
+        self.nombre_edit = self.nombre_edit.upper()
         if self.pk is None:
             self.tipo_ieu = self.tipo_ieu_edit
             self.nombre = self.nombre_edit
@@ -399,6 +408,7 @@ class TipoEspecificoInstitucion(models.Model):
         verbose_name_plural = "Tipos IEU Específicos"
 
     def clean(self):
+        self.nombre_edit = self.nombre_edit.upper()
         if self.pk is None:
             self.tipo_ieu = self.tipo_ieu_edit
             self.sub_tipo_ieu = self.sub_tipo_ieu_edit
@@ -733,16 +743,18 @@ class Localidad(models.Model):
         verbose_name_plural = "Localidades"
 
     def clean(self):
+        self.nombre_edit = self.nombre_edit.upper()
+        self.centro_poblado_edit = self.centro_poblado_edit.upper()
         if self.pk is None:
             self.ieu = self.ieu_edit
             self.tipo_localidad = self.tipo_localidad_edit
-            self.nombre = self.nombre_edit
+            self.nombre = self.nombre_edit.upper()
             self.web_site = self.web_site_edit
             self.direccion = self.direccion_edit
             self.estado = self.estado_edit
             self.municipio = self.municipio_edit
             self.parroquia = self.parroquia_edit
-            self.centro_poblado = self.centro_poblado_edit
+            self.centro_poblado = self.centro_poblado_edit.upper()
             self.punto = self.punto_edit
             self.poligonal = self.poligonal_edit
 
@@ -1175,6 +1187,7 @@ class Carrera(models.Model):
         verbose_name_plural = "Programas Académicos"
 
     def clean(self):
+        self.nombre_edit = self.nombre_edit.upper()
         if self.pk is None:
             self.localidad = self.localidad_edit
             self.tipo_carrera = self.tipo_carrera_edit

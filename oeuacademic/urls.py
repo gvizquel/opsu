@@ -15,7 +15,12 @@ from oeu.views import (
     EliminarModeloComplejo,
     ListarModeloComplejo,
 )
-from oeuacademic.forms import SFC_CARRERA_FORMSET, TITULO_FORMSET, CarreraPreGradoForm
+from oeuacademic.forms import (
+    SFC_CARRERA_FORMSET,
+    TITULO_FORMSET,
+    AreaConocimientoForm,
+    CarreraPreGradoForm,
+)
 from oeuacademic.views import (
     AcreditadoraAutoComplete,
     AgregarSAC,
@@ -63,7 +68,7 @@ urlpatterns = [
         "area-de-conocimiento/agregar/",
         AgregarModeloSimple.as_view(
             model=AreaConocimiento,
-            fields=["nombre", "descripcion"],
+            form_class=AreaConocimientoForm,
             template_name="area_conocimiento_formulario.html",
             success_url=reverse_lazy("oeuacademic:listar-area-de-conocimiento"),
             success_message="¡El área de conocimiento se agregó"
@@ -77,7 +82,7 @@ urlpatterns = [
         "area-de-conocimiento/editar/<int:pk>/",
         EditarModeloSimple.as_view(
             model=AreaConocimiento,
-            fields=["nombre", "descripcion"],
+            form_class=AreaConocimientoForm,
             template_name="area_conocimiento_formulario.html",
             success_url=reverse_lazy("oeuacademic:listar-area-de-conocimiento"),
             success_message="¡El área de conocimiento  se actualizó"

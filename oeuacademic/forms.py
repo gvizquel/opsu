@@ -8,12 +8,45 @@ from django.forms.models import BaseInlineFormSet, inlineformset_factory
 from ckeditor.widgets import CKEditorWidget
 from dal import autocomplete
 from oeu.models import (
+    AreaConocimiento,
     Carrera,
     CarreraSfc,
     CarreraTituloEdit,
     Localidad,
     SubAreaConocimiento,
 )
+
+
+class AreaConocimientoForm(ModelForm):
+    """
+    Formulario ajustado para manipular las áreas de conocimientos
+    """
+
+    class Meta:
+        """
+        Describo mi modelos, los campos y sus atributos
+        """
+
+        model = AreaConocimiento
+
+        fields = ["nombre", "descripcion"]
+
+        widgets = {
+            "nombre": forms.TextInput(
+                attrs={
+                    "style": "text-transform:uppercase;",
+                    "class": "form-control",
+                    "placeholder": "Área de Conocimiento...",
+                }
+            ),
+            "descripcion": CKEditorWidget(
+                attrs={
+                    "class": "form-control",
+                    "placeholder": "Descripción del Área de Conocimiento...",
+                    "rows": 2,
+                },
+            ),
+        }
 
 
 class SubAreaConocimientoForm(ModelForm):
@@ -28,7 +61,7 @@ class SubAreaConocimientoForm(ModelForm):
 
         model = SubAreaConocimiento
 
-        fields = ["area_conocimiento", "nombre"]
+        fields = ["area_conocimiento", "nombre", "descripcion"]
 
         widgets = {
             "area_conocimiento": forms.Select(attrs={"class": "form-control"}),
@@ -39,6 +72,7 @@ class SubAreaConocimientoForm(ModelForm):
                     "placeholder": "Escribe la sub área de conocimiento asociada",
                 }
             ),
+            "descripcion": CKEditorWidget(),
         }
 
 
@@ -104,7 +138,7 @@ class CarreraPreGradoForm(ModelForm):
             "descripcion_edit": CKEditorWidget(
                 attrs={
                     "class": "form-control",
-                    "placeholder": "Escribe el mercado ocupacional de la carrera",
+                    "placeholder": "Descripción de la carrera",
                     "rows": 2,
                 },
             ),
