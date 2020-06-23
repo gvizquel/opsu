@@ -26,3 +26,4 @@ log/
 .venv/
 media/
 /static
+opsu/settings.py
