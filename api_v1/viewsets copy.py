@@ -119,23 +119,12 @@ class ProgramaAcademicoViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = CarreraSerializer
     queryset = Carrera.objects.filter()
 
-    @swagger_auto_schema(
-        name="Lista de Programas Académicos",
-        operation_description="Devuelve una lista de los programas académicos de pregrado del subsistema de educación universitaria en Venezuela.",
-        operation_summary="lista los programas académicos de Venezuela",
-        # manual_parameters=["test_param"],
-        # responses={"200": "OKResponseSerializer", "400": "Bad Request"},
-        # properties={
-        #     "x": openapi.Schema(type=openapi.TYPE_STRING, description="string"),
-        #     "y": openapi.Schema(type=openapi.TYPE_STRING, description="string"),
-        # },
-        operation_id="lista_programas_academicos",
-    )
-    def list(self, request):
+    def get_queryset(self):
         """
-        Viewset to list all academic programs
+        Optionally restricts the returned purchases to a given user,
+        by filtering against a `username` query parameter in the URL.
         """
-        queryset = self.filter_queryset(self.get_queryset())
+        queryset = self.filter_queryset(self.queryset)
 
         id_estado = self.request.query_params.get("id_estado", None)
         id_municipio = self.request.query_params.get("id_municipio", None)
@@ -185,9 +174,27 @@ class ProgramaAcademicoViewSet(viewsets.ReadOnlyModelViewSet):
             queryset = queryset.filter(
                 localidad__ieu__institucion_ministerial__dep_admin=dep_admin
             )
+        return queryset
+
+    @swagger_auto_schema(
+        name="Lista de Programas Académicos",
+        operation_description="Devuelve una lista de los programas académicos de pregrado del subsistema de educación universitaria en Venezuela.",
+        operation_summary="lista los programas académicos de Venezuela",
+        # manual_parameters=["test_param"],
+        # responses={"200": "OKResponseSerializer", "400": "Bad Request"},
+        # properties={
+        #     "x": openapi.Schema(type=openapi.TYPE_STRING, description="string"),
+        #     "y": openapi.Schema(type=openapi.TYPE_STRING, description="string"),
+        # },
+        operation_id="lista_programas_academicos",
+    )
+    def list(self, request):
+        """
+        Viewset to list all academic programs
+        """
 
         self.pagination_class = CustomPagination
-        page = self.paginate_queryset(queryset)
+        page = self.paginate_queryset(self.get_queryset())
         serializer = self.get_serializer(page, many=True)
         return self.get_paginated_response(serializer.data)
 
