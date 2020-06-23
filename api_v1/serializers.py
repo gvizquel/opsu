@@ -142,31 +142,31 @@ class CarreraSerializer(serializers.ModelSerializer):
     datos esta activo o no.
     """
 
-    # tipo_programa = serializers.CharField(source="tipo_carrera")
-    # titulo = serializers.StringRelatedField(many=True, source="titula")
-    # activo = serializers.SerializerMethodField("registro_activo")
+    tipo_programa = serializers.CharField(source="tipo_carrera")
+    titulo = serializers.StringRelatedField(many=True, source="titula")
+    activo = serializers.SerializerMethodField("registro_activo")
 
     class Meta:
         model = Carrera
         fields = [
             "id",
             "nombre",
-            # "tipo_programa",
-            # "titulo",
-            # "area_conocimiento",
-            # "sub_area_conocimiento",
-            # "localidad",
-            # "activo",
+            "tipo_programa",
+            "titulo",
+            "area_conocimiento",
+            "sub_area_conocimiento",
+            "localidad",
+            "activo",
         ]
         read_only_fields = [
             "id",
             "nombre",
-            # "tipo_programa",
-            # "titulo",
-            # "area_conocimiento",
-            # "sub_area_conocimiento",
-            # "localidad",
-            # "activo",
+            "tipo_programa",
+            "titulo",
+            "area_conocimiento",
+            "sub_area_conocimiento",
+            "localidad",
+            "activo",
         ]
 
     def registro_activo(self, obj):
