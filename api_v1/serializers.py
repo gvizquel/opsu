@@ -149,22 +149,22 @@ class CarreraSerializer(serializers.ModelSerializer):
         fields = [
             "id",
             "nombre",
-            "tipo_programa",
-            "titulo",
-            "area_conocimiento",
-            "sub_area_conocimiento",
-            "localidad",
-            "activo",
+            # "tipo_programa",
+            # "titulo",
+            # "area_conocimiento",
+            # "sub_area_conocimiento",
+            # "localidad",
+            # "activo",
         ]
         read_only_fields = [
             "id",
             "nombre",
-            "tipo_programa",
-            "titulo",
-            "area_conocimiento",
-            "sub_area_conocimiento",
-            "localidad",
-            "activo",
+            # "tipo_programa",
+            # "titulo",
+            # "area_conocimiento",
+            # "sub_area_conocimiento",
+            # "localidad",
+            # "activo",
         ]
 
     def registro_activo(self, obj):
@@ -302,12 +302,12 @@ class TipoIeuEspecificoSerializer(serializers.ModelSerializer):
     Class to serilize tipo especu¿ifico
     """
 
-    tipo = serializers.SerializerMethodField("get_tipo_especifico_ieu")
+    nombre = serializers.SerializerMethodField("get_tipo_especifico_ieu")
 
     class Meta:
         model = Parroquia
-        fields = ["id", "tipo"]
-        read_only_fields = ["id", "tipo"]
+        fields = ["id", "nombre"]
+        read_only_fields = ["id", "nombre"]
 
     def get_tipo_especifico_ieu(self, obj):
 
