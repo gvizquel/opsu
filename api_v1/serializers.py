@@ -76,13 +76,13 @@ class LocalidadSerializer(serializers.ModelSerializer):
         read_only=True, source="ieu.institucion_ministerial.dep_admin"
     )
     activo = serializers.SerializerMethodField("registro_activo")
-    nombre_localidad = serializers.SerializerMethodField("get_nombre_localidad")
+    nombre = serializers.SerializerMethodField("get_nombre_localidad")
     localidad_principal = serializers.SerializerMethodField("get_localidad_principal")
 
     class Meta:
         model = Localidad
         fields = [
-            "nombre_localidad",
+            "nombre",
             "siglas",
             "id_ieu",
             "web_site",
@@ -100,7 +100,7 @@ class LocalidadSerializer(serializers.ModelSerializer):
             "activo",
         ]
         read_only_fields = [
-            "nombre_localidad",
+            "nombre",
             "siglas",
             "id_ieu",
             "web_site",
