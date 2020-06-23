@@ -10,11 +10,16 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db import transaction
 from django.db.models import Count, Q
-from django.db.models.functions import Cast
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.utils.safestring import mark_safe
-from django.views.generic import CreateView, DeleteView, ListView, UpdateView
+from django.views.generic import (
+    CreateView,
+    DeleteView,
+    DetailView,
+    ListView,
+    UpdateView,
+)
 
 # Thirdparty Libraries
 from dal import autocomplete
@@ -651,6 +656,38 @@ class EliminarModeloComplejo(LoginRequiredMixin, SuccessMessageMixin, DeleteView
             messages.success(self.request, self.success_message)
 
         return HttpResponseRedirect(self.get_success_url())
+
+    def get_success_url(self):
+        if "filtro" in self.request.GET:
+            LOGGER.info(
+                "{}?filtro={}".format(self.success_url, self.request.GET["filtro"])
+            )
+            return str(
+                "{}?filtro={}".format(self.success_url, self.request.GET["filtro"])
+            )
+
+        return str(self.success_url)
+
+
+# ########################################################################## #
+class DetalleModeloComplejo(LoginRequiredMixin, SuccessMessageMixin, DetailView):
+    """Con esta clase se puede eliminar los modelos que gestionan la estructura
+    de datos de las institucuines de educación univeristaría: TipoInstitucion,
+    SubTipoInstitucion, TipoEspecificoInstitucion, Institucion, Localidad,
+    Carrera.
+    """
+
+    relacion = None
+    rel_sfc = None
+    relacion_id = None
+
+    def get_context_data(self, **kwargs):
+        contexto = super(DetalleModeloComplejo, self).get_context_data(**kwargs)
+
+        if self.model == Carrera:
+            contexto["titula"] = CarreraTitulo.objects.filter(carrera=self.object)
+
+        return contexto
 
     def get_success_url(self):
         if "filtro" in self.request.GET:
