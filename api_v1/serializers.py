@@ -6,7 +6,14 @@ import logging
 
 # Thirdparty Libraries
 from globales.models import Estado, Municipio, Parroquia
-from oeu.models import AreaConocimiento, Carrera, Ieu, Localidad, SubAreaConocimiento
+from oeu.models import (
+    AreaConocimiento,
+    Carrera,
+    CarreraTitulo,
+    Ieu,
+    Localidad,
+    SubAreaConocimiento,
+)
 from oeuconfig.models import TipoCarrera, Titulo
 from rest_framework import serializers
 
@@ -143,7 +150,7 @@ class CarreraSerializer(serializers.ModelSerializer):
     """
 
     tipo_programa = serializers.CharField(source="tipo_carrera")
-    titulo = serializers.StringRelatedField(many=True, source="titula")
+    titulo = serializers.SerializerMethodField("get_titulo")
     activo = serializers.SerializerMethodField("registro_activo")
 
     class Meta:
@@ -174,6 +181,16 @@ class CarreraSerializer(serializers.ModelSerializer):
             return True
         return False
 
+    def get_titulo(self, obj):
+        titulo_srt = ""
+        titulos = CarreraTitulo.objects.filter(carrera=obj.id)
+        for titulo in titulos:
+            if titulo_srt:
+                titulo_srt = "{}, {}".format(titulo_srt, titulo.titulo)
+            else:
+                titulo_srt = "{}".format(titulo.titulo)
+        return titulo_srt
+
 
 class DetalleCarreraSerializer(serializers.ModelSerializer):
     """Serializador para los programas academicos.
@@ -182,7 +199,7 @@ class DetalleCarreraSerializer(serializers.ModelSerializer):
     """
 
     tipo_programa = serializers.CharField(source="tipo_carrera")
-    titulo = serializers.StringRelatedField(many=True, source="titula")
+    titulo = serializers.SerializerMethodField("get_titulo")
     activo = serializers.SerializerMethodField("registro_activo")
     id_ieu = serializers.CharField(
         source="localidad.ieu.institucion_ministerial.pk", read_only=True,
@@ -237,6 +254,16 @@ class DetalleCarreraSerializer(serializers.ModelSerializer):
         if obj.cod_activacion == "11111111" or obj.cod_activacion == "10111111":
             return True
         return False
+
+    def get_titulo(self, obj):
+        titulo_srt = ""
+        titulos = CarreraTitulo.objects.filter(carrera=obj.id)
+        for titulo in titulos:
+            if titulo_srt:
+                titulo_srt = "{}, {}".format(titulo_srt, titulo.titulo)
+            else:
+                titulo_srt = "{}".format(titulo.titulo)
+        return titulo_srt
 
 
 class EstadoSerializer(serializers.ModelSerializer):
