@@ -82,6 +82,7 @@ class LocalidadSerializer(serializers.ModelSerializer):
     class Meta:
         model = Localidad
         fields = [
+            "id",
             "nombre",
             "siglas",
             "id_ieu",
@@ -100,6 +101,7 @@ class LocalidadSerializer(serializers.ModelSerializer):
             "activo",
         ]
         read_only_fields = [
+            "id",
             "nombre",
             "siglas",
             "id_ieu",
@@ -140,9 +142,9 @@ class CarreraSerializer(serializers.ModelSerializer):
     datos esta activo o no.
     """
 
-    tipo_programa = serializers.CharField(source="tipo_carrera")
-    titulo = serializers.StringRelatedField(many=True, source="titula")
-    activo = serializers.SerializerMethodField("registro_activo")
+    # tipo_programa = serializers.CharField(source="tipo_carrera")
+    # titulo = serializers.StringRelatedField(many=True, source="titula")
+    # activo = serializers.SerializerMethodField("registro_activo")
 
     class Meta:
         model = Carrera
