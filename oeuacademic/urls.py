@@ -11,6 +11,7 @@ from oeu.models import (
 )
 from oeu.views import (
     AgregarModeloComplejo,
+    DetalleModeloComplejo,
     EditarModeloComplejo,
     EliminarModeloComplejo,
     ListarModeloComplejo,
@@ -227,7 +228,7 @@ urlpatterns = [
     ),
     path(  # Detalle
         "pre-grado/detalle/<int:pk>/",
-        DetailView.as_view(
+        DetalleModeloComplejo.as_view(
             model=Carrera,
             template_name="carrera_pre_detalle.html",
             extra_context={"titulo": "Carreras de Pre-grado"},
