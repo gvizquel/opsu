@@ -12,7 +12,6 @@
             {% endif %}
             <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
             <div class="box-body">
-
                 {% for field in form %}
                     {% if field.name != 'cod_activacion' and field.name != 'publicar' and field.name != 'editor' %}
                     <div class="form-group">
