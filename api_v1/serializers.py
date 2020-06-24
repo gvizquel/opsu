@@ -75,6 +75,9 @@ class LocalidadSerializer(serializers.ModelSerializer):
     """
 
     id_ieu = serializers.IntegerField(read_only=True, source="ieu.id")
+    nombre_ieu = serializers.CharField(
+        read_only=True, source="ieu.institucion_ministerial.nombre"
+    )
     fachada = serializers.SerializerMethodField("get_fachada")
     logo = serializers.CharField(read_only=True, source="ieu.logo")
     siglas = serializers.CharField(
@@ -99,6 +102,7 @@ class LocalidadSerializer(serializers.ModelSerializer):
             "nombre",
             "siglas",
             "id_ieu",
+            "nombre_ieu",
             "web_site",
             "direccion",
             "estado",
@@ -118,6 +122,7 @@ class LocalidadSerializer(serializers.ModelSerializer):
             "nombre",
             "siglas",
             "id_ieu",
+            "nombre_ieu",
             "web_site",
             "direccion",
             "estado",
@@ -220,13 +225,11 @@ class DetalleCarreraSerializer(serializers.ModelSerializer):
     tipo_programa = serializers.CharField(source="tipo_carrera")
     titulo = serializers.SerializerMethodField("get_titulo")
     activo = serializers.SerializerMethodField("registro_activo")
-    id_ieu = serializers.CharField(
-        source="localidad.ieu.institucion_ministerial.pk", read_only=True,
-    )
+    id_ieu = serializers.IntegerField(source="localidad.ieu.pk", read_only=True,)
     ieu = serializers.CharField(
         source="localidad.ieu.institucion_ministerial.nombre", read_only=True,
     )
-    id_localidad = serializers.CharField(source="localidad.pk", read_only=True,)
+    id_localidad = serializers.IntegerField(source="localidad.pk", read_only=True,)
     area_conocimiento = serializers.CharField(
         source="area_conocimiento.nombre", read_only=True,
     )
