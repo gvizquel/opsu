@@ -152,6 +152,12 @@ class CarreraSerializer(serializers.ModelSerializer):
     tipo_programa = serializers.CharField(source="tipo_carrera")
     titulo = serializers.SerializerMethodField("get_titulo")
     activo = serializers.SerializerMethodField("registro_activo")
+    area_conocimiento = serializers.CharField(
+        source="area_conocimiento.nombre", read_only=True,
+    )
+    sub_area_conocimiento = serializers.CharField(
+        source="sub_area_conocimiento.nombre", read_only=True,
+    )
 
     class Meta:
         model = Carrera
@@ -208,6 +214,12 @@ class DetalleCarreraSerializer(serializers.ModelSerializer):
         source="localidad.ieu.institucion_ministerial.nombre", read_only=True,
     )
     id_localidad = serializers.CharField(source="localidad.pk", read_only=True,)
+    area_conocimiento = serializers.CharField(
+        source="area_conocimiento.nombre", read_only=True,
+    )
+    sub_area_conocimiento = serializers.CharField(
+        source="sub_area_conocimiento.nombre", read_only=True,
+    )
 
     class Meta:
         model = Carrera
