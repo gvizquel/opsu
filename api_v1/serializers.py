@@ -28,7 +28,7 @@ class IeuSerializer(serializers.ModelSerializer):
     datos esta activo o no.
     """
 
-    ieu_nombre = serializers.CharField(
+    nombre = serializers.CharField(
         read_only=True, source="institucion_ministerial.nombre"
     )
     siglas = serializers.CharField(
