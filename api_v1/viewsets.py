@@ -149,6 +149,10 @@ class ProgramaAcademicoViewSet(viewsets.ReadOnlyModelViewSet):
         id_localidad = self.request.query_params.get("id_localidad", None)
         dep_admin = self.request.query_params.get("dep_admin", None)
         activo = self.request.query_params.get("activo", None)
+        object_id = self.request.query_params.get("id", None)
+
+        if object_id:
+            queryset = queryset.filter(pk__in=object_id.split(","))
 
         if activo == "0":
             queryset = queryset.filter(

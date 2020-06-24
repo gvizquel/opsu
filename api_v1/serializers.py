@@ -207,9 +207,16 @@ class CarreraSerializer(serializers.ModelSerializer):
         titulos = CarreraTitulo.objects.filter(carrera=obj.id)
         for titulo in titulos:
             if titulo_srt:
-                titulo_srt = "{}, {}".format(titulo_srt, titulo.titulo)
+                titulo_srt = "{}<br>{} ({} {})".format(
+                    titulo_srt,
+                    titulo.titulo,
+                    titulo.duracion,
+                    obj.periodicidad.descripcion,
+                )
             else:
-                titulo_srt = "{}".format(titulo.titulo)
+                titulo_srt = "{} ({} {})".format(
+                    titulo.titulo, titulo.duracion, obj.periodicidad.descripcion,
+                )
         return titulo_srt
 
     def get_localidad(self, obj):
@@ -289,9 +296,16 @@ class DetalleCarreraSerializer(serializers.ModelSerializer):
         titulos = CarreraTitulo.objects.filter(carrera=obj.id)
         for titulo in titulos:
             if titulo_srt:
-                titulo_srt = "{}, {}".format(titulo_srt, titulo.titulo)
+                titulo_srt = "{}<br>{} ({} {})".format(
+                    titulo_srt,
+                    titulo.titulo,
+                    titulo.duracion,
+                    obj.periodicidad.descripcion,
+                )
             else:
-                titulo_srt = "{}".format(titulo.titulo)
+                titulo_srt = "{} ({} {})".format(
+                    titulo.titulo, titulo.duracion, obj.periodicidad.descripcion,
+                )
         return titulo_srt
 
 
