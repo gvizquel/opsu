@@ -43,7 +43,7 @@ class IeuSerializer(serializers.ModelSerializer):
         model = Ieu
         fields = [
             "id",
-            "ieu_nombre",
+            "nombre",
             "siglas",
             "dep_admin",
             "tipo_especifico_ieu",
@@ -53,7 +53,7 @@ class IeuSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = [
             "id",
-            "ieu_nombre",
+            "nombre",
             "siglas",
             "dep_admin",
             "tipo_especifico_ieu",
