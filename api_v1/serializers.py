@@ -28,16 +28,13 @@ class IeuSerializer(serializers.ModelSerializer):
     datos esta activo o no.
     """
 
-    nombre = serializers.CharField(
-        read_only=True, source="institucion_ministerial.nombre"
-    )
-    siglas = serializers.CharField(
-        read_only=True, source="institucion_ministerial.siglas"
-    )
-    dep_admin = serializers.CharField(
-        read_only=True, source="institucion_ministerial.dep_admin"
-    )
+    nombre = serializers.CharField(source="institucion_ministerial.nombre")
+    siglas = serializers.CharField(source="institucion_ministerial.siglas")
+    dep_admin = serializers.CharField(source="institucion_ministerial.dep_admin")
     activo = serializers.SerializerMethodField("registro_activo")
+    tipo_ieu = serializers.CharField(source="tipo_especifico_ieu")
+    logo = serializers.CharField()
+    fachada = serializers.CharField()
 
     class Meta:
         model = Ieu
@@ -46,7 +43,7 @@ class IeuSerializer(serializers.ModelSerializer):
             "nombre",
             "siglas",
             "dep_admin",
-            "tipo_especifico_ieu",
+            "tipo_ieu",
             "logo",
             "fachada",
             "activo",
@@ -56,7 +53,7 @@ class IeuSerializer(serializers.ModelSerializer):
             "nombre",
             "siglas",
             "dep_admin",
-            "tipo_especifico_ieu",
+            "tipo_ieu",
             "logo",
             "fachada",
             "activo",
@@ -74,18 +71,12 @@ class LocalidadSerializer(serializers.ModelSerializer):
     datos esta activo o no.
     """
 
-    id_ieu = serializers.IntegerField(read_only=True, source="ieu.id")
-    nombre_ieu = serializers.CharField(
-        read_only=True, source="ieu.institucion_ministerial.nombre"
-    )
+    id_ieu = serializers.IntegerField(source="ieu.id")
+    nombre_ieu = serializers.CharField(source="ieu.institucion_ministerial.nombre")
     fachada = serializers.SerializerMethodField("get_fachada")
-    logo = serializers.CharField(read_only=True, source="ieu.logo")
-    siglas = serializers.CharField(
-        read_only=True, source="ieu.institucion_ministerial.siglas"
-    )
-    dep_admin = serializers.CharField(
-        read_only=True, source="ieu.institucion_ministerial.dep_admin"
-    )
+    logo = serializers.CharField(source="ieu.logo")
+    siglas = serializers.CharField(source="ieu.institucion_ministerial.siglas")
+    dep_admin = serializers.CharField(source="ieu.institucion_ministerial.dep_admin")
     activo = serializers.SerializerMethodField("registro_activo")
     nombre = serializers.SerializerMethodField("get_nombre_localidad")
     localidad_principal = serializers.SerializerMethodField("get_localidad_principal")
