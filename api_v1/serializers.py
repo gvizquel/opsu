@@ -85,6 +85,8 @@ class LocalidadSerializer(serializers.ModelSerializer):
     activo = serializers.SerializerMethodField("registro_activo")
     nombre = serializers.SerializerMethodField("get_nombre_localidad")
     localidad_principal = serializers.SerializerMethodField("get_localidad_principal")
+    punto = serializers.DictField()
+    poligonal = serializers.DictField()
 
     class Meta:
         model = Localidad
@@ -158,6 +160,7 @@ class CarreraSerializer(serializers.ModelSerializer):
     sub_area_conocimiento = serializers.CharField(
         source="sub_area_conocimiento.nombre", read_only=True,
     )
+    localidad = serializers.SerializerMethodField("get_localidad")
 
     class Meta:
         model = Carrera
@@ -197,6 +200,9 @@ class CarreraSerializer(serializers.ModelSerializer):
                 titulo_srt = "{}".format(titulo.titulo)
         return titulo_srt
 
+    def get_localidad(self, obj):
+        return "{}".format(obj.localidad)
+
 
 class DetalleCarreraSerializer(serializers.ModelSerializer):
     """Serializador para los programas academicos.
@@ -220,6 +226,7 @@ class DetalleCarreraSerializer(serializers.ModelSerializer):
     sub_area_conocimiento = serializers.CharField(
         source="sub_area_conocimiento.nombre", read_only=True,
     )
+    localidad = serializers.CharField(source="localidad.nombre", read_only=True,)
 
     class Meta:
         model = Carrera
