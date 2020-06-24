@@ -75,6 +75,7 @@ class LocalidadSerializer(serializers.ModelSerializer):
     """
 
     id_ieu = serializers.IntegerField(read_only=True, source="ieu.id")
+    fachada = serializers.SerializerMethodField("get_fachada")
     logo = serializers.CharField(read_only=True, source="ieu.logo")
     siglas = serializers.CharField(
         read_only=True, source="ieu.institucion_ministerial.siglas"
@@ -87,6 +88,9 @@ class LocalidadSerializer(serializers.ModelSerializer):
     localidad_principal = serializers.SerializerMethodField("get_localidad_principal")
     punto = serializers.DictField()
     poligonal = serializers.DictField()
+    estado = serializers.CharField(source="estado.nombre")
+    municipio = serializers.CharField(source="municipio.nombre")
+    parroquia = serializers.CharField(source="parroquia.nombre")
 
     class Meta:
         model = Localidad
@@ -143,6 +147,9 @@ class LocalidadSerializer(serializers.ModelSerializer):
         if obj.id == obj.ieu.localidad_principal_id:
             return True
         return False
+
+    def get_fachada(self, obj):
+        return "{}".format(obj.fachada)
 
 
 class CarreraSerializer(serializers.ModelSerializer):
