@@ -31,6 +31,7 @@ from .serializers import (
     DetalleCarreraSerializer,
     EstadoSerializer,
     IeuSerializer,
+    LocalidadMapaSerializer,
     LocalidadSerializer,
     MunicipioSerializer,
     ParroquiaSerializer,
@@ -85,6 +86,8 @@ class ProgramaAcademicoViewSet(viewsets.ReadOnlyModelViewSet):
                 area conocimiento.
             * **id_sub_area**: lista de valores (1,2,n) sin paréntesis tipo int que filtra las localidades de la
                 correspondiente sub area conocimiento.
+            * **nombre_programa**: lista de valores ('1','2','n') sin paréntesis tipo str que filtra las localidades de la
+                correspondiente progrma Académico.
         * Parametros institucionales:
             * **id_ieu**: lista de valores (1,2,n) sin paréntesis tipo int que filtra las localidades de la correspondiente
                 institución de educación universitaria.
@@ -151,6 +154,7 @@ class ProgramaAcademicoViewSet(viewsets.ReadOnlyModelViewSet):
         dep_admin = self.request.query_params.get("dep_admin", None)
         activo = self.request.query_params.get("activo", None)
         object_id = self.request.query_params.get("id", None)
+        nombre_programa = self.request.query_params.get("nombre_programa", None)
 
         if object_id:
             queryset = queryset.filter(pk__in=object_id.split(","))
@@ -190,6 +194,8 @@ class ProgramaAcademicoViewSet(viewsets.ReadOnlyModelViewSet):
             queryset = queryset.filter(
                 localidad__ieu__institucion_ministerial__dep_admin=dep_admin
             )
+        if nombre_programa:
+            queryset = queryset.filter(nombre__in=nombre_programa.split(","))
 
         self.pagination_class = CustomPagination
         page = self.paginate_queryset(queryset)
@@ -206,12 +212,8 @@ class ProgramaAcademicoNombreViewSet(viewsets.ReadOnlyModelViewSet):
     """
 
     serializer_class = CarreraNombreSerializer
-    queryset = (
-        Carrera.objects.filter(
-            Q(cod_activacion="11111111") | Q(cod_activacion="10111111")
-        )
-        .distinct("nombre")
-        .order_by("nombre")
+    queryset = Carrera.objects.raw(
+        "SELECT nombre, ROW_NUMBER ( ) OVER (ORDER BY nombre) AS id FROM (SELECT DISTINCT oeu.carrera.nombre FROM oeu.carrera WHERE (oeu.carrera.cod_activacion = '11111111' OR oeu.carrera.cod_activacion = '10111111') ORDER BY oeu.carrera.nombre ASC) nombres"
     )
 
     @swagger_auto_schema(
@@ -617,6 +619,17 @@ class LocalidadViewSet(viewsets.ReadOnlyModelViewSet):
                 educación universitaria.
             * **dep_admin**: tipo str que filtra las localidades por su dependencia
                 adinstrativa ("PÚBLICA" o "PRIVADA").
+        * Parametros académicos:
+            * **id_tipo_programa**: lista de valores (1,2,n) sin paréntesis tipo int que filtra las localidades del correspondiente
+                tipo de programa académico.
+            * **id_titulo**:  lista de valores (1,2,n) sin paréntesis tipo que filtra las localidades del correspondiente
+                titulo de grado que otorga.
+            * **id_area**: lista de valores (1,2,n) sin paréntesis tipo int que filtra las localidades de la correspondiente
+                area conocimiento.
+            * **id_sub_area**: lista de valores (1,2,n) sin paréntesis tipo int que filtra las localidades de la
+                correspondiente sub area conocimiento.
+            * **nombre_carrera**: lista de valores (carrera_1,carrera_2,carrera_n) sin paréntesis tipo str que filtra las
+                localidades del correspondiente progrma Académico.
 
     * Respuesta exitosa:
         * HTTP code: 200
@@ -669,6 +682,10 @@ class LocalidadViewSet(viewsets.ReadOnlyModelViewSet):
         object_id = self.request.query_params.get("id", None)
         dep_admin = self.request.query_params.get("dep_admin", None)
         activo = self.request.query_params.get("activo", None)
+        id_tipo_programa = self.request.query_params.get("id_tipo_programa", None)
+        id_area = self.request.query_params.get("id_area", None)
+        id_sub_area = self.request.query_params.get("id_sub_area", None)
+        nombre_programa = self.request.query_params.get("nombre_programa", None)
 
         if activo == "0":
             queryset = queryset.filter(
@@ -697,6 +714,17 @@ class LocalidadViewSet(viewsets.ReadOnlyModelViewSet):
             queryset = queryset.filter(
                 ieu__institucion_ministerial__dep_admin=dep_admin
             )
+        if id_tipo_programa:
+            queryset = queryset.filter(tipo_carrera__in=id_tipo_programa.split(","))
+        if id_area:
+            queryset = queryset.filter(area_conocimiento__in=id_area.split(","))
+        if id_sub_area:
+            queryset = queryset.filter(sub_area_conocimiento__in=id_sub_area.split(","))
+        if nombre_programa:
+            carreras = Carrera.objects.filter(
+                nombre__in=nombre_programa.split(",")
+            ).values("localidad")
+            queryset = queryset.filter(pk__in=carreras)
 
         self.pagination_class = CustomPagination
         page = self.paginate_queryset(queryset)

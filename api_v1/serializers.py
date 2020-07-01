@@ -269,20 +269,12 @@ class CarreraSerializer(serializers.ModelSerializer):
         return "{}".format(obj.localidad)
 
 
-class CarreraNombreSerializer(serializers.ModelSerializer):
+class CarreraNombreSerializer(serializers.Serializer):
     """Serializador para los nombres de losprogramas academicos.
     """
 
-    class Meta:
-        model = Carrera
-        fields = [
-            "id",
-            "nombre",
-        ]
-        read_only_fields = [
-            "id",
-            "nombre",
-        ]
+    id = serializers.IntegerField()
+    nombre = serializers.CharField(max_length=200)
 
 
 class DetalleCarreraSerializer(serializers.ModelSerializer):
