@@ -26,6 +26,7 @@ from rest_framework.response import Response
 # Local Folders Libraries
 from .serializers import (
     AreaSerializer,
+    CarreraNombreSerializer,
     CarreraSerializer,
     DetalleCarreraSerializer,
     EstadoSerializer,
@@ -189,6 +190,47 @@ class ProgramaAcademicoViewSet(viewsets.ReadOnlyModelViewSet):
             queryset = queryset.filter(
                 localidad__ieu__institucion_ministerial__dep_admin=dep_admin
             )
+
+        self.pagination_class = CustomPagination
+        page = self.paginate_queryset(queryset)
+        serializer = self.get_serializer(page, many=True)
+        return self.get_paginated_response(serializer.data)
+
+
+# #################################################################################### #
+class ProgramaAcademicoNombreViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    ## Programas Académicos
+    Este EndPoint devuelve lista de los nombres programas académicos de pregrado del
+    subsistema de educación universitaria.
+    """
+
+    serializer_class = CarreraNombreSerializer
+    queryset = (
+        Carrera.objects.filter(
+            Q(cod_activacion="11111111") | Q(cod_activacion="10111111")
+        )
+        .distinct("nombre")
+        .order_by("nombre")
+    )
+
+    @swagger_auto_schema(
+        name="Lista de Nombres de Programas Académicos",
+        operation_description="Devuelve una lista de los nombres de los programas académicos de pregrado del subsistema de educación universitaria en Venezuela.",
+        operation_summary="lista los nombres de los programas académicos de Venezuela",
+        # manual_parameters=["test_param"],
+        # responses={"200": "OKResponseSerializer", "400": "Bad Request"},
+        # properties={
+        #     "x": openapi.Schema(type=openapi.TYPE_STRING, description="string"),
+        #     "y": openapi.Schema(type=openapi.TYPE_STRING, description="string"),
+        # },
+        operation_id="lista_programas_academicos",
+    )
+    def list(self, request):
+        """
+        Viewset to list all academic programs
+        """
+        queryset = self.filter_queryset(self.get_queryset())
 
         self.pagination_class = CustomPagination
         page = self.paginate_queryset(queryset)

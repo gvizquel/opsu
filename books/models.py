@@ -10,19 +10,56 @@ import os
 
 # Django Libraries
 from django.db import models
+from django.utils.translation import ugettext_lazy as _
 
 # Thirdparty Libraries
 from ckeditor.fields import RichTextField
 from cuenta.libSobreEscribirImagen import SobreEscribirImagen
 
-# from djgeojson.fields import PointField, PolygonField
+# Autor, título, edición, editorial, Lugar de edición, Editorial, año, ISBN
+# Título, mención de responsabilidad, ISSN, volumen, número y fecha de publicación.Título, Lugar de edición, fecha de publicación, editor, volumen, número e ISSN
 
 
-# # ########################################################################## #
-# class Autor(models.Model):
-#     """
-#     Este modelo almacena loss autores
-#     """
+# #################################################################################### #
+class Author(models.Model):
+    """
+    Este modelo almacena loss autores de los libros
+    """
+
+    name = models.CharField(_("Name"), max=30)
+    other_name_nombre = models.CharField(_("Other Name"), max=30)
+    last_name = models.CharField(_("Last Name"), max=30)
+    other_last_name = models.CharField(_("Other Last Name"), max=30)
+    birth_date = models.DateTimeField(_("Birh Date"))
+    # pais_nacimiento =
+    # ciudad_nacimiento =
+    fecha_defuncion = models.DateTimeField(_("Fecha de Defunción"))
+    # pais_defuncion =
+    # ciudad_defuncion =
+
+    class Meta:
+        ordering = ["name", "other_name"]
+        db_table = "books'.'author"
+        verbose_name = _("Author")
+        verbose_name_plural = _("Authors")
+
+
+# #################################################################################### #
+class Book(models.Model):
+
+    # fecha_edicion =
+    autor = models.ManyToManyField(Author, through="BookAutor", related_name="autores")
+    # edicion =
+    # editor =
+    # editorial =
+    fecha_publicacion = models.DateTimeField(name="Fecha de Publicación")
+    # isbn =
+    # issn =
+    # lugar_edicion =
+    # numero =
+    # titulo =
+    # volumen =
+
 
 #     localidad = models.ForeignKey(Localidad, on_delete=models.PROTECT, db_index=True)
 #     tipo_carrera = models.ForeignKey(
