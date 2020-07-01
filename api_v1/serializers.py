@@ -276,9 +276,11 @@ class CarreraNombreSerializer(serializers.ModelSerializer):
     class Meta:
         model = Carrera
         fields = [
+            "id",
             "nombre",
         ]
         read_only_fields = [
+            "id",
             "nombre",
         ]
 
