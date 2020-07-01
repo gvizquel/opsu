@@ -19,6 +19,7 @@ from .viewsets import (
     LocalidadViewSet,
     MunicipioViewset,
     ParroquiaViewset,
+    ProgramaAcademicoNombreViewSet,
     ProgramaAcademicoViewSet,
     SubAreaViewSet,
     TipoIeuViewSet,
@@ -51,6 +52,11 @@ urlpatterns = [
         "programa-academico/pre-grado/listar/",
         ProgramaAcademicoViewSet.as_view({"get": "list"}),
         name="pre-programa",
+    ),
+    path(
+        "programa-academico-nombre/pre-grado/listar/",
+        ProgramaAcademicoNombreViewSet.as_view({"get": "list"}),
+        name="programa-academico-nombre",
     ),
     path(
         "programa-academico/pre-grado/detalle/",
