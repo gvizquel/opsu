@@ -31,7 +31,6 @@ from .serializers import (
     DetalleCarreraSerializer,
     EstadoSerializer,
     IeuSerializer,
-    LocalidadMapaSerializer,
     LocalidadSerializer,
     MunicipioSerializer,
     ParroquiaSerializer,

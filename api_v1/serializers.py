@@ -81,7 +81,6 @@ class LocalidadSerializer(serializers.ModelSerializer):
     nombre = serializers.SerializerMethodField("get_nombre_localidad")
     localidad_principal = serializers.SerializerMethodField("get_localidad_principal")
     punto = serializers.DictField()
-    poligonal = serializers.DictField()
     estado = serializers.CharField(source="estado.nombre")
     municipio = serializers.CharField(source="municipio.nombre")
     parroquia = serializers.CharField(source="parroquia.nombre")
@@ -101,7 +100,6 @@ class LocalidadSerializer(serializers.ModelSerializer):
             "parroquia",
             "centro_poblado",
             "punto",
-            "poligonal",
             "fachada",
             "logo",
             "dep_admin",
@@ -121,7 +119,6 @@ class LocalidadSerializer(serializers.ModelSerializer):
             "parroquia",
             "centro_poblado",
             "punto",
-            "poligonal",
             "fachada",
             "logo",
             "dep_admin",
@@ -146,61 +143,6 @@ class LocalidadSerializer(serializers.ModelSerializer):
 
     def get_fachada(self, obj):
         return "{}".format(obj.fachada)
-
-
-class LocalidadMapaSerializer(serializers.ModelSerializer):
-    """Serializador para mapear las localidades.
-    """
-
-    id_ieu = serializers.IntegerField(source="ieu.id")
-    nombre_ieu = serializers.CharField(source="ieu.institucion_ministerial.nombre")
-    activo = serializers.SerializerMethodField("registro_activo")
-    nombre = serializers.SerializerMethodField("get_nombre_localidad")
-    localidad_principal = serializers.SerializerMethodField("get_localidad_principal")
-    punto = serializers.DictField()
-    poligonal = serializers.DictField()
-
-    class Meta:
-        model = Localidad
-        fields = [
-            "id",
-            "nombre",
-            "siglas",
-            "id_ieu",
-            "nombre_ieu",
-            "punto",
-            "poligonal",
-            "fachada",
-            "localidad_principal",
-            "activo",
-        ]
-        read_only_fields = [
-            "id",
-            "nombre",
-            "siglas",
-            "id_ieu",
-            "nombre_ieu",
-            "punto",
-            "poligonal",
-            "fachada",
-            "localidad_principal",
-            "activo",
-        ]
-
-    def registro_activo(self, obj):
-        if obj.cod_activacion == "11011111" or obj.cod_activacion == "10011111":
-            return True
-        return False
-
-    def get_nombre_localidad(self, obj):
-        return "{} {} {}".format(
-            obj.ieu.institucion_ministerial, obj.tipo_localidad, obj.nombre,
-        )
-
-    def get_localidad_principal(self, obj):
-        if obj.id == obj.ieu.localidad_principal_id:
-            return True
-        return False
 
 
 class CarreraSerializer(serializers.ModelSerializer):
