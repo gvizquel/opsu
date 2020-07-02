@@ -13,10 +13,10 @@ from rest_framework import permissions
 # Local Folders Libraries
 from .viewsets import (
     AreaViewSet,
-    DetalleProgramaAcademicoViewSet,
     EstadoViewset,
     IeuViewSet,
     LocalidadViewSet,
+    LocalidadViewSet1,
     MunicipioViewset,
     ParroquiaViewset,
     ProgramaAcademicoNombreViewSet,
@@ -60,7 +60,7 @@ urlpatterns = [
     ),
     path(
         "programa-academico/pre-grado/detalle/",
-        DetalleProgramaAcademicoViewSet.as_view({"get": "retrieve"}),
+        ProgramaAcademicoViewSet.as_view({"get": "retrieve"}),
         name="detalle-pre-programa",
     ),
     path(
@@ -99,23 +99,30 @@ urlpatterns = [
     path("ieu/tipo/", TipoIeuViewSet.as_view({"get": "list"}), name="tipo-ieu",),
     path("ieu/", IeuViewSet.as_view({"get": "list"}), name="ieu",),
     path(
-        "ieu/localidad/", LocalidadViewSet.as_view({"get": "list"}), name="localidad",
+        "ieu/localidad/listar/",
+        LocalidadViewSet.as_view({"get": "list"}),
+        name="localidad",
+    ),
+    path(
+        "ieu/localidad/detalle/",
+        LocalidadViewSet.as_view({"get": "retrieve"}),
+        name="detalle-localidad",
     ),
     path(
         "ieu/localidad/",
-        LocalidadViewSet.as_view({"get": "list"}),
+        LocalidadViewSet1.as_view({"get": "list"}),
         name="detalle-localidad",
     ),
     # ################### Swagger #################### #
-    # re_path(
-    #     r"^swagger(?P<format>\.json|\.yaml)$",
-    #     schema_view.without_ui(cache_timeout=0),
-    #     name="schema-json",
-    # ),
-    # path(
-    #     "swagger/",
-    #     schema_view.with_ui("swagger", cache_timeout=0),
-    #     name="schema-swagger-ui",
-    # ),
-    # path("redoc/", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc"),
+    re_path(
+        r"^swagger(?P<format>\.json|\.yaml)$",
+        schema_view.without_ui(cache_timeout=0),
+        name="schema-json",
+    ),
+    path(
+        "swagger/",
+        schema_view.with_ui("swagger", cache_timeout=0),
+        name="schema-swagger-ui",
+    ),
+    path("redoc/", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc"),
 ]

@@ -65,7 +65,59 @@ class IeuSerializer(serializers.ModelSerializer):
         return False
 
 
-class LocalidadSerializer(serializers.ModelSerializer):
+# #################################################################################### #
+class ListLocalidadSerializer(serializers.ModelSerializer):
+    """Serializador para las Instituciones de Educación Universitaria.
+    'activo' representa un metodo para identificar si un registro de este modelo de
+    datos esta activo o no.
+    """
+
+    siglas = serializers.CharField(source="ieu.institucion_ministerial.siglas")
+    dep_admin = serializers.CharField(source="ieu.institucion_ministerial.dep_admin")
+    activo = serializers.SerializerMethodField("registro_activo")
+    nombre = serializers.SerializerMethodField("get_nombre_localidad")
+    punto = serializers.DictField()
+
+    class Meta:
+        model = Localidad
+        fields = [
+            "id",
+            "nombre",
+            "siglas",
+            "punto",
+            "dep_admin",
+            "activo",
+        ]
+        read_only_fields = [
+            "id",
+            "nombre",
+            "siglas",
+            "punto",
+            "dep_admin",
+            "activo",
+        ]
+
+    def registro_activo(self, obj):
+        if obj.cod_activacion == "11011111" or obj.cod_activacion == "10011111":
+            return True
+        return False
+
+    def get_nombre_localidad(self, obj):
+        return "{} {} {}".format(
+            obj.ieu.institucion_ministerial, obj.tipo_localidad, obj.nombre,
+        )
+
+    def get_localidad_principal(self, obj):
+        if obj.id == obj.ieu.localidad_principal_id:
+            return True
+        return False
+
+    def get_fachada(self, obj):
+        return "{}".format(obj.fachada)
+
+
+# #################################################################################### #
+class DetailLocalidadSerializer(serializers.ModelSerializer):
     """Serializador para las Instituciones de Educación Universitaria.
     'activo' representa un metodo para identificar si un registro de este modelo de
     datos esta activo o no.
@@ -81,6 +133,7 @@ class LocalidadSerializer(serializers.ModelSerializer):
     nombre = serializers.SerializerMethodField("get_nombre_localidad")
     localidad_principal = serializers.SerializerMethodField("get_localidad_principal")
     punto = serializers.DictField()
+    poligonal = serializers.DictField()
     estado = serializers.CharField(source="estado.nombre")
     municipio = serializers.CharField(source="municipio.nombre")
     parroquia = serializers.CharField(source="parroquia.nombre")
@@ -100,6 +153,7 @@ class LocalidadSerializer(serializers.ModelSerializer):
             "parroquia",
             "centro_poblado",
             "punto",
+            "poligonal",
             "fachada",
             "logo",
             "dep_admin",
@@ -119,6 +173,7 @@ class LocalidadSerializer(serializers.ModelSerializer):
             "parroquia",
             "centro_poblado",
             "punto",
+            "poligonal",
             "fachada",
             "logo",
             "dep_admin",
