@@ -28,10 +28,11 @@ from .serializers import (
     AreaSerializer,
     CarreraNombreSerializer,
     CarreraSerializer,
+    DetailLocalidadSerializer,
     DetalleCarreraSerializer,
     EstadoSerializer,
     IeuSerializer,
-    LocalidadSerializer,
+    ListLocalidadSerializer,
     MunicipioSerializer,
     ParroquiaSerializer,
     SubAreaSerializer,
@@ -121,6 +122,17 @@ class ProgramaAcademicoViewSet(viewsets.ReadOnlyModelViewSet):
 
     serializer_class = CarreraSerializer
     queryset = Carrera.objects.filter()
+    action_serializers = {
+        "retrieve": DetalleCarreraSerializer,
+        "list": CarreraSerializer,
+    }
+
+    def get_serializer_class(self):
+
+        if hasattr(self, "action_serializers"):
+            return self.action_serializers.get(self.action, self.serializer_class)
+
+        return super(LocalidadViewSet, self).get_serializer_class()
 
     @swagger_auto_schema(
         name="Lista de Programas Académicos",
@@ -201,6 +213,12 @@ class ProgramaAcademicoViewSet(viewsets.ReadOnlyModelViewSet):
         serializer = self.get_serializer(page, many=True)
         return self.get_paginated_response(serializer.data)
 
+    def retrieve(self, request):
+        object_id = self.request.query_params.get("id", -1)
+        queryset = get_object_or_404(Carrera, pk=object_id)
+        serializer = self.get_serializer(queryset)
+        return Response(serializer.data)
+
 
 # #################################################################################### #
 class ProgramaAcademicoNombreViewSet(viewsets.ReadOnlyModelViewSet):
@@ -237,57 +255,6 @@ class ProgramaAcademicoNombreViewSet(viewsets.ReadOnlyModelViewSet):
         page = self.paginate_queryset(queryset)
         serializer = self.get_serializer(page, many=True)
         return self.get_paginated_response(serializer.data)
-
-
-# #################################################################################### #
-class DetalleProgramaAcademicoViewSet(viewsets.ReadOnlyModelViewSet):
-    """
-    ## Programas Académicos
-    Este EndPoint puede devolver uno o una lista de los programas académicos de pregrado del subsistema
-    de educación universitaria.
-
-    * Method: **GET**
-    * Content-Type: **application/json**
-    * Url Params:
-        **dep_admin**: tipo str que filtra las localidades por su dependencia
-        adinstrativa ("PÚBLICA" o "PRIVADA").
-
-    * Respuesta exitosa:
-        * HTTP code: 200
-        * Objeto:
-
-            {\n
-                "count": Cantidad de objetos que devuelve el EndPoint,
-                "next": URL con la siguiente página (25 objetos) de resultados del EndPoint,
-                "previous": URL con la pagina anterior (25 objetos) de resultados del EndPoint,
-                "results": [
-                    {
-                        "id": identificador único de la carrera (int),
-                        "id_ieu": identificador único de la IEU (int),
-                        "ieu": "Colegio Universitario de Administración y Mercadeo",
-                        "id_localidad": identificador único de la localidad (int),
-                        "localidad": nombre de la localidad (str),
-                        "nombre": nombre del programa académico (str),
-                        "area_conocimiento": indica el área de conocimiento del programa académico (str),
-                        "sub_area_conocimiento": indica la sub área del programa académico (str),
-                        "tipo_programa": tipo de programa académico (str),
-                        "titulo": título de grado del programa académico (str),
-                        "descripcion": Descripción del programa académico (str),
-                        "mercado_ocupacional": Mercado ocupacional para el egresa del programa académico (str),
-                        "periodicidad": Periodos academicos (str),
-                        "duracion": Cantidad de periodos académicos que dura el programa academico (int),
-                        "prioritaria": Indica si el programa academico es prioritario o no (bool),
-                        "activo": indica si el programa académico esta o no activo (bool)
-                    }
-                ]
-            }
-    """
-
-    def retrieve(self, request):
-        object_id = self.request.query_params.get("id", -1)
-        programa = get_object_or_404(Carrera, pk=object_id)
-        serializer = DetalleCarreraSerializer(programa)
-        return Response(serializer.data)
 
 
 # #################################################################################### #
@@ -664,12 +631,102 @@ class LocalidadViewSet(viewsets.ReadOnlyModelViewSet):
             }
     """
 
-    serializer_class = LocalidadSerializer
+    serializer_class = ListLocalidadSerializer
     queryset = Localidad.objects.all()
+    action_serializers = {
+        "retrieve": DetailLocalidadSerializer,
+        "list": ListLocalidadSerializer,
+    }
+
+    def get_serializer_class(self):
+
+        if hasattr(self, "action_serializers"):
+            return self.action_serializers.get(self.action, self.serializer_class)
+
+        return super(LocalidadViewSet, self).get_serializer_class()
 
     def list(self, request):
         """
-        Viewset to list all academic programs
+        Viewset to list of Localidad
+        """
+        queryset = self.filter_queryset(self.get_queryset())
+
+        id_estado = self.request.query_params.get("id_estado", None)
+        id_municipio = self.request.query_params.get("id_municipio", None)
+        id_parroquia = self.request.query_params.get("id_parroquia", None)
+        id_ieu = self.request.query_params.get("id_ieu", None)
+        id_tipo_ieu = self.request.query_params.get("id_tipo_ieu", None)
+        object_id = self.request.query_params.get("id", None)
+        dep_admin = self.request.query_params.get("dep_admin", None)
+        activo = self.request.query_params.get("activo", None)
+        id_tipo_programa = self.request.query_params.get("id_tipo_programa", None)
+        id_area = self.request.query_params.get("id_area", None)
+        id_sub_area = self.request.query_params.get("id_sub_area", None)
+        nombre_programa = self.request.query_params.get("nombre_programa", None)
+
+        if activo == "0":
+            queryset = queryset.filter(
+                ~Q(cod_activacion="11011111"), ~Q(cod_activacion="10011111")
+            )
+        else:
+            queryset = queryset.filter(
+                Q(cod_activacion="11011111") | Q(cod_activacion="10011111")
+            )
+
+        if id_estado:
+            queryset = queryset.filter(estado__in=id_estado.split(","))
+        if id_municipio:
+            queryset = queryset.filter(municipio__in=id_municipio.split(","))
+        if id_parroquia:
+            queryset = queryset.filter(parroquia__in=id_parroquia.split(","))
+        if id_ieu:
+            queryset = queryset.filter(ieu__in=id_ieu.split(","))
+        if id_tipo_ieu:
+            queryset = queryset.filter(
+                ieu__tipo_especifico_ieu__in=id_tipo_ieu.split(",")
+            )
+        if object_id:
+            queryset = queryset.filter(pk__in=object_id.split(","))
+        if dep_admin:
+            queryset = queryset.filter(
+                ieu__institucion_ministerial__dep_admin=dep_admin
+            )
+        if id_tipo_programa:
+            queryset = queryset.filter(tipo_carrera__in=id_tipo_programa.split(","))
+        if id_area:
+            queryset = queryset.filter(area_conocimiento__in=id_area.split(","))
+        if id_sub_area:
+            queryset = queryset.filter(sub_area_conocimiento__in=id_sub_area.split(","))
+        if nombre_programa:
+            carreras = Carrera.objects.filter(
+                nombre__in=nombre_programa.split(",")
+            ).values("localidad")
+            queryset = queryset.filter(pk__in=carreras)
+
+        self.pagination_class = CustomPagination
+        page = self.paginate_queryset(queryset)
+        serializer = self.get_serializer(page, many=True)
+        return self.get_paginated_response(serializer.data)
+
+    def retrieve(self, request):
+        """
+        Viewset to get one Localidad
+        """
+        object_id = self.request.query_params.get("id", -1)
+        queryset = get_object_or_404(Localidad, pk=object_id)
+        serializer = self.get_serializer(queryset)
+        return Response(serializer.data)
+
+
+# #################################################################################### #
+class LocalidadViewSet1(viewsets.ReadOnlyModelViewSet):
+
+    queryset = Localidad.objects.all()
+    serializer_class = DetailLocalidadSerializer
+
+    def list(self, request):
+        """
+        Viewset to list of Localidad
         """
         queryset = self.filter_queryset(self.get_queryset())
 
