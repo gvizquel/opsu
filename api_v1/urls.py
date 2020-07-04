@@ -31,7 +31,7 @@ schema_view = get_schema_view(
     openapi.Info(
         title="LOEU API",
         default_version="v1",
-        description="Oportunidades de Estudio en Venezuela",
+        description="Libro de Oportunidades de Estudio en Venezuela",
         terms_of_service="https://www.google.com/policies/terms/",
         contact=openapi.Contact(email="gvizquel@gmail.com"),
         license=openapi.License(name="BSD License"),

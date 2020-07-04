@@ -346,4 +346,11 @@ CKEDITOR_CONFIGS = {
 
 
 ############################# Logger and Debuguing Config ##############################
-SWAGGER_SETTINGS = {"DEFAULT_INFO": "import.path.to.urls.api_info"}
+SWAGGER_SETTINGS = {
+    "DEFAULT_INFO": "import.path.to.urls.api_info",
+    "OPERATIONS_SORTER": "method",
+    "TAGS_SORTER": "alpha",
+    # "DOC_EXPANSION": "none",
+    "DEFAULT_MODEL_RENDERING": "example",
+    "DISPLAY_OPERATION_ID": False,
+}
