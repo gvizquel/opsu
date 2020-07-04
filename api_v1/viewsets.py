@@ -78,7 +78,7 @@ class EstadoViewset(viewsets.ReadOnlyModelViewSet):
         in_="query",
         required=False,
         description="Lista de los id de los estados (1,2,n) sin paréntesis. Filtra los estados corespondientes.",
-        type="integer",
+        type="char",
     )
 
     @swagger_auto_schema(
@@ -125,14 +125,14 @@ class MunicipioViewset(viewsets.ReadOnlyModelViewSet):
         in_="query",
         required=False,
         description="Lista de los id de los Municipios (1,2,n) sin paréntesis. Filtra los Municipios corespondientes.",
-        type="integer",
+        type="char",
     )
     estado_param = openapi.Parameter(
         "id_estado",
         in_="query",
         required=False,
         description="Lista de los id de los Estados (1,2,n) sin paréntesis. Filtra los Municipios de los Estados corespondientes.",
-        type="integer",
+        type="char",
     )
 
     @swagger_auto_schema(
@@ -182,14 +182,21 @@ class ParroquiaViewset(viewsets.ReadOnlyModelViewSet):
         in_="query",
         required=False,
         description="Lista de los id de los Parroquias (1,2,n) sin paréntesis. Filtra los Parroquias corespondientes.",
-        type="integer",
+        type="char",
     )
     estado_param = openapi.Parameter(
         "id_estado",
         in_="query",
         required=False,
         description="Lista de los id de los Estados (1,2,n) sin paréntesis. Filtra los Parroquias de los Estados corespondientes.",
-        type="integer",
+        type="char",
+    )
+    municipio_param = openapi.Parameter(
+        "id_municipio",
+        in_="query",
+        required=False,
+        description="Lista de los id de las Municipios (1,2,n) sin paréntesis. Filtra las Parroquias de los Municipios corespondientes.",
+        type="char",
     )
 
     @swagger_auto_schema(
