@@ -54,7 +54,7 @@ urlpatterns = [
         name="pre-programa",
     ),
     path(
-        "programa-academico-nombre/pre-grado/listar/",
+        "programa-academico/pre-grado/nombre/",
         ProgramaAcademicoNombreViewSet.as_view({"get": "list"}),
         name="programa-academico-nombre",
     ),

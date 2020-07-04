@@ -116,7 +116,7 @@ class LocalidadSerializer(serpy.Serializer):
         return False
 
 
-class CarreraSerializer(serializers.ModelSerializer):
+class ListaProgramaAcademicoSerializer(serializers.ModelSerializer):
     """Serializador para los programas academicos.
     'activo' representa un metodo para identificar si un registro de este modelo de
     datos esta activo o no.
@@ -155,7 +155,7 @@ class CarreraSerializer(serializers.ModelSerializer):
         return False
 
 
-class DetalleCarreraSerializer(serializers.ModelSerializer):
+class DetalleProgramaAcademicoSerializer(serializers.ModelSerializer):
     """Serializador para los programas academicos.
     'activo' representa un metodo para identificar si un registro de este modelo de
     datos esta activo o no.
@@ -219,7 +219,7 @@ class DetalleCarreraSerializer(serializers.ModelSerializer):
         return False
 
 
-class EstadoSerializer(serpy.Serializer):
+class ListaEstadoSerializer(serpy.Serializer):
     """
     Class to serilize Estados
     """
@@ -228,7 +228,7 @@ class EstadoSerializer(serpy.Serializer):
     nombre = serpy.Field(required=False)
 
 
-class MunicipioSerializer(serpy.Serializer):
+class ListaMunicipioSerializer(serpy.Serializer):
     """
     Class to serilize Municipios
     """
@@ -241,7 +241,7 @@ class MunicipioSerializer(serpy.Serializer):
         return Parroquia.estado.id
 
 
-class ParroquiaSerializer(serpy.Serializer):
+class ListaParroquiaSerializer(serpy.Serializer):
     """
     Class to serilize parroquias
     """
