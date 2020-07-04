@@ -22,6 +22,65 @@ logging.basicConfig(level=logging.DEBUG)
 LOGGER = logging.getLogger("services")
 
 
+# #################################################################################### #
+class ListaEstadoSerializer(serializers.ModelSerializer):
+    """Serializador para los Estados.
+    """
+
+    class Meta:
+        model = Estado
+        fields = [
+            "id",
+            "nombre",
+        ]
+        read_only_fields = [
+            "id",
+            "nombre",
+        ]
+
+
+# #################################################################################### #
+class ListaMunicipioSerializer(serializers.ModelSerializer):
+    """Serializador para los Estados.
+    """
+
+    class Meta:
+        model = Municipio
+        fields = [
+            "id",
+            "nombre",
+            "estado",
+        ]
+        read_only_fields = [
+            "id",
+            "nombre",
+            "estado",
+        ]
+
+
+# #################################################################################### #
+class ListaParroquiaSerializer(serializers.ModelSerializer):
+    """Serializador para los Parroquias.
+    'activo' representa un metodo para identificar si un registro de este modelo de
+    datos esta activo o no.
+    """
+
+    class Meta:
+        model = Parroquia
+        fields = [
+            "id",
+            "nombre",
+            "estado",
+            "municipio",
+        ]
+        read_only_fields = [
+            "id",
+            "nombre",
+            "estado",
+            "municipio",
+        ]
+
+
 class IeuSerializer(serializers.ModelSerializer):
     """Serializador para las Instituciones de Educación Universitaria.
     'activo' representa un metodo para identificar si un registro de este modelo de
@@ -66,7 +125,7 @@ class IeuSerializer(serializers.ModelSerializer):
 
 
 # #################################################################################### #
-class ListLocalidadSerializer(serializers.ModelSerializer):
+class ListaLocalidadSerializer(serializers.ModelSerializer):
     """Serializador para las Instituciones de Educación Universitaria.
     'activo' representa un metodo para identificar si un registro de este modelo de
     datos esta activo o no.
@@ -117,7 +176,7 @@ class ListLocalidadSerializer(serializers.ModelSerializer):
 
 
 # #################################################################################### #
-class DetailLocalidadSerializer(serializers.ModelSerializer):
+class DetalleLocalidadSerializer(serializers.ModelSerializer):
     """Serializador para las Instituciones de Educación Universitaria.
     'activo' representa un metodo para identificar si un registro de este modelo de
     datos esta activo o no.
@@ -200,7 +259,8 @@ class DetailLocalidadSerializer(serializers.ModelSerializer):
         return "{}".format(obj.fachada)
 
 
-class CarreraSerializer(serializers.ModelSerializer):
+# #################################################################################### #
+class ListaProgramaAcademicoSerializer(serializers.ModelSerializer):
     """Serializador para los programas academicos.
     'activo' representa un metodo para identificar si un registro de este modelo de
     datos esta activo o no.
@@ -266,7 +326,7 @@ class CarreraSerializer(serializers.ModelSerializer):
         return "{}".format(obj.localidad)
 
 
-class CarreraNombreSerializer(serializers.Serializer):
+class ListaProgramaAcademicoNombreSerializer(serializers.Serializer):
     """Serializador para los nombres de losprogramas academicos.
     """
 
@@ -274,13 +334,13 @@ class CarreraNombreSerializer(serializers.Serializer):
     nombre = serializers.CharField(max_length=200)
 
 
-class DetalleCarreraSerializer(serializers.ModelSerializer):
+class DetalleProgramaAcademicoSerializer(serializers.ModelSerializer):
     """Serializador para los programas academicos.
     'activo' representa un metodo para identificar si un registro de este modelo de
     datos esta activo o no.
     """
 
-    tipo_programa = serializers.CharField(source="tipo_carrera")
+    tipo_programa = serializers.CharField(source="tipo_carrera", read_only=True)
     titulo = serializers.SerializerMethodField("get_titulo")
     activo = serializers.SerializerMethodField("registro_activo")
     id_ieu = serializers.IntegerField(source="localidad.ieu.pk", read_only=True,)
@@ -315,7 +375,6 @@ class DetalleCarreraSerializer(serializers.ModelSerializer):
             "duracion",
             "prioritaria",
             "activo",
-            "localidad",
         ]
         read_only_fields = [
             "id",
@@ -334,7 +393,6 @@ class DetalleCarreraSerializer(serializers.ModelSerializer):
             "duracion",
             "prioritaria",
             "activo",
-            "localidad",
         ]
 
     def registro_activo(self, obj):
@@ -358,66 +416,6 @@ class DetalleCarreraSerializer(serializers.ModelSerializer):
                     titulo.titulo, titulo.duracion, obj.periodicidad.descripcion,
                 )
         return titulo_srt
-
-
-class EstadoSerializer(serializers.ModelSerializer):
-    """Serializador para los Estados.
-    'activo' representa un metodo para identificar si un registro de este modelo de
-    datos esta activo o no.
-    """
-
-    class Meta:
-        model = Estado
-        fields = [
-            "id",
-            "nombre",
-        ]
-        read_only_fields = [
-            "id",
-            "nombre",
-        ]
-
-
-class MunicipioSerializer(serializers.ModelSerializer):
-    """Serializador para los Estados.
-    'activo' representa un metodo para identificar si un registro de este modelo de
-    datos esta activo o no.
-    """
-
-    class Meta:
-        model = Municipio
-        fields = [
-            "id",
-            "nombre",
-            "estado",
-        ]
-        read_only_fields = [
-            "id",
-            "nombre",
-            "estado",
-        ]
-
-
-class ParroquiaSerializer(serializers.ModelSerializer):
-    """Serializador para los Parroquias.
-    'activo' representa un metodo para identificar si un registro de este modelo de
-    datos esta activo o no.
-    """
-
-    class Meta:
-        model = Parroquia
-        fields = [
-            "id",
-            "nombre",
-            "estado",
-            "municipio",
-        ]
-        read_only_fields = [
-            "id",
-            "nombre",
-            "estado",
-            "municipio",
-        ]
 
 
 class TipoIeuEspecificoSerializer(serializers.ModelSerializer):

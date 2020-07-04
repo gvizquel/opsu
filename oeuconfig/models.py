@@ -285,7 +285,7 @@ class Titulo(models.Model):
     """ Modelo para gestionar los titulos que se otorgan en las IEU.
     """
 
-    nombre = models.CharField(max_length=255)
+    nombre = models.CharField(max_length=255, unique=True)
     descripcion = RichTextField(blank=True, null=True)
 
     def __str__(self):
