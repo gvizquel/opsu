@@ -81,19 +81,25 @@ class ListaParroquiaSerializer(serializers.ModelSerializer):
         ]
 
 
-class IeuSerializer(serializers.ModelSerializer):
+class ListaIeuSerializer(serializers.ModelSerializer):
     """Serializador para las Instituciones de Educación Universitaria.
     'activo' representa un metodo para identificar si un registro de este modelo de
     datos esta activo o no.
     """
 
-    nombre = serializers.CharField(source="institucion_ministerial.nombre")
-    siglas = serializers.CharField(source="institucion_ministerial.siglas")
-    dep_admin = serializers.CharField(source="institucion_ministerial.dep_admin")
-    activo = serializers.SerializerMethodField("registro_activo")
-    tipo_ieu = serializers.CharField(source="tipo_especifico_ieu")
-    logo = serializers.CharField()
-    fachada = serializers.CharField()
+    nombre = serializers.CharField(
+        source="institucion_ministerial.nombre", read_only=True
+    )
+    siglas = serializers.CharField(
+        source="institucion_ministerial.siglas", read_only=True
+    )
+    dep_admin = serializers.CharField(
+        source="institucion_ministerial.dep_admin", read_only=True
+    )
+    activo = serializers.SerializerMethodField("registro_activo", read_only=True)
+    tipo_ieu = serializers.CharField(source="tipo_especifico_ieu", read_only=True)
+    logo = serializers.CharField(read_only=True)
+    fachada = serializers.CharField(read_only=True)
 
     class Meta:
         model = Ieu
@@ -131,11 +137,16 @@ class ListaLocalidadSerializer(serializers.ModelSerializer):
     datos esta activo o no.
     """
 
-    siglas = serializers.CharField(source="ieu.institucion_ministerial.siglas")
-    dep_admin = serializers.CharField(source="ieu.institucion_ministerial.dep_admin")
+    siglas = serializers.CharField(
+        source="ieu.institucion_ministerial.siglas", read_only=True
+    )
+    dep_admin = serializers.CharField(
+        source="ieu.institucion_ministerial.dep_admin", read_only=True
+    )
     activo = serializers.SerializerMethodField("registro_activo")
     nombre = serializers.SerializerMethodField("get_nombre_localidad")
-    punto = serializers.DictField()
+    punto = serializers.DictField(read_only=True)
+    localidad_principal = serializers.SerializerMethodField("get_localidad_principal")
 
     class Meta:
         model = Localidad
@@ -145,6 +156,7 @@ class ListaLocalidadSerializer(serializers.ModelSerializer):
             "siglas",
             "punto",
             "dep_admin",
+            "localidad_principal",
             "activo",
         ]
         read_only_fields = [
@@ -153,6 +165,7 @@ class ListaLocalidadSerializer(serializers.ModelSerializer):
             "siglas",
             "punto",
             "dep_admin",
+            "localidad_principal",
             "activo",
         ]
 
@@ -186,12 +199,14 @@ class DetalleLocalidadSerializer(serializers.ModelSerializer):
     nombre_ieu = serializers.CharField(source="ieu.institucion_ministerial.nombre")
     fachada = serializers.SerializerMethodField("get_fachada")
     logo = serializers.CharField(source="ieu.logo")
-    siglas = serializers.CharField(source="ieu.institucion_ministerial.siglas")
+    siglas = serializers.CharField(
+        source="ieu.institucion_ministerial.siglas", read_only=True
+    )
     dep_admin = serializers.CharField(source="ieu.institucion_ministerial.dep_admin")
     activo = serializers.SerializerMethodField("registro_activo")
     nombre = serializers.SerializerMethodField("get_nombre_localidad")
     localidad_principal = serializers.SerializerMethodField("get_localidad_principal")
-    punto = serializers.DictField()
+    punto = serializers.DictField(read_only=True)
     poligonal = serializers.DictField()
     estado = serializers.CharField(source="estado.nombre")
     municipio = serializers.CharField(source="municipio.nombre")
@@ -270,10 +285,10 @@ class ListaProgramaAcademicoSerializer(serializers.ModelSerializer):
     titulo = serializers.SerializerMethodField("get_titulo")
     activo = serializers.SerializerMethodField("registro_activo")
     area_conocimiento = serializers.CharField(
-        source="area_conocimiento.nombre", read_only=True,
+        source="area_conocimiento.nombre", read_only=True
     )
     sub_area_conocimiento = serializers.CharField(
-        source="sub_area_conocimiento.nombre", read_only=True,
+        source="sub_area_conocimiento.nombre", read_only=True
     )
     localidad = serializers.SerializerMethodField("get_localidad")
 

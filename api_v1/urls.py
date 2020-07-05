@@ -16,7 +16,6 @@ from .viewsets import (
     EstadoViewset,
     IeuViewSet,
     LocalidadViewSet,
-    LocalidadViewSet1,
     MunicipioViewset,
     ParroquiaViewset,
     ProgramaAcademicoNombreViewSet,
@@ -106,11 +105,6 @@ urlpatterns = [
     path(
         "ieu/localidad/detalle/",
         LocalidadViewSet.as_view({"get": "retrieve"}),
-        name="detalle-localidad",
-    ),
-    path(
-        "ieu/localidad/",
-        LocalidadViewSet1.as_view({"get": "list"}),
         name="detalle-localidad",
     ),
     # ################### Swagger #################### #
