@@ -29,8 +29,8 @@ from .serializers import (
     AreaSerializer,
     DetalleLocalidadSerializer,
     DetalleProgramaAcademicoSerializer,
-    IeuSerializer,
     ListaEstadoSerializer,
+    ListaIeuSerializer,
     ListaLocalidadSerializer,
     ListaMunicipioSerializer,
     ListaParroquiaSerializer,
@@ -83,7 +83,7 @@ class EstadoViewset(viewsets.ReadOnlyModelViewSet):
 
     @swagger_auto_schema(
         name="Lista de estados",
-        tags=["EndPoints División Político Territorial"],
+        tags=["EndPoints de División Político Territorial"],
         query_serializer=ListaEstadoSerializer,
         manual_parameters=[id_param],
         operation_description="Devuelve una lista de estados.",
@@ -137,7 +137,7 @@ class MunicipioViewset(viewsets.ReadOnlyModelViewSet):
 
     @swagger_auto_schema(
         name="Lista de Municipios",
-        tags=["EndPoints División Político Territorial"],
+        tags=["EndPoints de División Político Territorial"],
         query_serializer=ListaMunicipioSerializer,
         manual_parameters=[id_param, estado_param],
         operation_description="Devuelve una lista de Municipios.",
@@ -201,7 +201,7 @@ class ParroquiaViewset(viewsets.ReadOnlyModelViewSet):
 
     @swagger_auto_schema(
         name="Lista de Parroquias",
-        tags=["EndPoints División Político Territorial"],
+        tags=["EndPoints de División Político Territorial"],
         query_serializer=ListaParroquiaSerializer,
         manual_parameters=[id_param, estado_param],
         operation_description="Devuelve una lista de Parroquias.",
@@ -259,14 +259,14 @@ class ProgramaAcademicoViewSet(viewsets.ReadOnlyModelViewSet):
     )
 
     list_carrera_response = openapi.Response(
-        "Detalle del programa académico", ListaProgramaAcademicoSerializer
+        "Lista del programa académico", ListaProgramaAcademicoSerializer
     )
 
     id_param = openapi.Parameter(
         "id",
         in_="query",
         required=False,
-        description="Lista de los id de los programa académico (1,2,n) sin paréntesis. Filtra los programa académico corespondientes.",
+        description="Lista de los id de las Localidades (1,2,n) sin paréntesis. Filtra los programa académico corespondientes.",
         type="char",
     )
 
@@ -543,43 +543,52 @@ class IeuViewSet(viewsets.ReadOnlyModelViewSet):
     ## Instituciones de Educación Universitaria (IEU)
     Este EndPoint puede devolver uno o una lista de las Instituciones de Educación
     Universitaria.
-
-    * Method: **GET**
-    * Content-Type: **application/json**
-    * Url Params:
-        * **id**: lista de valores (1,2,n) sin paréntesis tipo int que filtra la
-            correspondiente IEU.
-        * **id_tipo_ieu**: lista de valores (1,2,n) sin paréntesis tipo int que filtra
-            las IEU del correspondiente tipo de institución de educación universitaria.
-        * **dep_admin**: tipo str que filtra las IEU por su dependencia adinstrativa
-            ("PÚBLICA" o "PRIVADA").
-
-    * Respuesta exitosa:
-        * HTTP code: 200
-        * Objeto:
-
-            {\n
-                "count": Cantidad de objetos que devuelve el EndPoint,
-                "next": URL con la siguiente página (25 objetos) de resultados del EndPoint,
-                "previous": URL con la pagina anterior (25 objetos) de resultados del EndPoint,
-                "results": [
-                    {
-                        "id": identificador único de la IEU (int),
-                        "nombre": nombre de la IEU (str),
-                        "siglas": siglas de la IEU (str),
-                        "dep_admin": indica si la IEU es publica o provada (str)
-                        "tipo_ieu": "Institutos Universitarios Militares",
-                        "logo": ruta de la imagen del logo de la IEU (str),
-                        "fachada": ruta de la imagen de la fachada de la IEU (str),
-                        "activo": false
-                    }
-                ]
-            }
     """
 
-    serializer_class = IeuSerializer
+    serializer_class = ListaIeuSerializer
     queryset = Ieu.objects.all()
 
+    tipo_ieu_response = openapi.Response("Tipos de IEU", ListaIeuSerializer)
+
+    id_param = openapi.Parameter(
+        "id",
+        in_="query",
+        required=False,
+        description="Lista de los id de las Instituciones de Educación Universitaria (1,2,n) sin paréntesis. Filtra las Instituciones de Educación Universitaria corespondientes.",
+        type="char",
+    )
+    tipo_ieu__param = openapi.Parameter(
+        "id_tipo_ieu",
+        in_="query",
+        required=False,
+        description="Lista de los id de los tipos de IEU (1,2,n) sin paréntesis. Filtra las Instituciones de Educación Universitaria segun los tipos de IEU corespondientes.",
+        type="char",
+    )
+    dep_admin_param = openapi.Parameter(
+        "dep_admin",
+        in_="query",
+        required=False,
+        description="Tipo de administración de las (PÚBLICA, PRIVADA) sin paréntesis. Filtra las Instituciones de Educación Universitaria según su tipo de admnistración.",
+        type="char",
+    )
+    activo_param = openapi.Parameter(
+        "activo",
+        in_="query",
+        required=False,
+        description="Filtra las Instituciones de Educación Universitaria activos o inactivos.",
+        type="boolean",
+    )
+
+    @swagger_auto_schema(
+        name="Lista de las Instituciones de Educación Universitaria",
+        tags=["EndPoints de Instituciones de Educación Universitaria"],
+        query_serializer=ListaIeuSerializer,
+        manual_parameters=[id_param, tipo_ieu__param, dep_admin_param, activo_param],
+        operation_description="Devuelve una lista de las Instituciones de Educación Universitaria",
+        operation_summary="Lista de las Instituciones de Educación Universitaria",
+        responses={"200": tipo_ieu_response, "400": "Bad Request"},
+        operation_id="Lista de las Instituciones de Educación Universitaria",
+    )
     def list(self, request):
         """
         Viewset to list all academic programs
@@ -617,73 +626,6 @@ class LocalidadViewSet(viewsets.ReadOnlyModelViewSet):
     """
     ## Localidad de las Instituciones de Educación Universitaria
     Este EndPoint puede devolver uno o una lista de las localidades de las IEU.
-
-    * Method: **GET**
-    * Content-Type: **application/json**
-    * Url Params:
-        * Parametros político territoriales:
-            * **id_estado**: lista de valores (1,2,n) sin paréntesis tipo int que filtra
-                las localidades del correspondiente estado.
-            * **id_municipio**: lista de valores (1,2,n) sin paréntesis tipo int que
-                filtra las localidades del correspondiente municipio.
-            * **id_parroquia**: lista de valores (1,2,n) sin paréntesis tipo int que
-                filtra las localidades de la correspondiente parroquia.
-        * Parametros institucionales:
-            * **id_ieu**: lista de valores (1,2,n) sin paréntesis tipo int que filtra
-                las localidades de la correspondiente institución de educación
-                universitaria.
-            * **id_tipo_ieu**: lista de valores (1,2,n) sin paréntesis tipo int que
-                filtra las localidades del correspondiente  tipo de institución de
-                educación universitaria.
-            * **id**: lista de valores (1,2,n) sin paréntesis tipo int que filtra las
-                localidades de la correspondiente localidad de una institución de
-                educación universitaria.
-            * **dep_admin**: tipo str que filtra las localidades por su dependencia
-                adinstrativa ("PÚBLICA" o "PRIVADA").
-        * Parametros académicos:
-            * **id_tipo_programa**: lista de valores (1,2,n) sin paréntesis tipo int que filtra las localidades del correspondiente
-                tipo de programa académico.
-            * **id_titulo**:  lista de valores (1,2,n) sin paréntesis tipo que filtra las localidades del correspondiente
-                titulo de grado que otorga.
-            * **id_area**: lista de valores (1,2,n) sin paréntesis tipo int que filtra las localidades de la correspondiente
-                area conocimiento.
-            * **id_sub_area**: lista de valores (1,2,n) sin paréntesis tipo int que filtra las localidades de la
-                correspondiente sub area conocimiento.
-            * **nombre_carrera**: lista de valores (carrera_1,carrera_2,carrera_n) sin paréntesis tipo str que filtra las
-                localidades del correspondiente progrma Académico.
-
-    * Respuesta exitosa:
-        * HTTP code: 200
-        * Objeto:
-
-            {\n
-                "count": Cantidad de objetos que devuelve el EndPoint,
-                "next": URL con la siguiente página (25 objetos) de resultados del EndPoint,
-                "previous": URL con la pagina anterior (25 objetos) de resultados del EndPoint,
-                "results": [
-                    {
-
-                        "id": identificador único de la localidad (int),
-                        "nombre": "Colegio Universitario Dr. Rafael Belloso Chacín Localidad Maracaibo",
-                        "siglas": "Siglas de IEU a la que pertenece la localidad",
-                        "id_ieu": identificador de la IEU a la que pertenece la localidad (int),
-                        "web_site": URL del web site de la localidad (str)",
-                        "direccion": dirección de la que pertenece el programa académico (str),
-                        "estado": estado de la localidad (str),
-                        "municipio": municipio de la localidad (str),
-                        "parroquia": parroquia de la localidad  (str),
-                        "centro_poblado": centro poblado de la localidad (str),
-                        "punto": punto georeferenciado de la localidad (str),
-                        "poligonal": poligonal georeferenciada de la localidad (str),
-                        "fachada": ruta de la imagen de la fachada de la localidad (str),
-                        "logo": ruta de la imagen del logo de la IEU (str),
-                        "dep_admin": indica si la IEU es publica o provada (str)
-                        "localidad_principal": Indica si la localidad es la localidad principal de la IEU (bool),
-                        "activo": Indica si la localidad esta activa o no (bool)
-                        },
-                    }
-                ]
-            }
     """
 
     serializer_class = ListaLocalidadSerializer
@@ -700,6 +642,107 @@ class LocalidadViewSet(viewsets.ReadOnlyModelViewSet):
 
         return super(LocalidadViewSet, self).get_serializer_class()
 
+    detail_localidad_response = openapi.Response(
+        "Detalle de las Localidades", DetalleLocalidadSerializer
+    )
+
+    list_localidad_response = openapi.Response(
+        "Lista de las Localidades", ListaLocalidadSerializer
+    )
+
+    id_param = openapi.Parameter(
+        "id",
+        in_="query",
+        required=False,
+        description="Lista de los id de las Localidades (1,2,n) sin paréntesis. Filtra las Localidades corespondientes.",
+        type="char",
+    )
+
+    estado_param = openapi.Parameter(
+        "id_estado",
+        in_="query",
+        required=False,
+        description="Lista de los id de los estados (1,2,n) sin paréntesis. Filtra las Localidades de los correspondientes estados.",
+        type="char",
+    )
+    municipio_param = openapi.Parameter(
+        "id_municipio",
+        in_="query",
+        required=False,
+        description="Lista de los id de los municipios (1,2,n) sin paréntesis. Filtra las Localidades de los correspondientes municipios.",
+        type="char",
+    )
+    parroquia_param = openapi.Parameter(
+        "id_parroquia",
+        in_="query",
+        required=False,
+        description="Lista de los id de las parroquias (1,2,n) sin paréntesis. Filtra las Localidades de las correspondientes parroquias.",
+        type="char",
+    )
+    tipo_programa_param = openapi.Parameter(
+        "id_tipo_programa",
+        in_="query",
+        require=False,
+        description="Lista de los id de los tipo_programa (1,2,n) sin paréntesis. Filtra las Localidades de los corespondientes tipo_programa.",
+        type="char",
+    )
+    titulo_param = openapi.Parameter(
+        "id_titulo",
+        in_="query",
+        require=False,
+        description="Lista de los id de los títulos (1,2,n) sin paréntesis. Filtra las Localidades de los corespondientes títulos.",
+        type="char",
+    )
+    area_param = openapi.Parameter(
+        "id_area",
+        in_="query",
+        require=False,
+        description="Lista de los id de las áreas de conocimiento (1,2,n) sin paréntesis. Filtra las Localidades de las corespondientes áreas de conocimiento.",
+        type="char",
+    )
+    sub_area_param = openapi.Parameter(
+        "id_sub_area",
+        in_="query",
+        require=False,
+        description="Lista de los id de los sub áreas de conocimiento (1,2,n) sin paréntesis. Filtra las Localidades de las corespondientes sub áreas de conocimiento.",
+        type="char",
+    )
+    nombre_programa_param = openapi.Parameter(
+        "nombre_programa",
+        in_="query",
+        require=False,
+        description="Lista de los de los nombres de programas académicos ('ABOGADO','INFORMÁTICA','MEDICINA') sin paréntesis y en mayúscula. Filtra las Localidades de los corespondientes nombres de programas académicos.",
+        type="char",
+    )
+    activo_param = openapi.Parameter(
+        "activo",
+        in_="query",
+        required=False,
+        description="Filtra las Localidades activos o inactivos.",
+        type="boolean",
+    )
+
+    @swagger_auto_schema(
+        name="Lista de las Localidades de las Instituciones de Educación Universitaria en Venezuela",
+        tags=["EndPoints de Instituciones de Educación Universitaria"],
+        query_serializer=ListaLocalidadSerializer,
+        manual_parameters=[
+            id_param,
+            estado_param,
+            municipio_param,
+            parroquia_param,
+            activo_param,
+            tipo_programa_param,
+            titulo_param,
+            area_param,
+            sub_area_param,
+            nombre_programa_param,
+        ],
+        operation_description="Devuelve una lista de las Localidades de pregrado del subsistema de educación universitaria en Venezuela.",
+        operation_summary="Lista de las Localidades de las Instituciones de Educación Universitaria en Venezuela",
+        responses={"200": list_localidad_response, "400": "Bad Request"},
+        operation_id="Lista Programas Academicos",
+    )
     def list(self, request):
         """
         Viewset to list of Localidad
@@ -763,6 +806,16 @@ class LocalidadViewSet(viewsets.ReadOnlyModelViewSet):
         serializer = self.get_serializer(page, many=True)
         return self.get_paginated_response(serializer.data)
 
+    @swagger_auto_schema(
+        name="Detalle de la Localidad",
+        tags=["EndPoints de Instituciones de Educación Universitaria"],
+        query_serializer=DetalleProgramaAcademicoSerializer,
+        manual_parameters=[id_param],
+        operation_description="Devuelve el detalle de la Localidad.",
+        operation_summary="Detalle de la Localidad.",
+        responses={"200": detail_localidad_response, "400": "Bad Request"},
+        operation_id="Detalle Programa Académico",
+    )
     def retrieve(self, request):
         """
         Viewset to get one Localidad
@@ -771,76 +824,6 @@ class LocalidadViewSet(viewsets.ReadOnlyModelViewSet):
         queryset = get_object_or_404(Localidad, pk=object_id)
         serializer = self.get_serializer(queryset)
         return Response(serializer.data)
-
-
-# #################################################################################### #
-class LocalidadViewSet1(viewsets.ReadOnlyModelViewSet):
-
-    queryset = Localidad.objects.all()
-    serializer_class = DetalleLocalidadSerializer
-
-    def list(self, request):
-        """
-        Viewset to list of Localidad
-        """
-        queryset = self.filter_queryset(self.get_queryset())
-
-        id_estado = self.request.query_params.get("id_estado", None)
-        id_municipio = self.request.query_params.get("id_municipio", None)
-        id_parroquia = self.request.query_params.get("id_parroquia", None)
-        id_ieu = self.request.query_params.get("id_ieu", None)
-        id_tipo_ieu = self.request.query_params.get("id_tipo_ieu", None)
-        object_id = self.request.query_params.get("id", None)
-        dep_admin = self.request.query_params.get("dep_admin", None)
-        activo = self.request.query_params.get("activo", None)
-        id_tipo_programa = self.request.query_params.get("id_tipo_programa", None)
-        id_area = self.request.query_params.get("id_area", None)
-        id_sub_area = self.request.query_params.get("id_sub_area", None)
-        nombre_programa = self.request.query_params.get("nombre_programa", None)
-
-        if activo == "0":
-            queryset = queryset.filter(
-                ~Q(cod_activacion="11011111"), ~Q(cod_activacion="10011111")
-            )
-        else:
-            queryset = queryset.filter(
-                Q(cod_activacion="11011111") | Q(cod_activacion="10011111")
-            )
-
-        if id_estado:
-            queryset = queryset.filter(estado__in=id_estado.split(","))
-        if id_municipio:
-            queryset = queryset.filter(municipio__in=id_municipio.split(","))
-        if id_parroquia:
-            queryset = queryset.filter(parroquia__in=id_parroquia.split(","))
-        if id_ieu:
-            queryset = queryset.filter(ieu__in=id_ieu.split(","))
-        if id_tipo_ieu:
-            queryset = queryset.filter(
-                ieu__tipo_especifico_ieu__in=id_tipo_ieu.split(",")
-            )
-        if object_id:
-            queryset = queryset.filter(pk__in=object_id.split(","))
-        if dep_admin:
-            queryset = queryset.filter(
-                ieu__institucion_ministerial__dep_admin=dep_admin
-            )
-        if id_tipo_programa:
-            queryset = queryset.filter(tipo_carrera__in=id_tipo_programa.split(","))
-        if id_area:
-            queryset = queryset.filter(area_conocimiento__in=id_area.split(","))
-        if id_sub_area:
-            queryset = queryset.filter(sub_area_conocimiento__in=id_sub_area.split(","))
-        if nombre_programa:
-            carreras = Carrera.objects.filter(
-                nombre__in=nombre_programa.split(",")
-            ).values("localidad")
-            queryset = queryset.filter(pk__in=carreras)
-
-        self.pagination_class = CustomPagination
-        page = self.paginate_queryset(queryset)
-        serializer = self.get_serializer(page, many=True)
-        return self.get_paginated_response(serializer.data)
 
 
 # #################################################################################### #
