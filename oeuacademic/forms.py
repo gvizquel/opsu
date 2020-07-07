@@ -228,7 +228,6 @@ class CarreraPreGradoForm(ModelForm):
         else:
 
             if self.filtro:
-                print(self.filtro)
                 self.fields["localidad_edit"].queryset = Localidad.objects.filter(
                     id=self.filtro
                 )

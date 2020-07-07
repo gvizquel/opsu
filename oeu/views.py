@@ -96,7 +96,6 @@ class TipoEspecificoIeuAutocomplete(autocomplete.Select2QuerySetView):
             queryset = queryset.filter(sub_tipo_ieu=sub_tipo_ieu_edit)
 
         if self.q:
-            print(self.q)
             queryset = queryset.filter(
                 Q(nombre__icontains=self.q) | Q(sub_tipo_ieu__nombre__icontains=self.q)
             )
@@ -535,7 +534,6 @@ class EditarModeloComplejo(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
         formsets_form.append(contexto.get("titulo_form")) if contexto.get(
             "titulo_form"
         ) else formsets_form
-        print(formsets_form)
 
         for formset in formsets_form:
             if not formset.is_valid():

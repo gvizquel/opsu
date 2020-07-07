@@ -21,7 +21,6 @@ DEBUG = ENVIROMENT("DEBUG")
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-print(BASE_DIR)
 
 GOOGLE_RECAPTCHA_SECRET_KEY = "6LevF1gUAAAAAPn3z8EswCgIk1S_jLKYdf4s62B9"
 

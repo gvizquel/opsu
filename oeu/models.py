@@ -755,12 +755,15 @@ class Localidad(models.Model):
             self.municipio = self.municipio_edit
             self.parroquia = self.parroquia_edit
             self.centro_poblado = self.centro_poblado_edit.upper()
-            self.punto = self.punto_edit
+            self.punto = self.punto_edit.rstrip()
             self.poligonal = self.poligonal_edit
 
     def save(self, *args, **kwargs):
         if self.pk is not None:
             self.ieu_edit = self.ieu
+            # self.punto_edit = self.punto_edit.rstrip()
+            # self.punto = self.punto_edit
+            print(self.punto_edit)
 
         super().save(*args, **kwargs)
 
@@ -1048,13 +1051,6 @@ class Carrera(models.Model):
         related_name="CineFCampoDetallado2",
         null=True,
     )
-    titulo = models.ForeignKey(
-        "oeuconfig.Titulo",
-        on_delete=models.PROTECT,
-        db_index=True,
-        blank=True,
-        null=True,
-    )
     institucion_acreditadora = models.ForeignKey(
         "Ieu",
         on_delete=models.PROTECT,
@@ -1074,7 +1070,6 @@ class Carrera(models.Model):
         blank=True,
         null=True,
     )
-    duracion = models.SmallIntegerField(blank=True, null=True)
     localidad_edit = models.ForeignKey(
         Localidad,
         db_column="localidad_edit",
@@ -1114,14 +1109,6 @@ class Carrera(models.Model):
         related_name="CineFCampoDetallado3",
         null=True,
     )
-    titulo_edit = models.ForeignKey(
-        "oeuconfig.Titulo",
-        db_column="titulo_edit",
-        on_delete=models.PROTECT,
-        related_name="titulo",
-        blank=True,
-        null=True,
-    )
     ieu_acreditadora_edit = models.ForeignKey(
         "Ieu",
         on_delete=models.PROTECT,
@@ -1142,7 +1129,6 @@ class Carrera(models.Model):
         blank=True,
         null=True,
     )
-    duracion_edit = models.SmallIntegerField(blank=True, null=True)
     publicar = models.BooleanField(default=False)
     cod_activacion = models.CharField(max_length=9, blank=True, null=True)
     sfc = models.ManyToManyField("oeuconfig.SoporteFormalCambio", through="CarreraSfc")
