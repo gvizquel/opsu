@@ -375,9 +375,9 @@ class ProgramaAcademicoViewSet(viewsets.ReadOnlyModelViewSet):
         id_tipo_ieu = self.request.query_params.get("id_tipo_ieu", None)
         id_localidad = self.request.query_params.get("id_localidad", None)
         dep_admin = self.request.query_params.get("dep_admin", None)
-        activo = self.request.query_params.get("activo", "true")
         nombre_programa = self.request.query_params.get("nombre_programa", None)
         object_id = self.request.query_params.get("id", None)
+        activo = self.request.query_params.get("activo", "true")
 
         if activo == "false":
             queryset = queryset.filter(
@@ -398,8 +398,6 @@ class ProgramaAcademicoViewSet(viewsets.ReadOnlyModelViewSet):
             queryset = queryset.filter(localidad__parroquia__in=id_parroquia.split(","))
         if id_tipo_programa:
             queryset = queryset.filter(tipo_carrera__in=id_tipo_programa.split(","))
-        if id_titulo:
-            queryset = queryset.filter(titulo__in=id_titulo.split(","))
         if id_area:
             queryset = queryset.filter(area_conocimiento__in=id_area.split(","))
         if id_sub_area:
@@ -418,6 +416,9 @@ class ProgramaAcademicoViewSet(viewsets.ReadOnlyModelViewSet):
             )
         if nombre_programa:
             queryset = queryset.filter(nombre__in=nombre_programa.split(","))
+
+        if id_titulo:
+            queryset = queryset.filter(titula__in=id_titulo.split(","))
 
         self.pagination_class = CustomPagination
         page = self.paginate_queryset(queryset)
@@ -756,19 +757,20 @@ class LocalidadViewSet(viewsets.ReadOnlyModelViewSet):
         id_tipo_ieu = self.request.query_params.get("id_tipo_ieu", None)
         object_id = self.request.query_params.get("id", None)
         dep_admin = self.request.query_params.get("dep_admin", None)
-        activo = self.request.query_params.get("activo", None)
         id_tipo_programa = self.request.query_params.get("id_tipo_programa", None)
         id_area = self.request.query_params.get("id_area", None)
         id_sub_area = self.request.query_params.get("id_sub_area", None)
         nombre_programa = self.request.query_params.get("nombre_programa", None)
+        id_titulo = self.request.query_params.get("id_titulo", None)
+        activo = self.request.query_params.get("activo", "true")
 
-        if activo == "0":
-            queryset = queryset.filter(
-                ~Q(cod_activacion="11011111"), ~Q(cod_activacion="10011111")
-            )
-        else:
+        if activo == "true":
             queryset = queryset.filter(
                 Q(cod_activacion="11011111") | Q(cod_activacion="10011111")
+            )
+        elif activo == "false":
+            queryset = queryset.filter(
+                ~Q(cod_activacion="11011111"), ~Q(cod_activacion="10011111")
             )
 
         if id_estado:
@@ -796,10 +798,17 @@ class LocalidadViewSet(viewsets.ReadOnlyModelViewSet):
         if id_sub_area:
             queryset = queryset.filter(sub_area_conocimiento__in=id_sub_area.split(","))
         if nombre_programa:
-            carreras = Carrera.objects.filter(
+            localidades = Carrera.objects.filter(
                 nombre__in=nombre_programa.split(",")
             ).values("localidad")
-            queryset = queryset.filter(pk__in=carreras)
+            queryset = queryset.distinct().filter(pk__in=localidades)
+        if id_titulo:
+            localidades = (
+                Carrera.objects.distinct()
+                .filter(titula__in=id_titulo.split(","))
+                .values("localidad")
+            )
+            queryset = queryset.distinct().filter(pk__in=localidades)
 
         self.pagination_class = CustomPagination
         page = self.paginate_queryset(queryset)

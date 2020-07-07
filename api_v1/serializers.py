@@ -145,7 +145,7 @@ class ListaLocalidadSerializer(serializers.ModelSerializer):
     )
     activo = serializers.SerializerMethodField("registro_activo")
     nombre = serializers.SerializerMethodField("get_nombre_localidad")
-    punto = serializers.DictField(read_only=True)
+    punto = serializers.JSONField(read_only=True)
     localidad_principal = serializers.SerializerMethodField("get_localidad_principal")
 
     class Meta:
@@ -206,8 +206,8 @@ class DetalleLocalidadSerializer(serializers.ModelSerializer):
     activo = serializers.SerializerMethodField("registro_activo")
     nombre = serializers.SerializerMethodField("get_nombre_localidad")
     localidad_principal = serializers.SerializerMethodField("get_localidad_principal")
-    punto = serializers.DictField(read_only=True)
-    poligonal = serializers.DictField()
+    punto = serializers.JSONField(read_only=True)
+    poligonal = serializers.JSONField()
     estado = serializers.CharField(source="estado.nombre")
     municipio = serializers.CharField(source="municipio.nombre")
     parroquia = serializers.CharField(source="parroquia.nombre")
@@ -387,7 +387,6 @@ class DetalleProgramaAcademicoSerializer(serializers.ModelSerializer):
             "descripcion",
             "mercado_ocupacional",
             "periodicidad",
-            "duracion",
             "prioritaria",
             "activo",
         ]
@@ -405,7 +404,6 @@ class DetalleProgramaAcademicoSerializer(serializers.ModelSerializer):
             "descripcion",
             "mercado_ocupacional",
             "periodicidad",
-            "duracion",
             "prioritaria",
             "activo",
         ]

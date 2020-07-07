@@ -42,10 +42,7 @@ schema_view = get_schema_view(
 app_name = "api_v1"
 
 urlpatterns = [
-    path(
-        "test/", TemplateView.as_view(template_name="datatabletest.html"), name="test"
-    ),
-    path("", TemplateView.as_view(template_name="api_v1_doc.html"), name="api-index"),
+    # path("", TemplateView.as_view(template_name="api_v1_doc.html"), name="schema-swagger-ui"),
     # ###################### Programas Academicos de Pre Grado ####################### #
     path(
         "programa-academico/pre-grado/listar/",
@@ -108,15 +105,13 @@ urlpatterns = [
         name="detalle-localidad",
     ),
     # ################### Swagger #################### #
-    re_path(
-        r"^swagger(?P<format>\.json|\.yaml)$",
-        schema_view.without_ui(cache_timeout=0),
-        name="schema-json",
-    ),
+    # re_path(
+    #     r"^swagger(?P<format>\.json|\.yaml)$",
+    #     schema_view.without_ui(cache_timeout=0),
+    #     name="schema-json",
+    # ),
     path(
-        "swagger/",
-        schema_view.with_ui("swagger", cache_timeout=0),
-        name="schema-swagger-ui",
+        "", schema_view.with_ui("swagger", cache_timeout=0), name="schema-swagger-ui",
     ),
-    path("redoc/", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc"),
+    # path("redoc/", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc"),
 ]

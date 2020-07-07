@@ -70,8 +70,7 @@ class SubAreaConocimientoAutoComplete(autocomplete.Select2QuerySetView):
 
     def get_queryset(self):
 
-        area = self.forwarded.get("area_conocimiento_edit", None)
-        print(area)
+        # area = self.forwarded.get("area_conocimiento_edit", None)
 
         queryset = SubAreaConocimiento.objects.all()
 
