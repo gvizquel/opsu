@@ -3,7 +3,6 @@
 # Django Libraries
 from django.conf.urls import re_path
 from django.urls import path
-from django.views.generic import TemplateView
 
 # Thirdparty Libraries
 from drf_yasg import openapi
