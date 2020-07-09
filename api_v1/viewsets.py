@@ -294,7 +294,6 @@ class ProgramaAcademicoViewSet(viewsets.ReadOnlyModelViewSet):
     tipo_programa_param = openapi.Parameter(
         "id_tipo_programa",
         in_="query",
-        require=False,
         description="Lista de los id de los tipo_programa (1,2,n) sin paréntesis. Filtra los programas académicos de los corespondientes tipo_programa.",
         type="char",
     )
@@ -353,10 +352,6 @@ class ProgramaAcademicoViewSet(viewsets.ReadOnlyModelViewSet):
         operation_summary="Lista los programas académicos de Venezuela",
         responses={"200": list_carrera_response, "400": "Bad Request"},
         operation_id="Lista Programas Academicos",
-        # properties={
-        #     "x": openapi.Schema(type=openapi.TYPE_STRING, description="string"),
-        #     "y": openapi.Schema(type=openapi.TYPE_STRING, description="string"),
-        # },
     )
     def list(self, request):
         """
@@ -371,10 +366,10 @@ class ProgramaAcademicoViewSet(viewsets.ReadOnlyModelViewSet):
         id_titulo = self.request.query_params.get("id_titulo", None)
         id_area = self.request.query_params.get("id_area", None)
         id_sub_area = self.request.query_params.get("id_sub_area", None)
-        id_ieu = self.request.query_params.get("id_ieu", None)
-        id_tipo_ieu = self.request.query_params.get("id_tipo_ieu", None)
-        id_localidad = self.request.query_params.get("id_localidad", None)
-        dep_admin = self.request.query_params.get("dep_admin", None)
+        id_ieu = self.request.query_params.get("id_ieu", None)  # *******
+        id_tipo_ieu = self.request.query_params.get("id_tipo_ieu", None)  # *******
+        id_localidad = self.request.query_params.get("id_localidad", None)  # *******
+        dep_admin = self.request.query_params.get("dep_admin", None)  # *******
         nombre_programa = self.request.query_params.get("nombre_programa", None)
         object_id = self.request.query_params.get("id", None)
         activo = self.request.query_params.get("activo", "true")
