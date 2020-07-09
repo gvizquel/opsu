@@ -81,16 +81,6 @@ class EstadoViewset(viewsets.ReadOnlyModelViewSet):
         type="char",
     )
 
-    @swagger_auto_schema(
-        name="Lista de estados",
-        tags=["EndPoints de División Político Territorial"],
-        query_serializer=ListaEstadoSerializer,
-        manual_parameters=[id_param],
-        operation_description="Devuelve una lista de estados.",
-        operation_summary="Lista de estados.",
-        responses={"200": estado_response, "400": "Bad Request"},
-        operation_id="Lista de Estados",
-    )
     def list(self, request):
         """
         Metodo to list estados
