@@ -345,8 +345,8 @@ class ListaProgramaAcademicoNombreSerializer(serializers.Serializer):
     """Serializador para los nombres de losprogramas academicos.
     """
 
-    id = serializers.IntegerField()
-    nombre = serializers.CharField(max_length=200)
+    id = serializers.IntegerField(read_only=True)
+    nombre = serializers.CharField(max_length=200, read_only=True)
 
 
 class DetalleProgramaAcademicoSerializer(serializers.ModelSerializer):
