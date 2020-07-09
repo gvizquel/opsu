@@ -300,28 +300,28 @@ class ProgramaAcademicoViewSet(viewsets.ReadOnlyModelViewSet):
     titulo_param = openapi.Parameter(
         "id_titulo",
         in_="query",
-        require=False,
+        required=False,
         description="Lista de los id de los títulos (1,2,n) sin paréntesis. Filtra los programas académicos de los corespondientes títulos.",
         type="char",
     )
     area_param = openapi.Parameter(
         "id_area",
         in_="query",
-        require=False,
+        required=False,
         description="Lista de los id de las áreas de conocimiento (1,2,n) sin paréntesis. Filtra los programas académicos de las corespondientes áreas de conocimiento.",
         type="char",
     )
     sub_area_param = openapi.Parameter(
         "id_sub_area",
         in_="query",
-        require=False,
+        required=False,
         description="Lista de los id de los sub áreas de conocimiento (1,2,n) sin paréntesis. Filtra los programas académicos de las corespondientes sub áreas de conocimiento.",
         type="char",
     )
     nombre_programa_param = openapi.Parameter(
         "nombre_programa",
         in_="query",
-        require=False,
+        required=False,
         description="Lista de los de los nombres de programas académicos ('ABOGADO','INFORMÁTICA','MEDICINA') sin paréntesis y en mayúscula. Filtra los programas académicos de los corespondientes nombres de programas académicos.",
         type="char",
     )
@@ -678,34 +678,35 @@ class LocalidadViewSet(viewsets.ReadOnlyModelViewSet):
     tipo_programa_param = openapi.Parameter(
         "id_tipo_programa",
         in_="query",
+        required=False,
         description="Lista de los id de los tipo_programa (1,2,n) sin paréntesis. Filtra las Localidades de los corespondientes tipo_programa.",
         type="char",
     )
     titulo_param = openapi.Parameter(
         "id_titulo",
         in_="query",
-        require=False,
+        required=False,
         description="Lista de los id de los títulos (1,2,n) sin paréntesis. Filtra las Localidades de los corespondientes títulos.",
         type="char",
     )
     area_param = openapi.Parameter(
         "id_area",
         in_="query",
-        require=False,
+        required=False,
         description="Lista de los id de las áreas de conocimiento (1,2,n) sin paréntesis. Filtra las Localidades de las corespondientes áreas de conocimiento.",
         type="char",
     )
     sub_area_param = openapi.Parameter(
         "id_sub_area",
         in_="query",
-        require=False,
+        required=False,
         description="Lista de los id de los sub áreas de conocimiento (1,2,n) sin paréntesis. Filtra las Localidades de las corespondientes sub áreas de conocimiento.",
         type="char",
     )
     nombre_programa_param = openapi.Parameter(
         "nombre_programa",
         in_="query",
-        require=False,
+        required=False,
         description="Lista de los de los nombres de programas académicos ('ABOGADO','INFORMÁTICA','MEDICINA') sin paréntesis y en mayúscula. Filtra las Localidades de los corespondientes nombres de programas académicos.",
         type="char",
     )
