@@ -678,7 +678,6 @@ class LocalidadViewSet(viewsets.ReadOnlyModelViewSet):
     tipo_programa_param = openapi.Parameter(
         "id_tipo_programa",
         in_="query",
-        require=False,
         description="Lista de los id de los tipo_programa (1,2,n) sin paréntesis. Filtra las Localidades de los corespondientes tipo_programa.",
         type="char",
     )
@@ -818,7 +817,7 @@ class LocalidadViewSet(viewsets.ReadOnlyModelViewSet):
         operation_description="Devuelve el detalle de la Localidad.",
         operation_summary="Detalle de la Localidad.",
         responses={"200": detail_localidad_response, "400": "Bad Request"},
-        operation_id="Detalle Programa Académico",
+        operation_id="Detalle Localidad IEU",
     )
     def retrieve(self, request):
         """
