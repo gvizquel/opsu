@@ -62,43 +62,6 @@ class CustomPagination(pagination.PageNumberPagination):
 
 
 # #################################################################################### #
-class EstadoViewset(viewsets.ReadOnlyModelViewSet):
-    """
-    ## Obtener Estado
-    Este EndPoint puede devolver uno o una lista de los estados de Venezuela.
-    """
-
-    serializer_class = ListaEstadoSerializer
-    queryset = Estado.objects.all()
-
-    estado_response = openapi.Response("Estado", ListaEstadoSerializer)
-
-    id_param = openapi.Parameter(
-        "id",
-        in_="query",
-        required=False,
-        description="Lista de los id de los estados (1,2,n) sin paréntesis. Filtra los estados corespondientes.",
-        type="char",
-    )
-
-    def list(self, request):
-        """
-        Metodo to list estados
-        """
-        queryset = self.filter_queryset(self.get_queryset())
-
-        object_id = self.request.query_params.get("id", None)
-
-        if object_id:
-            queryset = queryset.filter(pk__in=object_id.split(","))
-
-        self.pagination_class = CustomPagination
-        page = self.paginate_queryset(queryset)
-        serializer = self.get_serializer(page, many=True)
-        return self.get_paginated_response(serializer.data)
-
-
-# #################################################################################### #
 class MunicipioViewset(viewsets.ReadOnlyModelViewSet):
     """
     ## Obtener Municipio
@@ -148,6 +111,53 @@ class MunicipioViewset(viewsets.ReadOnlyModelViewSet):
             queryset = queryset.filter(pk__in=object_id.split(","))
         if id_estado:
             queryset = queryset.filter(estado__in=id_estado.split(","))
+
+        self.pagination_class = CustomPagination
+        page = self.paginate_queryset(queryset)
+        serializer = self.get_serializer(page, many=True)
+        return self.get_paginated_response(serializer.data)
+
+
+# #################################################################################### #
+class EstadoViewset(viewsets.ReadOnlyModelViewSet):
+    """
+    ## Obtener Estado
+    Este EndPoint puede devolver uno o una lista de los estados de Venezuela.
+    """
+
+    serializer_class = ListaEstadoSerializer
+    queryset = Estado.objects.all()
+
+    estado_response = openapi.Response("Estado", ListaEstadoSerializer)
+
+    id_param = openapi.Parameter(
+        "id",
+        in_="query",
+        required=False,
+        description="Lista de los id de los estados (1,2,n) sin paréntesis. Filtra los estados corespondientes.",
+        type="char",
+    )
+
+    @swagger_auto_schema(
+        name="Lista de estados",
+        tags=["EndPoints de División Político Territorial"],
+        query_serializer=ListaEstadoSerializer,
+        manual_parameters=[id_param],
+        operation_description="Devuelve una lista de estados.",
+        operation_summary="Lista de estados.",
+        responses={"200": estado_response, "400": "Bad Request"},
+        operation_id="Lista de Estados",
+    )
+    def list(self, request):
+        """
+        Metodo to list estados
+        """
+        queryset = self.filter_queryset(self.get_queryset())
+
+        object_id = self.request.query_params.get("id", None)
+
+        if object_id:
+            queryset = queryset.filter(pk__in=object_id.split(","))
 
         self.pagination_class = CustomPagination
         page = self.paginate_queryset(queryset)
