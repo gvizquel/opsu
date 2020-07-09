@@ -281,7 +281,7 @@ class ListaProgramaAcademicoSerializer(serializers.ModelSerializer):
     datos esta activo o no.
     """
 
-    tipo_programa = serializers.CharField(source="tipo_carrera")
+    tipo_programa = serializers.CharField(source="tipo_carrera", read_only=True)
     titulo = serializers.SerializerMethodField("get_titulo")
     activo = serializers.SerializerMethodField("registro_activo")
     area_conocimiento = serializers.CharField(
