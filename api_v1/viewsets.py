@@ -737,7 +737,7 @@ class LocalidadViewSet(viewsets.ReadOnlyModelViewSet):
         operation_description="Devuelve una lista de las Localidades de pregrado del subsistema de educación universitaria en Venezuela.",
         operation_summary="Lista de las Localidades de las Instituciones de Educación Universitaria en Venezuela",
         responses={"200": list_localidad_response, "400": "Bad Request"},
-        operation_id="Lista Programas Academicos",
+        operation_id="Lista Localidades de las IEU",
     )
     def list(self, request):
         """
