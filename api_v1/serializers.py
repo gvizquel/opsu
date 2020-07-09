@@ -41,7 +41,7 @@ class ListaEstadoSerializer(serializers.ModelSerializer):
 
 # #################################################################################### #
 class ListaMunicipioSerializer(serializers.ModelSerializer):
-    """Serializador para los Estados.
+    """Serializador para los Municipios.
     """
 
     class Meta:
