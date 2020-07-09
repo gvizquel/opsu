@@ -62,6 +62,53 @@ class CustomPagination(pagination.PageNumberPagination):
 
 
 # #################################################################################### #
+class EstadoViewset(viewsets.ReadOnlyModelViewSet):
+    """
+    ## Obtener Estado
+    Este EndPoint puede devolver uno o una lista de los estados de Venezuela.
+    """
+
+    serializer_class = ListaEstadoSerializer
+    queryset = Estado.objects.all()
+
+    estado_response = openapi.Response("Estado", ListaEstadoSerializer)
+
+    id_param = openapi.Parameter(
+        "id",
+        in_="query",
+        required=False,
+        description="Lista de los id de los estados (1,2,n) sin paréntesis. Filtra los estados corespondientes.",
+        type="string",
+    )
+
+    @swagger_auto_schema(
+        name="Lista de estados",
+        tags=["EndPoints de División Político Territorial"],
+        query_serializer=ListaEstadoSerializer,
+        manual_parameters=[id_param],
+        operation_description="Devuelve una lista de estados.",
+        operation_summary="Lista de estados.",
+        responses={"200": estado_response, "400": "Bad Request"},
+        operation_id="Lista Estados",
+    )
+    def list(self, request):
+        """
+        Metodo to list estados
+        """
+        queryset = self.filter_queryset(self.get_queryset())
+
+        object_id = self.request.query_params.get("id", None)
+
+        if object_id:
+            queryset = queryset.filter(pk__in=object_id.split(","))
+
+        self.pagination_class = CustomPagination
+        page = self.paginate_queryset(queryset)
+        serializer = self.get_serializer(page, many=True)
+        return self.get_paginated_response(serializer.data)
+
+
+# #################################################################################### #
 class MunicipioViewset(viewsets.ReadOnlyModelViewSet):
     """
     ## Obtener Municipio
@@ -78,14 +125,14 @@ class MunicipioViewset(viewsets.ReadOnlyModelViewSet):
         in_="query",
         required=False,
         description="Lista de los id de los Municipios (1,2,n) sin paréntesis. Filtra los Municipios corespondientes.",
-        type="char",
+        type="string",
     )
     estado_param = openapi.Parameter(
         "id_estado",
         in_="query",
         required=False,
         description="Lista de los id de los Estados (1,2,n) sin paréntesis. Filtra los Municipios de los Estados corespondientes.",
-        type="char",
+        type="string",
     )
 
     @swagger_auto_schema(
@@ -119,53 +166,6 @@ class MunicipioViewset(viewsets.ReadOnlyModelViewSet):
 
 
 # #################################################################################### #
-class EstadoViewset(viewsets.ReadOnlyModelViewSet):
-    """
-    ## Obtener Estado
-    Este EndPoint puede devolver uno o una lista de los estados de Venezuela.
-    """
-
-    serializer_class = ListaEstadoSerializer
-    queryset = Estado.objects.all()
-
-    estado_response = openapi.Response("Estado", ListaEstadoSerializer)
-
-    id_param = openapi.Parameter(
-        "id",
-        in_="query",
-        required=False,
-        description="Lista de los id de los estados (1,2,n) sin paréntesis. Filtra los estados corespondientes.",
-        type="char",
-    )
-
-    @swagger_auto_schema(
-        name="Lista de estados",
-        tags=["EndPoints de División Político Territorial"],
-        query_serializer=ListaEstadoSerializer,
-        manual_parameters=[id_param],
-        operation_description="Devuelve una lista de estados.",
-        operation_summary="Lista de estados.",
-        responses={"200": estado_response, "400": "Bad Request"},
-        operation_id="Lista de Estados",
-    )
-    def list(self, request):
-        """
-        Metodo to list estados
-        """
-        queryset = self.filter_queryset(self.get_queryset())
-
-        object_id = self.request.query_params.get("id", None)
-
-        if object_id:
-            queryset = queryset.filter(pk__in=object_id.split(","))
-
-        self.pagination_class = CustomPagination
-        page = self.paginate_queryset(queryset)
-        serializer = self.get_serializer(page, many=True)
-        return self.get_paginated_response(serializer.data)
-
-
-# #################################################################################### #
 class ParroquiaViewset(viewsets.ReadOnlyModelViewSet):
     """
     ## Obtener Parroquia
@@ -182,21 +182,21 @@ class ParroquiaViewset(viewsets.ReadOnlyModelViewSet):
         in_="query",
         required=False,
         description="Lista de los id de los Parroquias (1,2,n) sin paréntesis. Filtra los Parroquias corespondientes.",
-        type="char",
+        type="string",
     )
     estado_param = openapi.Parameter(
         "id_estado",
         in_="query",
         required=False,
         description="Lista de los id de los Estados (1,2,n) sin paréntesis. Filtra los Parroquias de los Estados corespondientes.",
-        type="char",
+        type="string",
     )
     municipio_param = openapi.Parameter(
         "id_municipio",
         in_="query",
         required=False,
         description="Lista de los id de las Municipios (1,2,n) sin paréntesis. Filtra las Parroquias de los Municipios corespondientes.",
-        type="char",
+        type="string",
     )
 
     @swagger_auto_schema(
@@ -267,7 +267,7 @@ class ProgramaAcademicoViewSet(viewsets.ReadOnlyModelViewSet):
         in_="query",
         required=False,
         description="Lista de los id de las Localidades (1,2,n) sin paréntesis. Filtra los programa académico corespondientes.",
-        type="char",
+        type="string",
     )
 
     estado_param = openapi.Parameter(
@@ -275,55 +275,55 @@ class ProgramaAcademicoViewSet(viewsets.ReadOnlyModelViewSet):
         in_="query",
         required=False,
         description="Lista de los id de los estados (1,2,n) sin paréntesis. Filtra los programas académicos de los correspondientes estados.",
-        type="char",
+        type="string",
     )
     municipio_param = openapi.Parameter(
         "id_municipio",
         in_="query",
         required=False,
         description="Lista de los id de los municipios (1,2,n) sin paréntesis. Filtra los programas académicos de los correspondientes municipios.",
-        type="char",
+        type="string",
     )
     parroquia_param = openapi.Parameter(
         "id_parroquia",
         in_="query",
         required=False,
         description="Lista de los id de las parroquias (1,2,n) sin paréntesis. Filtra los programas académicos de las correspondientes parroquias.",
-        type="char",
+        type="string",
     )
     tipo_programa_param = openapi.Parameter(
         "id_tipo_programa",
         in_="query",
         description="Lista de los id de los tipo_programa (1,2,n) sin paréntesis. Filtra los programas académicos de los corespondientes tipo_programa.",
-        type="char",
+        type="string",
     )
     titulo_param = openapi.Parameter(
         "id_titulo",
         in_="query",
         required=False,
         description="Lista de los id de los títulos (1,2,n) sin paréntesis. Filtra los programas académicos de los corespondientes títulos.",
-        type="char",
+        type="string",
     )
     area_param = openapi.Parameter(
         "id_area",
         in_="query",
         required=False,
         description="Lista de los id de las áreas de conocimiento (1,2,n) sin paréntesis. Filtra los programas académicos de las corespondientes áreas de conocimiento.",
-        type="char",
+        type="string",
     )
     sub_area_param = openapi.Parameter(
         "id_sub_area",
         in_="query",
         required=False,
         description="Lista de los id de los sub áreas de conocimiento (1,2,n) sin paréntesis. Filtra los programas académicos de las corespondientes sub áreas de conocimiento.",
-        type="char",
+        type="string",
     )
     nombre_programa_param = openapi.Parameter(
         "nombre_programa",
         in_="query",
         required=False,
         description="Lista de los de los nombres de programas académicos ('ABOGADO','INFORMÁTICA','MEDICINA') sin paréntesis y en mayúscula. Filtra los programas académicos de los corespondientes nombres de programas académicos.",
-        type="char",
+        type="string",
     )
     activo_param = openapi.Parameter(
         "activo",
@@ -493,7 +493,7 @@ class TipoIeuViewSet(viewsets.ReadOnlyModelViewSet):
         in_="query",
         required=False,
         description="Lista de los id de los tipos de IEU (1,2,n) sin paréntesis. Filtra los tipos de iue corespondientes.",
-        type="char",
+        type="string",
     )
 
     @swagger_auto_schema(
@@ -551,21 +551,21 @@ class IeuViewSet(viewsets.ReadOnlyModelViewSet):
         in_="query",
         required=False,
         description="Lista de los id de las Instituciones de Educación Universitaria (1,2,n) sin paréntesis. Filtra las Instituciones de Educación Universitaria corespondientes.",
-        type="char",
+        type="string",
     )
     tipo_ieu__param = openapi.Parameter(
         "id_tipo_ieu",
         in_="query",
         required=False,
         description="Lista de los id de los tipos de IEU (1,2,n) sin paréntesis. Filtra las Instituciones de Educación Universitaria segun los tipos de IEU corespondientes.",
-        type="char",
+        type="string",
     )
     dep_admin_param = openapi.Parameter(
         "dep_admin",
         in_="query",
         required=False,
         description="Tipo de administración de las (PÚBLICA, PRIVADA) sin paréntesis. Filtra las Instituciones de Educación Universitaria según su tipo de admnistración.",
-        type="char",
+        type="string",
     )
     activo_param = openapi.Parameter(
         "activo",
@@ -651,7 +651,7 @@ class LocalidadViewSet(viewsets.ReadOnlyModelViewSet):
         in_="query",
         required=False,
         description="Lista de los id de las Localidades (1,2,n) sin paréntesis. Filtra las Localidades corespondientes.",
-        type="char",
+        type="string",
     )
 
     estado_param = openapi.Parameter(
@@ -659,56 +659,56 @@ class LocalidadViewSet(viewsets.ReadOnlyModelViewSet):
         in_="query",
         required=False,
         description="Lista de los id de los estados (1,2,n) sin paréntesis. Filtra las Localidades de los correspondientes estados.",
-        type="char",
+        type="string",
     )
     municipio_param = openapi.Parameter(
         "id_municipio",
         in_="query",
         required=False,
         description="Lista de los id de los municipios (1,2,n) sin paréntesis. Filtra las Localidades de los correspondientes municipios.",
-        type="char",
+        type="string",
     )
     parroquia_param = openapi.Parameter(
         "id_parroquia",
         in_="query",
         required=False,
         description="Lista de los id de las parroquias (1,2,n) sin paréntesis. Filtra las Localidades de las correspondientes parroquias.",
-        type="char",
+        type="string",
     )
     tipo_programa_param = openapi.Parameter(
         "id_tipo_programa",
         in_="query",
         required=False,
         description="Lista de los id de los tipo_programa (1,2,n) sin paréntesis. Filtra las Localidades de los corespondientes tipo_programa.",
-        type="char",
+        type="string",
     )
     titulo_param = openapi.Parameter(
         "id_titulo",
         in_="query",
         required=False,
         description="Lista de los id de los títulos (1,2,n) sin paréntesis. Filtra las Localidades de los corespondientes títulos.",
-        type="char",
+        type="string",
     )
     area_param = openapi.Parameter(
         "id_area",
         in_="query",
         required=False,
         description="Lista de los id de las áreas de conocimiento (1,2,n) sin paréntesis. Filtra las Localidades de las corespondientes áreas de conocimiento.",
-        type="char",
+        type="string",
     )
     sub_area_param = openapi.Parameter(
         "id_sub_area",
         in_="query",
         required=False,
         description="Lista de los id de los sub áreas de conocimiento (1,2,n) sin paréntesis. Filtra las Localidades de las corespondientes sub áreas de conocimiento.",
-        type="char",
+        type="string",
     )
     nombre_programa_param = openapi.Parameter(
         "nombre_programa",
         in_="query",
         required=False,
         description="Lista de los de los nombres de programas académicos ('ABOGADO','INFORMÁTICA','MEDICINA') sin paréntesis y en mayúscula. Filtra las Localidades de los corespondientes nombres de programas académicos.",
-        type="char",
+        type="string",
     )
     activo_param = openapi.Parameter(
         "activo",
@@ -848,7 +848,7 @@ class AreaViewSet(viewsets.ReadOnlyModelViewSet):
         in_="query",
         required=False,
         description="Lista de los id de las Áreas de Conocimiento (1,2,n) sin paréntesis. Filtra las Áreas de Conocimiento corespondientes.",
-        type="char",
+        type="string",
     )
 
     @swagger_auto_schema(
@@ -895,7 +895,7 @@ class SubAreaViewSet(viewsets.ReadOnlyModelViewSet):
         in_="query",
         required=False,
         description="Lista de los id de las Sub Áreas de Conocimiento (1,2,n) sin paréntesis. Filtra las Sub Áreas de Conocimiento corespondientes.",
-        type="char",
+        type="string",
     )
 
     id_area = openapi.Parameter(
@@ -903,7 +903,7 @@ class SubAreaViewSet(viewsets.ReadOnlyModelViewSet):
         in_="query",
         required=False,
         description="Lista de los id de las Áreas de Conocimiento (1,2,n) sin paréntesis. Filtra las Áreas de Conocimiento corespondientes a las Sub Áreas de Conocimiento.",
-        type="char",
+        type="string",
     )
 
     @swagger_auto_schema(
@@ -955,7 +955,7 @@ class TituloViewSet(viewsets.ReadOnlyModelViewSet):
         in_="query",
         required=False,
         description="Lista de los id de los Tíulos de Grado de los Programas Académicos (1,2,n) sin paréntesis. Filtra los Tíulos de Grado de los Programas Académicos corespondientes.",
-        type="char",
+        type="string",
     )
 
     @swagger_auto_schema(
@@ -1004,7 +1004,7 @@ class TipoProgramaViewSet(viewsets.ReadOnlyModelViewSet):
         in_="query",
         required=False,
         description="Lista de los id de los Tipos de Programa Académico (1,2,n) sin paréntesis. Filtra los Tipos de Programa Académico corespondientes.",
-        type="char",
+        type="string",
     )
 
     @swagger_auto_schema(
