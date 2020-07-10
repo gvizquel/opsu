@@ -370,6 +370,7 @@ class DetalleProgramaAcademicoSerializer(serializers.ModelSerializer):
         source="sub_area_conocimiento.nombre", read_only=True,
     )
     localidad = serializers.CharField(source="localidad.nombre", read_only=True,)
+    periodicidad = serializers.CharField(source="periodicidad.nombre", read_only=True,)
 
     class Meta:
         model = Carrera
