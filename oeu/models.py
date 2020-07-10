@@ -1182,9 +1182,7 @@ class Carrera(models.Model):
             self.institucion_acreditadora = self.ieu_acreditadora_edit
             self.nombre = self.nombre_edit.upper()
             self.descripcion = self.descripcion_edit
-            self.titulo = self.titulo_edit
             self.periodicidad = self.periodicidad_edit
-            self.duracion = self.duracion_edit
             self.mercado_ocupacional = self.mercado_ocupacional_edit
 
     def save(self, *args, **kwargs):

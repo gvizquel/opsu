@@ -109,7 +109,7 @@ class CarreraPreGradoForm(ModelForm):
             "localidad_edit": ("Localidad"),
             "nombre_edit": ("Nombre"),
             "descripcion_edit": ("Descripción"),
-            "titulo_edit": ("Título"),
+            # "titulo_edit": ("Título"),
             "tipo_carrera_edit": ("Tipo de Programa"),
             # "ieu_acreditadora_edit": ("Institución Acreditadora"),
             "mercado_ocupacional_edit": ("Mercado Ocupacional"),
@@ -171,13 +171,13 @@ class CarreraPreGradoForm(ModelForm):
                     "data-placeholder": "Sub Área de Conocimiento...",
                 }
             ),
-            "titulo_edit": autocomplete.ModelSelect2(
-                url="oeuacademic:titulo",
-                attrs={
-                    "class": "form-control select2",
-                    "data-placeholder": "Titulo de egreso",
-                },
-            ),
+            # "titulo_edit": autocomplete.ModelSelect2(
+            #     url="oeuacademic:titulo",
+            #     attrs={
+            #         "class": "form-control select2",
+            #         "data-placeholder": "Titulo de egreso",
+            #     },
+            # ),
             "periodicidad_edit": forms.Select(
                 attrs={
                     "class": "form-control select2",
