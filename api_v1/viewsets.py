@@ -252,7 +252,7 @@ class ProgramaAcademicoViewSet(viewsets.ReadOnlyModelViewSet):
         if hasattr(self, "action_serializers"):
             return self.action_serializers.get(self.action, self.serializer_class)
 
-        return super(LocalidadViewSet, self).get_serializer_class()
+        return super(ProgramaAcademicoViewSet, self).get_serializer_class()
 
     detail_carrera_response = openapi.Response(
         "Detalle del programa académico", DetalleProgramaAcademicoSerializer
@@ -318,6 +318,35 @@ class ProgramaAcademicoViewSet(viewsets.ReadOnlyModelViewSet):
         description="Lista de los id de los sub áreas de conocimiento (1,2,n) sin paréntesis. Filtra los programas académicos de las corespondientes sub áreas de conocimiento.",
         type="string",
     )
+    ieu_param = openapi.Parameter(
+        "id_ieu",
+        in_="query",
+        required=False,
+        description="Lista de los id de las instituciones de educación universitaria (1,2,n) sin paréntesis. Filtra los programas académicos de las corespondientes instituciones de educación universitaria.",
+        type="string",
+    )
+    tipo_ieu_param = openapi.Parameter(
+        "id_tipo_ieu",
+        in_="query",
+        required=False,
+        description="Lista de los id de los tipos de IEU (1,2,n) sin paréntesis. Filtra los programas académicos de los corespondientes tipos de IEU.",
+        type="string",
+    )
+    localidad_param = openapi.Parameter(
+        "id_localidad",
+        in_="query",
+        required=False,
+        description="Lista de los id de las localidades (1,2,n) sin paréntesis. Filtra los programas académicos de las corespondientes localidades.",
+        type="string",
+    )
+    admin_param = openapi.Parameter(
+        "dep_admin",
+        in_="query",
+        required=False,
+        enum=("PÚBLICA", "PRIVADA"),
+        description="Filtra los Programas Académicos por su tipo de gestión PÚBLICA o PRIVADA.",
+        type="string",
+    )
     nombre_programa_param = openapi.Parameter(
         "nombre_programa",
         in_="query",
@@ -341,12 +370,16 @@ class ProgramaAcademicoViewSet(viewsets.ReadOnlyModelViewSet):
             estado_param,
             municipio_param,
             parroquia_param,
-            activo_param,
             tipo_programa_param,
             titulo_param,
             area_param,
             sub_area_param,
+            ieu_param,
+            tipo_ieu_param,
+            localidad_param,
+            admin_param,
             nombre_programa_param,
+            activo_param,
         ],
         operation_description="Devuelve una lista de los programas académicos de pregrado del subsistema de educación universitaria en Venezuela.",
         operation_summary="Lista los programas académicos de Venezuela",
@@ -366,10 +399,10 @@ class ProgramaAcademicoViewSet(viewsets.ReadOnlyModelViewSet):
         id_titulo = self.request.query_params.get("id_titulo", None)
         id_area = self.request.query_params.get("id_area", None)
         id_sub_area = self.request.query_params.get("id_sub_area", None)
-        id_ieu = self.request.query_params.get("id_ieu", None)  # *******
-        id_tipo_ieu = self.request.query_params.get("id_tipo_ieu", None)  # *******
-        id_localidad = self.request.query_params.get("id_localidad", None)  # *******
-        dep_admin = self.request.query_params.get("dep_admin", None)  # *******
+        id_ieu = self.request.query_params.get("id_ieu", None)
+        id_tipo_ieu = self.request.query_params.get("id_tipo_ieu", None)
+        id_localidad = self.request.query_params.get("id_localidad", None)
+        dep_admin = self.request.query_params.get("dep_admin", None)
         nombre_programa = self.request.query_params.get("nombre_programa", None)
         object_id = self.request.query_params.get("id", None)
         activo = self.request.query_params.get("activo", "true")
@@ -787,11 +820,20 @@ class LocalidadViewSet(viewsets.ReadOnlyModelViewSet):
                 ieu__institucion_ministerial__dep_admin=dep_admin
             )
         if id_tipo_programa:
-            queryset = queryset.filter(tipo_carrera__in=id_tipo_programa.split(","))
+            localidades = Carrera.objects.filter(
+                tipo_carrera__in=id_tipo_programa.split(",")
+            ).values("localidad")
+            queryset = queryset.distinct().filter(pk__in=localidades)
         if id_area:
-            queryset = queryset.filter(area_conocimiento__in=id_area.split(","))
+            localidades = Carrera.objects.filter(
+                area_conocimiento__in=id_area.split(",")
+            ).values("localidad")
+            queryset = queryset.distinct().filter(pk__in=localidades)
         if id_sub_area:
-            queryset = queryset.filter(sub_area_conocimiento__in=id_sub_area.split(","))
+            localidades = Carrera.objects.filter(
+                sub_area_conocimiento__in=id_sub_area.split(",")
+            ).values("localidad")
+            queryset = queryset.distinct().filter(pk__in=localidades)
         if nombre_programa:
             localidades = Carrera.objects.filter(
                 nombre__in=nombre_programa.split(",")

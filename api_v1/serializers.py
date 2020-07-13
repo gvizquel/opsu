@@ -415,21 +415,16 @@ class DetalleProgramaAcademicoSerializer(serializers.ModelSerializer):
         return False
 
     def get_titulo(self, obj):
-        titulo_srt = ""
+        titulo_srt = "<ul class='detail-list' style='max-width: 77px;, height: auto;'>"
         titulos = CarreraTitulo.objects.filter(carrera=obj.id)
         for titulo in titulos:
-            if titulo_srt:
-                titulo_srt = "{}<br>{} ({} {})".format(
-                    titulo_srt,
-                    titulo.titulo,
-                    titulo.duracion,
-                    obj.periodicidad.descripcion,
-                )
-            else:
-                titulo_srt = "{} ({} {})".format(
-                    titulo.titulo, titulo.duracion, obj.periodicidad.descripcion,
-                )
-        return titulo_srt
+            titulo_srt = "{}<li>{} ({} {})</li>".format(
+                titulo_srt,
+                titulo.titulo,
+                titulo.duracion,
+                obj.periodicidad.descripcion,
+            )
+        return "{}{}".format(titulo_srt, "</ul>")
 
 
 class TipoIeuEspecificoSerializer(serializers.ModelSerializer):
