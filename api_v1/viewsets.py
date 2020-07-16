@@ -7,6 +7,9 @@ import math
 # Django Libraries
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
+from django.views.decorators.vary import vary_on_cookie
 
 # Thirdparty Libraries
 from drf_yasg import openapi
@@ -386,6 +389,8 @@ class ProgramaAcademicoViewSet(viewsets.ReadOnlyModelViewSet):
         responses={"200": list_carrera_response, "400": "Bad Request"},
         operation_id="Lista Programas Academicos",
     )
+    @method_decorator(cache_page(60 * 60 * 24))
+    @method_decorator(vary_on_cookie)
     def list(self, request):
         """
         Viewset to list all academic programs
@@ -772,6 +777,8 @@ class LocalidadViewSet(viewsets.ReadOnlyModelViewSet):
         responses={"200": list_localidad_response, "400": "Bad Request"},
         operation_id="Lista Localidades de las IEU",
     )
+    @method_decorator(cache_page(60 * 60 * 24))
+    @method_decorator(vary_on_cookie)
     def list(self, request):
         """
         Viewset to list of Localidad

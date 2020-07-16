@@ -687,7 +687,7 @@ class Localidad(models.Model):
     )
     centro_poblado_edit = models.CharField(max_length=255)
     punto_edit = PointField()
-    poligonal_edit = PolygonField()
+    poligonal_edit = PolygonField(blank=True, null=True)
     fachada_edit = models.ImageField(
         max_length=255,
         blank=True,
