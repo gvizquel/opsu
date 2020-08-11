@@ -61,7 +61,7 @@ class Autor(models.Model):
     #     null=True,
     # )
     ciudad_nacimiento = models.CharField(
-        _("Last Name"), max_length=120, blank=True, null=True
+        _("Ciudad Nacimiento"), max_length=120, blank=True, null=True
     )
     fecha_defuncion = models.DateField(_("Fecha de Defunción"), blank=True, null=True)
     # pais_defuncion = models.ForeignKey(
@@ -73,7 +73,7 @@ class Autor(models.Model):
     #     null=True,
     # )
     ciudad_defuncion = models.CharField(
-        _("Last Name"), max_length=120, blank=True, null=True
+        _("Ciudad Defunción"), max_length=120, blank=True, null=True
     )
     resumen_biografico = RichTextField(_("Resumen Biográfico"), blank=True, null=True)
     foto = models.ImageField(
@@ -118,7 +118,7 @@ class Editor(models.Model):
     #     null=True,
     # )
     ciudad_nacimiento = models.CharField(
-        _("Last Name"), max_length=120, blank=True, null=True
+        _("Ciudad Nacimiento"), max_length=120, blank=True, null=True
     )
     fecha_defuncion = models.DateField(_("Fecha de Defunción"), blank=True, null=True)
     # pais_defuncion = models.ForeignKey(
@@ -130,7 +130,7 @@ class Editor(models.Model):
     #     null=True,
     # )
     ciudad_defuncion = models.CharField(
-        _("Last Name"), max_length=120, blank=True, null=True
+        _("Ciudad Defunción"), max_length=120, blank=True, null=True
     )
     resumen_biografico = RichTextField(_("Resumen Biográfico"), blank=True, null=True)
     foto = models.ImageField(
@@ -158,7 +158,7 @@ class Editorial(models.Model):
     """
 
     name = models.CharField(_("Nombre"), max_length=30)
-    direccion = models.CharField(_("Last Name"), max_length=120, blank=True, null=True)
+    direccion = models.TextField(_("Dirección"), blank=True, null=True)
 
     def __str__(self):
         return "{}".format(self.name)
