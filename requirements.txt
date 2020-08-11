@@ -3,13 +3,13 @@ astroid==2.3.3
 attrs==19.3.0
 autopep8==1.5
 black==19.10b0
-certifi==2020.4.5.2
+certifi==2020.6.20
 cfgv==3.1.0
 chardet==3.0.4
 click==7.1.1
 coreapi==2.3.3
 coreschema==0.0.4
-distlib==0.3.0
+distlib==0.3.1
 Django==2.2.13
 django-autocomplete-light==3.5.1
 django-ckeditor==5.9.0
@@ -29,8 +29,8 @@ filelock==3.0.12
 flake8==3.7.9
 gunicorn==20.0.4
 identify==1.4.13
-idna==2.9
-importlib-metadata==1.6.1
+idna==2.10
+importlib-metadata==1.7.0
 inflection==0.5.0
 isort==4.3.21
 itypes==1.2.0
@@ -46,7 +46,7 @@ nodeenv==1.3.5
 packaging==20.4
 pathspec==0.7.0
 pep8==1.7.1
-Pillow==7.0.0
+Pillow==7.2.0
 pre-commit==2.2.0
 psycopg2-binary==2.8.4
 pycodestyle==2.5.0
@@ -68,8 +68,8 @@ toml==0.10.0
 typed-ast==1.4.1
 typing-extensions==3.7.4.1
 uritemplate==3.0.1
-urllib3==1.25.9
+urllib3==1.25.10
 virtualenv==20.0.15
-whitenoise==5.1.0
+whitenoise==5.2.0
 wrapt==1.11.2
 zipp==3.1.0
