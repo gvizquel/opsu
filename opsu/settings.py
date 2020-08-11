@@ -54,6 +54,7 @@ DATABASES = {
 ################################ Application definition ################################
 INSTALLED_APPS = [
     # My apps #
+    "books",
     "globales",
     "oeuacademic",
     "oeuconfig",
@@ -283,6 +284,17 @@ SUIT_CONFIG = {
             "label": "Personas y Grupos",
             "icon": "icon-user",
             "models": ("cuenta.Persona", "auth.group", "admin.LogEntry"),
+        },
+        {
+            "label": "Publicaciones",
+            "icon": "icon-book",
+            "models": (
+                "books.Publicacion",
+                "books.Autor",
+                "books.Editor",
+                "books.Editorial",
+                "books.Categoria",
+            ),
         },
     ),
     # misc
