@@ -755,15 +755,12 @@ class Localidad(models.Model):
             self.municipio = self.municipio_edit
             self.parroquia = self.parroquia_edit
             self.centro_poblado = self.centro_poblado_edit.upper()
-            self.punto = self.punto_edit.rstrip()
+            self.punto = self.punto_edit
             self.poligonal = self.poligonal_edit
 
     def save(self, *args, **kwargs):
         if self.pk is not None:
             self.ieu_edit = self.ieu
-            # self.punto_edit = self.punto_edit.rstrip()
-            # self.punto = self.punto_edit
-            print(self.punto_edit)
 
         super().save(*args, **kwargs)
 
