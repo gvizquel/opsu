@@ -282,7 +282,6 @@ class AgregarModeloComplejo(LoginRequiredMixin, SuccessMessageMixin, CreateView)
         self.object.cod_activacion = self.get_cod_activacion()
         self.object.publicar = False
         with transaction.atomic():
-            LOGGER.info("AQUI")
             self.object.save()
             for formulario in formsets_form:
                 formulario.instance = self.object

@@ -614,12 +614,6 @@ class LocalidadForm(ModelForm):
                 "parroquia_edit"
             ].queryset = self.instance.municipio_edit.parroquia_set.order_by("nombre")
 
-    def clean(self):
-        cleaned_data = super().clean()
-        punto_edit = cleaned_data.get("punto_edit")
-        print("punto_edit")
-        print(punto_edit)
-
 
 ##############################################################################
 #########                       FormSet Generales                   ##########

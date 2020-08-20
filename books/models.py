@@ -35,10 +35,6 @@ def image_path_portada(instance, filename):
     return os.path.join("portada", str(instance.pk) + "." + filename.rsplit(".", 1)[1])
 
 
-# Autor, título, edición, editorial, Lugar de edición, Editorial, año, ISBN
-# Título, mención de responsabilidad, ISSN, volumen, número y fecha de publicación.Título, Lugar de edición, fecha de publicación, editor, volumen, número e ISSN
-
-
 # #################################################################################### #
 class Autor(models.Model):
     """
