@@ -433,6 +433,7 @@ class IeuForm(ModelForm):
                 url="oeu:tipo-especifico-ieu",
                 attrs={
                     "class": "form-control",
+                    "style": "width:100%",
                     "data-placeholder": "Tipo Especifico IEU ...",
                 },
             ),
@@ -441,6 +442,7 @@ class IeuForm(ModelForm):
                 forward=["tipo_especifico_ieu_edit"],
                 attrs={
                     "class": "form-control",
+                    "style": "width:100%",
                     "data-placeholder": "Institución Ministerial ...",
                 },
             ),

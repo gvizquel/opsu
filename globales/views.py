@@ -63,6 +63,9 @@ class InstitucionIeuAutoComplete(autocomplete.Select2QuerySetView):
     def get_queryset(self):
         queryset = InstitucionMinisterial.objects.filter(tipo_institucion="IEU")
 
+        gestion = self.forwarded.get("gestion", None)
+        print(gestion)
+
         if self.q:
             queryset = queryset.filter(nombre__icontains=self.q)
 
@@ -126,8 +129,11 @@ class MunicipioAutocomplete(autocomplete.Select2QuerySetView):
 
 
 def load_municipio(request):
-    estado_id = request.GET.get("estado")
-    municipios = Municipio.objects.filter(estado=estado_id).order_by("nombre")
+    municipios = Municipio.objects.all().order_by("nombre")
+
+    if request.GET.get("estado"):
+        municipios = Municipio.objects.filter(estado=request.GET.get("estado"))
+
     return render(
         request, "municipio_dropdown_list_options.html", {"municipios": municipios}
     )
@@ -149,8 +155,14 @@ class ParroquiaAutocomplete(autocomplete.Select2QuerySetView):
 
 
 def load_parroquia(request):
-    municipio_id = request.GET.get("municipio")
-    parroquias = Parroquia.objects.filter(municipio=municipio_id).order_by("nombre")
+    parroquias = Parroquia.objects.all().order_by("nombre")
+
+    if request.GET.get("estado"):
+        parroquias = parroquias.filter(estado=request.GET.get("estado"))
+
+    if request.GET.get("municipio"):
+        parroquias = parroquias.filter(municipio=request.GET.get("municipio"))
+
     return render(
         request, "parroquia_dropdown_list_options.html", {"parroquias": parroquias}
     )

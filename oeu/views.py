@@ -9,7 +9,7 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db import transaction
-from django.db.models import Count, Q
+from django.db.models import Count, F, Q
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.utils.safestring import mark_safe
@@ -850,4 +850,89 @@ def talero_oeu(request):
             "programa_area": serial_programa_area,
             "programa_gestion": serial_programa_gestion,
         },
+    )
+
+
+def set_if_not_none(mapping, key, value):
+    """ Esta función agrega valores a los kwargs de filtrado de una consulta del ORM,
+    Siempre y cuando estos valores sean distintos de None y distintos de vacio
+    """
+    if (value is not None and value) or (isinstance(value, bool)) or (value == 0):
+        mapping[key] = value
+
+
+# #################################################################################### #
+def load_institucion_ministerial(request):
+    filters_kwargs = {}
+
+    estado = request.GET.get("estado", None)
+    municipio = request.GET.get("municipio", None)
+    parroquia = request.GET.get("parroquia", None)
+    gestion = request.GET.get("gestion", None)
+
+    set_if_not_none(
+        filters_kwargs,
+        "localidad__ieu__institucion_ministerial__tipo_institucion",
+        "IEU",
+    )
+    set_if_not_none(filters_kwargs, "localidad__estado", estado)
+    set_if_not_none(filters_kwargs, "localidad__municipio", municipio)
+    set_if_not_none(filters_kwargs, "localidad__parroquia", parroquia)
+    set_if_not_none(
+        filters_kwargs, "localidad__ieu__institucion_ministerial__dep_admin", gestion
+    )
+
+    instituciones = (
+        Carrera.objects.filter(**filters_kwargs)
+        .annotate(
+            nombre_institucion=F("localidad__ieu__institucion_ministerial__nombre"),
+            id_institucion=F("localidad__ieu__institucion_ministerial__pk"),
+        )
+        .values("nombre_institucion", "id_institucion",)
+        .distinct("nombre_institucion", "id_institucion",)
+        .order_by("nombre_institucion", "id_institucion",)
+    )
+
+    return render(
+        request,
+        "institucion_ministerial_dropdown_list_options.html",
+        {"instituciones": instituciones},
+    )
+
+
+# #################################################################################### #
+def load_tipo_gestion(request):
+    filters_kwargs = {}
+    set_if_not_none(
+        filters_kwargs,
+        "localidad__ieu__institucion_ministerial__tipo_institucion",
+        "IEU",
+    )
+    set_if_not_none(
+        filters_kwargs,
+        "localidad__estado",
+        request.GET.get("estado") if request.GET.get("estado") else None,
+    )
+    set_if_not_none(
+        filters_kwargs,
+        "localidad__municipio",
+        request.GET.get("municipio") if request.GET.get("municipio") else None,
+    )
+    set_if_not_none(
+        filters_kwargs,
+        "localidad__parroquia",
+        request.GET.get("parroquia") if request.GET.get("parroquia") else None,
+    )
+    tipo_gestion = (
+        Carrera.objects.filter(**filters_kwargs)
+        .annotate(tipo_gestion=F("localidad__ieu__institucion_ministerial__dep_admin"),)
+        .values("tipo_gestion",)
+        .distinct("tipo_gestion",)
+        .order_by("tipo_gestion",)
+    )
+
+    return render(
+        request,
+        "tipo_gestion_dropdown_list_options.html",
+        {"tipo_gestion": tipo_gestion},
     )

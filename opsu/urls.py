@@ -12,6 +12,7 @@ urlpatterns = [
     path("loeu/", include("oeu.urls")),
     path("loeu/configuracion/", include("oeuconfig.urls")),
     path("loeu/programas-academicos/", include("oeuacademic.urls")),
+    path("loeu/reportes/", include("reporte_loeu.urls")),
     path("", include("cuenta.urls")),
     path("configuraciones/", include("globales.urls")),
     path("admin/", admin.site.urls),
