@@ -39,4 +39,4 @@ def is_in_user_group(grupo, usuario):
     return usuario.groups.filter(name=grupo).exists()
 
 
-# jinja2.tests.TESTS["in_user_group"] = is_in_user_group
+jinja2.tests.TESTS["in_user_group"] = is_in_user_group
