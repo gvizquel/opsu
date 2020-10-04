@@ -177,26 +177,17 @@ class CarreraPreGradoForm(ModelForm):
             ),
             "cine_f_campo_amplio_edit": autocomplete.ModelSelect2(
                 url="oeuacademic:cine-f-campo-amplio",
-                attrs={
-                    "class": "form-control",
-                    "data-placeholder": "Seleccione Una Opción",
-                },
+                attrs={"class": "form-control", "data-placeholder": "a Opción"},
             ),
             "cine_f_campo_especifico_edit": autocomplete.ModelSelect2(
                 url="oeuacademic:cine-f-campo-especifico",
                 forward=["cine_f_campo_amplio_edit"],
-                attrs={
-                    "class": "form-control",
-                    "data-placeholder": "Seleccione Una Opción",
-                },
+                attrs={"class": "form-control", "data-placeholder": "a Opción"},
             ),
             "cine_f_campo_detallado_edit": autocomplete.ModelSelect2(
                 url="oeuacademic:cine-f-campo-detallado",
                 forward=["cine_f_campo_especifico_edit"],
-                attrs={
-                    "class": "form-control",
-                    "data-placeholder": "Seleccione Una Opción",
-                },
+                attrs={"class": "form-control", "data-placeholder": "a Opción"},
             ),
             "duracion_edit": forms.NumberInput(attrs={"class": "form-control"},),
             "prioritaria_edit": forms.CheckboxInput(),

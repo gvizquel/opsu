@@ -1,0 +1,254 @@
+{% extends "base_jinja.html" %}
+
+{% block title %} {{ titulo }} {% endblock title %}
+
+{% block stylesheets %}
+{{ super() }}
+<!-- DataTables -->
+<link rel="stylesheet" href="{{ static('bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css') }}">
+<link rel="stylesheet"
+    href="{{ static('bower_components/datatables.net-responsive-bs/css/responsive.bootstrap.min.css') }}">
+<link rel="stylesheet" href="{{ static('bower_components/datatables.net-buttons-bs/css/buttons.bootstrap.min.css') }}">
+{% endblock stylesheets %}
+
+{% block content %}
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            IEU:
+            <small>{{ titulo }}</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Resumen LOEU</a></li>
+            <li><a href="{{ url('globales:listar-institucion-ministerial') }}">{{ titulo }}</a></li>
+            <li class="active">{% if object %}Editar {% else %}Agregar {% endif %}</li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="col-md-12">
+            <div class="box box-success">
+                <div class="box-body">
+                    <form autocomplete="off" id="tabular-report-form" method="post">
+                        <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                        {{ crispy(form) }}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+{% endblock content %}
+
+{% block javascripts %}
+{{ super() }}
+<script type="text/javascript" src="{{ static('autocomplete_light/jquery.init.js') }}"></script>
+<script type="text/javascript" src="{{ static('autocomplete_light/autocomplete.init.js') }}"></script>
+<script type="text/javascript" src="{{ static('autocomplete_light/vendor/select2/dist/js/select2.full.js') }}"></script>
+<script type="text/javascript" src="{{ static('autocomplete_light/select2.js') }}"></script>
+{{ form.media.js }}
+<script type="text/javascript">
+    // Select2 que no es del auto-complete-ligth
+
+    $(function () {
+        //Initialize Select2 Elements
+        $('.select2').select2();
+
+        $("#id_estado").select2({
+            placeholder: "ESTADO...",
+            allowClear: true
+        });
+        $("#id_municipio").select2({
+            placeholder: "MUNICIPIO...",
+            allowClear: true
+        });
+        $("#id_parroquia").select2({
+            placeholder: "PARROQUIA...",
+            allowClear: true
+        });
+        $("#id_gestion").select2({
+            placeholder: "TIPO DE GESTIÓN...",
+            allowClear: true
+        });
+        $("#id_ieu").select2({
+            placeholder: "INSTIUCIÓN DE EDUCACIÓN UNIVERSITARIA...",
+            allowClear: true
+        });
+        $("#id_cod_activacion").select2({
+            placeholder: "OFERTA ACTIVA",
+            allowClear: true
+        });
+
+    });
+
+
+    $(document).ready(function () {
+
+        $("#id_estado").select2({
+            placeholder: 'ESTADO...',
+            closeOnSelect: true,
+            allowClear: true,
+            ajax: {
+                url: "{{ url('api_v1:estado') }}",
+                dataType: 'json',
+                cache: true,
+                delay: 100,
+                data: function (params) {
+                    return {
+                        q: params.term,
+                        page: params.page || 1
+                    };
+                }
+            }
+        });
+
+    });
+
+
+    $("#id_estado").change(function () {
+        $('#id_municipio').val(null).trigger('change');
+        $("#id_parroquia").val(null).trigger('change');
+        $("#id_gestion").val(null).trigger('change');
+        $("#cod_activacion").val(null).trigger('change');
+        $("#area").val(null).trigger('change');
+        $("#sub_area").val(null).trigger('change');
+        $("#titulo").val(null).trigger('change');
+        /*  var url_municipio = "{{ url('globales:ajax-load-municipios') }}";
+        var url_parroquia = "{{ url('globales:ajax-load-parroquias') }}";
+        var url_gestion = "{{ url('oeu:ajax-load-tipo-gestion') }}";
+        var url_ieu = "{{ url('oeu:ajax-load-institcion-ministerial') }}";
+        var estadoId = $(this).val();
+
+        $.ajax({
+            url: url_municipio,
+            data: {
+                'estado': estadoId
+            },
+            success: function (data) {
+                $("#id_municipio").html(data);
+            }
+        });
+
+        $.ajax({
+            url: url_parroquia,
+            data: {
+                'estado': estadoId
+            },
+            success: function (data) {
+                $("#id_parroquia").html(data);
+            }
+        });
+
+        $.ajax({
+            url: url_gestion,
+            data: {
+                'estado': estadoId
+            },
+            success: function (data) {
+                $("#id_gestion").html(data);
+            }
+        });
+
+        $.ajax({
+            url: url_ieu,
+            data: {
+                'estado': estadoId
+            },
+            success: function (data) {
+                $("#id_ieu").html(data);
+            }
+        });
+*/
+    });
+
+    $("#id_municipio").change(function () {
+        var url_parroquia = "{{ url('globales:ajax-load-parroquias') }}";
+        var url_gestion = "{{ url('oeu:ajax-load-tipo-gestion') }}";
+        var url_ieu = "{{ url('oeu:ajax-load-institcion-ministerial') }}";
+        var municipioId = $(this).val();
+
+        $.ajax({
+            url: url_parroquia,
+            data: {
+                'municipio': municipioId
+            },
+            success: function (data) {
+                $("#id_parroquia").html(data);
+            }
+        });
+
+        $.ajax({
+            url: url_gestion,
+            data: {
+                'municipio': municipioId
+            },
+            success: function (data) {
+                $("#id_gestion").html(data);
+            }
+        });
+
+        $.ajax({
+            url: url_ieu,
+            data: {
+                'municipio': municipioId
+            },
+            success: function (data) {
+                $("#id_ieu").html(data);
+            }
+        });
+
+    });
+
+    $("#id_parroquia").change(function () {
+        var url_gestion = "{{ url('oeu:ajax-load-tipo-gestion') }}";
+        var url_ieu = "{{ url('oeu:ajax-load-institcion-ministerial') }}";
+        var parroquiaId = $(this).val();
+
+        $.ajax({
+            url: url_gestion,
+            data: {
+                'parroquia': parroquiaId
+            },
+            success: function (data) {
+                $("#id_gestion").html(data);
+            }
+        });
+
+        $.ajax({
+            url: url_ieu,
+            data: {
+                'parroquia': parroquiaId
+            },
+            success: function (data) {
+                $("#id_ieu").html(data);
+            }
+        });
+
+    });
+
+    $("#id_gestion").change(function () {
+        var url_ieu = "{{ url('oeu:ajax-load-institcion-ministerial') }}";
+        var estadoId = $("#id_estado").val();
+        var municipioId = $("#id_municipio").val();
+        var parroquiaId = $("#id_parroquia").val();
+        var gestion = $(this).val();
+
+        $.ajax({
+            url: url_ieu,
+            data: {
+                'estado': estadoId,
+                'municipio': municipioId,
+                'parroquia': parroquiaId,
+                'gestion': gestion
+            },
+            success: function (data) {
+                $("#id_ieu").html(data);
+            }
+        });
+
+    });
+</script>
+{% endblock javascripts %}

@@ -11,6 +11,7 @@ from django.urls import reverse
 
 # Thirdparty Libraries
 import jinja2
+from crispy_forms.utils import render_crispy_form
 
 # Para ver la fecha y hora en español :-)
 locale.setlocale(locale.LC_TIME, "")
@@ -25,6 +26,7 @@ def environment(**options):
             "static": staticfiles_storage.url,
             "url": reverse,
             "get_messages": messages.get_messages,
+            "crispy": render_crispy_form,
         }
     )
     return env
@@ -37,4 +39,4 @@ def is_in_user_group(grupo, usuario):
     return usuario.groups.filter(name=grupo).exists()
 
 
-jinja2.tests.TESTS["in_user_group"] = is_in_user_group
+# jinja2.tests.TESTS["in_user_group"] = is_in_user_group

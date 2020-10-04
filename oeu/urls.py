@@ -54,6 +54,8 @@ from oeu.views import (
     SubTipoIeuAutoComplete,
     TipoEspecificoIeuAutocomplete,
     TipoIeuAutoComplete,
+    load_institucion_ministerial,
+    load_tipo_gestion,
     talero_oeu,
 )
 
@@ -380,4 +382,11 @@ urlpatterns = [
         ),
         name="eliminar-localidad",
     ),
+    # ajax
+    path(
+        "ajax/load-institucion-ministerial/",
+        load_institucion_ministerial,
+        name="ajax-load-institcion-ministerial",
+    ),
+    path("ajax/load-tipo-gestion/", load_tipo_gestion, name="ajax-load-tipo-gestion",),
 ]

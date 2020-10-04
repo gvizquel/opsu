@@ -1,0 +1,4 @@
+<option value="">INSTITUCIÓN DE EDUCACIÓN UNIVERSITARIA...</option>
+{% for institucion in instituciones %}
+<option value="{{ institucion.id_institucion }}">{{ institucion.nombre_institucion }}</option>
+{% endfor %}

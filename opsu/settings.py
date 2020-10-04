@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     "oeu",
     "cuenta",
     "api_v1",
+    "reporte_loeu",
     ####################
     "dal",
     "dal_select2",
@@ -78,10 +79,15 @@ INSTALLED_APPS = [
     "corsheaders",
     "rest_framework_datatables",
     "drf_yasg",
+    "crispy_forms",
+    "django_jinja",
     # 'django.contrib.sites',
     # 'debug_toolbar',
+    "django_extensions",
 ]
 
+# #################################################################################### #
+CRISPY_TEMPLATE_PACK = "bootstrap3"
 
 SESSION_SERIALIZER = "django.contrib.sessions.serializers.PickleSerializer"
 

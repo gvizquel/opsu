@@ -924,28 +924,6 @@ class LocalidadServicio(models.Model):
 
 
 # ########################################################################## #
-# class InstanciaAdministrativa(models.Model):
-#     """
-#     Este modelo controla las instancias administrativas para luego poder
-#     referenciar los teléfonos, correos, etc. de las localidades de las IEU
-#     """
-
-#     nombre = models.CharField(max_length=100)
-#     publicar = models.BooleanField(default=False)
-
-#     def __str__(self):
-#         return self.nombre
-
-#     class Meta:
-#         ordering = [
-#             "nombre",
-#         ]
-#         db_table = 'oeu"."instancia_administrativa'
-#         verbose_name = "Instancia Administrativa"
-#         verbose_name_plural = "Instancias Administrativas"
-
-
-# ########################################################################## #
 class CineFCampoAmplio(models.Model):
     """UNESCO CINE-F
     """
