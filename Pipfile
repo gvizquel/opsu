@@ -41,6 +41,7 @@ whitenoise = "*"
 djangorestframework-datatables = "*"
 drf-yasg = "*"
 django-crispy-forms = "*"
+xlsxwriter = "*"
 
 [requires]
 python_version = "3.7.3"

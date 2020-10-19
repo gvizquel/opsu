@@ -4,6 +4,7 @@
 import csv
 import datetime
 import functools
+import io
 import logging
 import operator
 
@@ -17,6 +18,7 @@ from django.urls import reverse_lazy
 from django.views.generic import FormView, TemplateView
 
 # Thirdparty Libraries
+import xlsxwriter
 from oeu.models import Carrera
 from reporte_loeu.forms import GeneralReportForm
 
@@ -54,9 +56,56 @@ class GeneralReportView(LoginRequiredMixin, SuccessMessageMixin, FormView):
         data = form.cleaned_data
         filters_kwargs = {}
         filters_args = []
-        rows = []
         today = datetime.datetime.now()
-        print(today)
+        output = io.BytesIO()
+        workbook = xlsxwriter.Workbook(output)
+        worksheet = workbook.add_worksheet()
+        headers = [
+            "INSTITUCIÓN DE EDUCACIÓN UNIVERSITARIA",
+            "TIPO DE INSTITUCIÓN DE EDUCACIÓN UNIVERSITARIA",
+            "COD_IEU",
+            "SIGLAS",
+            "TIPO DE GESTIÓN",
+            "TIPO DE LOCALIDAD",
+            "LOCALIDAD",
+            "ESTADO",
+            "MUNICIPIO",
+            "PARROQUIA",
+            "COD_LOCALIDAD",
+            "ÁREA DE CONOCIMINETO",
+            "COD_AREA",
+            "sUB ÁREA DE CONOCIMINETO",
+            "COD_SUB_AREA",
+            "PROGRAMA ACADÉMICO",
+            "COD_PROGRAMA",
+            "TIPO DE PROGRAMA",
+            "ACTIVO",
+        ]
+
+        for count, header in enumerate(headers):
+            worksheet.write(0, count, header)
+
+        worksheet.autofilter("A1:S1")
+
+        worksheet.set_column("A:A", 102)
+        worksheet.set_column("B:B", 61)
+        worksheet.set_column("C:C", 20)
+        worksheet.set_column("D:D", 20)
+        worksheet.set_column("E:E", 20)
+        worksheet.set_column("F:F", 23)
+        worksheet.set_column("G:G", 10)
+        worksheet.set_column("H:H", 18)
+        worksheet.set_column("I:I", 30)
+        worksheet.set_column("J:J", 48)
+        worksheet.set_column("K:K", 20)
+        worksheet.set_column("L:L", 48)
+        worksheet.set_column("M:M", 20)
+        worksheet.set_column("N:N", 64)
+        worksheet.set_column("O:O", 20)
+        worksheet.set_column("P:P", 89)
+        worksheet.set_column("Q:Q", 20)
+        worksheet.set_column("R:R", 23)
+        worksheet.set_column("S:S", 20)
 
         # Preparo los argumentos para filtrar las fotos del reporte en un diccionario
         set_if_not_none(
@@ -104,60 +153,51 @@ class GeneralReportView(LoginRequiredMixin, SuccessMessageMixin, FormView):
         response = HttpResponse(content_type="text/csv")
         response["Content-Disposition"] = 'attachment; filename="somefilename.csv"'
 
-        rows.append(
-            [
-                "INSTITUCIÓN DE EDUCACIÓN UNIVERSITARIA",
-                "COD_IEU",
-                "SIGLAS",
-                "TIPO DE GESTIÓN",
-                "TIPO DE LOCALIDAD",
-                "LOCALIDAD",
-                "COD_LOCALIDAD",
-                "ÁREA DE CONOCIMINETO",
-                "COD_AREA",
-                "sUB ÁREA DE CONOCIMINETO",
-                "COD_SUB_AREA",
-                "PROGRAMA ACADÉMICO",
-                "COD_PROGRAMA",
-                "TIPO DE PROGRAMA",
-                "ACTIVO",
-            ]
-        )
-
-        for programa in oferta_academica.iterator():
+        for count, programa in enumerate(oferta_academica.iterator()):
             if programa.cod_activacion == "11111111":
                 activo = "SI"
             else:
                 activo = "NO"
 
-            rows.append(
-                [
-                    programa.localidad.ieu.institucion_ministerial.nombre,
-                    programa.localidad.ieu.pk,
-                    programa.localidad.ieu.institucion_ministerial.siglas,
-                    programa.localidad.ieu.institucion_ministerial.dep_admin,
-                    programa.localidad.tipo_localidad.nombre,
-                    programa.localidad.nombre,
-                    programa.localidad.pk,
-                    programa.area_conocimiento.nombre,
-                    programa.area_conocimiento.pk,
-                    programa.sub_area_conocimiento.nombre,
-                    programa.sub_area_conocimiento.pk,
-                    programa.nombre,
-                    programa.pk,
-                    programa.tipo_carrera.nombre,
-                    activo,
-                ]
+            worksheet.write(
+                count + 1, 0, programa.localidad.ieu.institucion_ministerial.nombre
             )
+            worksheet.write(
+                count + 1, 1, programa.localidad.ieu.tipo_especifico_ieu.__str__()
+            )
+            worksheet.write(count + 1, 2, programa.localidad.ieu.pk)
+            worksheet.write(
+                count + 1, 3, programa.localidad.ieu.institucion_ministerial.siglas
+            )
+            worksheet.write(
+                count + 1, 4, programa.localidad.ieu.institucion_ministerial.dep_admin
+            )
+            worksheet.write(count + 1, 5, programa.localidad.tipo_localidad.nombre)
+            worksheet.write(count + 1, 6, programa.localidad.nombre)
+            worksheet.write(count + 1, 7, programa.localidad.estado.nombre)
+            worksheet.write(count + 1, 8, programa.localidad.municipio.nombre)
+            worksheet.write(count + 1, 9, programa.localidad.parroquia.nombre)
+            worksheet.write(count + 1, 10, programa.localidad.pk)
+            worksheet.write(count + 1, 11, programa.area_conocimiento.nombre)
+            worksheet.write(count + 1, 12, programa.area_conocimiento.pk)
+            worksheet.write(count + 1, 13, programa.sub_area_conocimiento.nombre)
+            worksheet.write(count + 1, 14, programa.sub_area_conocimiento.pk)
+            worksheet.write(count + 1, 15, programa.nombre)
+            worksheet.write(count + 1, 16, programa.pk)
+            worksheet.write(count + 1, 17, programa.tipo_carrera.nombre)
+            worksheet.write(count + 1, 18, activo)
 
-        pseudo_buffer = Echo()
-        writer = csv.writer(pseudo_buffer)
-        response = StreamingHttpResponse(
-            (writer.writerow(row) for row in rows), content_type="text/csv"
+        workbook.close()
+
+        output.seek(0)
+
+        filename = "loe_reporte_general_{:%Y%m%d%H%M%S}.xlsx".format(today)
+
+        response = HttpResponse(
+            output,
+            content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         )
-        response[
-            "Content-Disposition"
-        ] = "attachment; filename=loe_reporte_general_{:%Y%m%d%H%M%S}.csv".format(today)
+        response["Content-Disposition"] = "attachment; filename=%s" % filename
 
         return response
 
