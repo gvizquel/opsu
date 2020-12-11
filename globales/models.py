@@ -6,9 +6,6 @@ Modelo de datos de la app globales
 # Future Libraries
 from __future__ import unicode_literals
 
-# Standard Libraries
-from datetime import datetime
-
 # Django Libraries
 from django.db import models
 
