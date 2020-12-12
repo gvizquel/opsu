@@ -42,16 +42,16 @@ class BooksPersonDatatable(BaseDatatableView):
             obj = {
                 'id': row.id,
                 'name': row.name if row.name else '-',
-                'other_name': row.other_name if row.other_name else '-'
+                'other_name': row.other_name if row.other_name else '-',
+                'last_name': row.last_name if row.last_name else '-',
+                'other_last_name': row.other_last_name if row.other_last_name else '-'
             }
-            boton = """ <a 
-                        class="btn btn-sm btn-default" 
-                        title="Detalle de" 
+            boton = """ <a
+                        class="btn btn-sm btn-default"
+                        title="Detalle de"
                         onclick="detail({})">
                             <i class="fa fa-eye"></i>
                         </a> """.format(obj)
-
-            
             return boton
 
         return super().render_column(row, column)

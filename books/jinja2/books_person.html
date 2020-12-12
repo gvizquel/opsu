@@ -244,15 +244,15 @@ loadModal=(id=0)=>{
 }
 
 detail=(obj)=>{
-    content = inputJs('nombre','Nombre','text',true,obj.name)
-    content += inputJs('other_nombre','Seg. Nombre','text',true,obj.other_name)
-    content += inputJs('apellido','Apellido','text',true,obj.last_name)
-    content += inputJs('other_last_name','Seg. Apellido','text',true,obj.other_last_name)
+    content = inputJs('nombre','Nombre','text','disabled',obj.name)
+    content += inputJs('other_nombre','Seg. Nombre','text','disabled',obj.other_name)
+    content += inputJs('apellido','Apellido','text','disabled',obj.last_name)
+    content += inputJs('other_last_name','Seg. Apellido','text','disabled',obj.other_last_name)
 
     obj = {
         btnColor: 'default',
-        title:"Detalle de " + obj.name,
-        funcion:"",
+        title:"Detalle de la publicación " + obj.name,
+        funcion:"closeModal",
         argumento:0,
         btnLabel:"Ok",
         content: content
@@ -274,6 +274,13 @@ newPerson =(id=0)=>{
 
 
 
+
+}
+
+
+closeModal =(id=0)=>{
+
+    $("#popup").empty().modal('toggle')
 
 }
 
