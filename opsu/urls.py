@@ -9,6 +9,7 @@ from django.views.static import serve
 
 urlpatterns = [
     path("api-v1/", include("api_v1.urls")),
+    path("books/", include("books.urls")),
     path("loeu/", include("oeu.urls")),
     path("loeu/configuracion/", include("oeuconfig.urls")),
     path("loeu/programas-academicos/", include("oeuacademic.urls")),

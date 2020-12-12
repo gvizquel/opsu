@@ -5,6 +5,7 @@ Django settings for LOEU project.
 
 # Standard Libraries
 import os
+from datetime import timedelta
 
 # Django Libraries
 from django.utils.translation import gettext_lazy as _
@@ -76,6 +77,7 @@ INSTALLED_APPS = [
     "djgeojson",
     "ckeditor",
     "rest_framework",
+    "rest_framework_jwt",
     "corsheaders",
     "rest_framework_datatables",
     "drf_yasg",
@@ -167,6 +169,11 @@ SETTINGS_EXPORT = [
     "INICIAL_B",
 ]
 
+SITE_NAME = "opsu"
+CSRF_COOKIE_NAME = "csrftoken_" + SITE_NAME
+SESSION_COOKIE_NAME = "scn_" + SITE_NAME
+NAME_JWT = "tok_" + SITE_NAME
+
 ############################# Django Rest Framework Config #############################
 # REST_FRAMEWORK = {
 #     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
@@ -178,11 +185,16 @@ REST_FRAMEWORK = {
         "rest_framework.renderers.BrowsableAPIRenderer",
         "rest_framework_datatables.renderers.DatatablesRenderer",
     ),
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_jwt.authentication.JSONWebTokenAuthentication",
+    ),
     "DEFAULT_FILTER_BACKENDS": (
         "rest_framework_datatables.filters.DatatablesFilterBackend",
     ),
     "DEFAULT_PAGINATION_CLASS": "rest_framework_datatables.pagination.DatatablesPageNumberPagination",
     "PAGE_SIZE": 7000,
+    "JWT_EXPIRATION_DELTA": timedelta(hours=48),
+    "JWT_ALLOW_REFRESH": True,
 }
 
 ################################## Map LeftLet Config ##################################

@@ -2,31 +2,26 @@
 from django.contrib import admin
 
 # Thirdparty Libraries
-from books.models import Autor, Categoria, Editor, Editorial, Publicacion
+from books.models import BooksCategoria, BooksEditorial, BooksPerson, BooksPublicacion
 
 # Register your models here.
 
 
-@admin.register(Autor)
-class AutorAdmin(admin.ModelAdmin):
+@admin.register(BooksPerson)
+class PersonAdmin(admin.ModelAdmin):
     pass
 
 
-@admin.register(Editor)
-class EditorAdmin(admin.ModelAdmin):
-    pass
-
-
-@admin.register(Editorial)
+@admin.register(BooksEditorial)
 class EditorialAdmin(admin.ModelAdmin):
     pass
 
 
-@admin.register(Categoria)
+@admin.register(BooksCategoria)
 class CategoriaAdmin(admin.ModelAdmin):
     pass
 
 
-@admin.register(Publicacion)
+@admin.register(BooksPublicacion)
 class PublicacionAdmin(admin.ModelAdmin):
     pass
