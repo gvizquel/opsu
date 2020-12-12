@@ -20,14 +20,14 @@ urlpatterns = [
     path(
         "list/",
         TemplateView.as_view(
-            template_name="",
+            template_name="books_person.html",
             extra_context={
-                "dt_view_name": "datatable_person",
+                "dt_view_name": "dt-person",
                 "api_list_name": "api_person_list",
                 "api_detail_name": "api_person_detail",
-                "add_title": "Añadir nueva marca de producto",
-                "title": "Listando marcas de producto",
-                "palabraClave": "Marcas",
+                "add_title": "Añadir nueva publicación",
+                "title": "Listando publicaciones",
+                "palabraClave": "Publicaciones",
             },
         ),
         name="list",

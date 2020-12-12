@@ -1,0 +1,282 @@
+{% extends "base_jinja.html" %}
+
+{% block title %} {{ title }} {% endblock title %}
+
+{% block stylesheets %}
+    {{ super() }}
+    <!-- DataTables -->
+    <link rel="stylesheet" href="{{ static('bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ static('bower_components/datatables.net-responsive-bs/css/responsive.bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ static('bower_components/datatables.net-buttons-bs/css/buttons.bootstrap.min.css') }}">
+    <style>
+        .mytex {
+            min-width: 80px !important;
+        }
+        span {
+            display: inline-block;
+        }
+        .header th {
+            height: 40px;
+            line-height: 20px;
+            vertical-align: middle;
+            background-color: #bcd2ec;
+            border-width: 0px;
+            padding-left: 10px;
+            padding-right: 10px;
+         }
+    </style>
+{% endblock stylesheets %}
+
+{% block content %}
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <h1>
+                IEU:
+                <small>{{ title }}</small>
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i> Resumen LOEU</a></li>
+                <li class="active">{{ title }}</li>
+            </ol>
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+            
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="box box-info">
+                        <div class="box-header">
+                                {{ title }}
+                            <a 
+                                href="javascript:void(0)" 
+                                data-toggle="tooltip" 
+                                title="Agregar {{ title }}" 
+                                type="button" 
+                                class="btn btn-success btn pull-right"
+                                onclick="loadModal(0)">Agregar</a>
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                            <select name="filter_pais" id="filter_pais" class="select2 form-control" style="width: 100%;">
+                                <option value="1">Afganistan</option>
+                                <option value="2">X</option>
+                            </select>
+
+                            <table 
+                                width="100%" 
+                                id="example" 
+                                class="table-sm table-hover table-bordered table-striped dataTable"
+                                >
+                                <thead class="header">
+                                    <tr>
+                                        <th class="text-center">Nombre</th>
+                                        <th class="text-center">Seg. Nombre</th>
+                                        <th class="text-center">Apellido</th>
+                                        <th class="text-center">Seg. Apellido</th>
+                                        <th class="text-center">País de nacimiento</th>
+                                        <th class="text-center">Acciones</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                        <!-- /.box-body -->
+                    </div>
+                    <!-- /.box -->
+                </div>
+            </div>
+            <!-- /.row -->
+        </section>
+        <!-- /.content -->
+        <div id="popup" class="modal fade" role="dialog"></div>
+    </div>
+    <!-- /.content-wrapper -->
+
+
+
+{% endblock content %}
+
+{% block javascripts %}
+    {{ super() }}
+    <!-- DataTables -->
+    <script src="{{ static('bower_components/datatables.net/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ static('bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js') }}"></script>
+    <script src="{{ static('bower_components/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script>
+    <script src="{{ static('bower_components/datatables.net-responsive-bs/js/responsive.bootstrap.js') }}"></script>
+    <script src="{{ static('bower_components/datatables.net-buttons/js/dataTables.buttons.min.js') }}"></script>
+    <script src="{{ static('bower_components/datatables.net-buttons-bs/js/buttons.bootstrap.min.js') }}"></script>
+    <script src="{{ static('bower_components/jszip/dist/jszip.min.js') }}"></script>
+    <script src="{{ static('bower_components/pdfmake/build/pdfmake.min.js') }}"></script>
+    <script src="{{ static('bower_components/pdfmake/build/vfs_fonts.js') }}"></script>
+    <script src="{{ static('bower_components/datatables.net-buttons/js/buttons.html5.min.js') }}"></script>
+    <script src="{{ static('bower_components/datatables.net-buttons/js/buttons.print.min.js') }}"></script>
+    <script src="{{ static('bower_components/datatables.net-buttons/js/buttons.colVis.min.js') }}"></script>
+    <!-- page script -->
+
+    <script src="{{ static('common_book.js') }}"></script>
+
+    <script>
+
+select2Ajax = (inputId,url,value=null) =>{
+
+    $(`#${inputId}`).select2({
+        // theme:'bootstrap4',
+        
+        ajax: {
+            url: url,
+            data: function (params) {
+            var query = {
+                q: params.term,
+                type: 'public'
+            }
+        
+            // Query parameters will be ?search=[term]&type=public
+            return query;
+            }
+        }
+    })
+    if(value){
+        console.log(value)
+        var newOption = new Option(value.text, value.id, true, true);
+        $(`#${inputId}`).append(newOption).trigger('change');
+    }
+
+}
+
+modalBody = (obj) =>{
+
+return(`<div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-${obj.btnColor}">
+                    <h4 class="modal-title">${obj.title}</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    ${obj.content}
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-${obj.btnColor}" onclick="${obj.funcion}(${obj.argumento})">${obj.btnLabel}</button>
+                </div>
+            </div>
+        </div>`)
+
+
+}
+
+inputJs = (inputId,label,type,disabled="",value=null) =>{
+    return(`<div class="form-group">
+                <label for="${inputId}">${label}</label>
+                <input 
+                  ${disabled}
+                  value="${value?value:''}"
+                  type="${type}" class="form-control" id="${inputId}" name="${inputId}" placeholder="${label}">
+            </div>`)
+}
+
+
+    $(document).ready(function() {
+
+        select2Ajax("filter_pais", Django.ac_pais)
+
+        var url_dt = Django['dt-person'];
+
+        var oTable = $('#example').dataTable({
+            
+            "processing": true,
+            "serverSide": true,
+            "destroy":true,
+            "responsive":true,
+            "dom": 'Blfrtip',
+            "buttons": [
+                'copyHtml5',
+                'excelHtml5',
+                'csvHtml5',
+                'pdfHtml5'
+            ],
+            "columnDefs":[
+                {
+                    targets:[5],
+                    orderable:false,
+                    searchable:false,
+                }
+            ],
+            "ajax": {
+                url: url_dt,
+                data:function(d){
+                    d.filter_pais = $("#filter_pais").val()
+                }
+            }
+
+
+        });
+
+
+        $('#filter_pais').change(function(){
+            oTable.api().ajax.reload(null, false);
+        });
+      
+    })
+
+
+loadModal=(id=0)=>{
+
+    content = inputJs('nombre','Nombre','text')
+    content += inputJs('other_nombre','Seg. Nombre','text')
+    content += inputJs('apellido','Apellido','text')
+    content += inputJs('other_last_name','Seg. Apellido','text')
+
+    obj = {
+        btnColor: 'primary',
+        title:"{{ add_title }}",
+        funcion:"newPerson",
+        argumento:0,
+        btnLabel:"Guardar",
+        content: content
+    }
+
+    $("#popup").empty().append(modalBody(obj)).modal('show')
+
+}
+
+detail=(obj)=>{
+    content = inputJs('nombre','Nombre','text',true,obj.name)
+    content += inputJs('other_nombre','Seg. Nombre','text',true,obj.other_name)
+    content += inputJs('apellido','Apellido','text',true,obj.last_name)
+    content += inputJs('other_last_name','Seg. Apellido','text',true,obj.other_last_name)
+
+    obj = {
+        btnColor: 'default',
+        title:"Detalle de " + obj.name,
+        funcion:"",
+        argumento:0,
+        btnLabel:"Ok",
+        content: content
+    }
+    $("#popup").empty().append(modalBody(obj)).modal('show')
+
+
+}
+
+newPerson =(id=0)=>{
+
+    data = {
+        name : $("#nombre").val(),
+        last_name : $("#nombre").val(),
+        other_name : $("#nombre").val(),
+        other_last_name : $("#nombre").val()
+
+    }
+
+
+
+
+}
+
+    </script>
+
+{% endblock javascripts %}
