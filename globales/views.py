@@ -75,11 +75,10 @@ class InstitucionIeuAutoComplete(autocomplete.Select2QuerySetView):
 ##############################################################################
 class PaisAutocomplete(autocomplete.Select2QuerySetView):
     def get_queryset(self):
+        qs = Pais.objects.all()
 
         if self.q:
-            qs = Pais.objects.filter(nombrepais__istartswith=self.q).order_by(
-                "nombrepais"
-            )
+            qs = qs.filter(nombre__istartswith=self.q).order_by("nombre")
 
         return qs
 
@@ -87,11 +86,9 @@ class PaisAutocomplete(autocomplete.Select2QuerySetView):
 ##############################################################################
 class PaisAutocomplete2(autocomplete.Select2QuerySetView):
     def get_queryset(self):
-
+        qs = Pais.objects.all()
         if self.q:
-            qs = Pais.objects.filter(nombrepais__istartswith=self.q).order_by(
-                "nombrepais"
-            )
+            qs = qs.filter(nombre__istartswith=self.q).order_by("nombre")
 
         return qs
 
