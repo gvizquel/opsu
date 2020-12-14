@@ -126,6 +126,19 @@
                     {% include "configuracion_menu.html" %}
                 </ul>
             </li>
+
+            <li class="treeview {% if 'books/' in request.path %}active{% endif %}">
+                <a href="#">
+                    <i class="fa fa-book"></i>
+                    <span>CENIDES</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    {% include "books_menu.html" %}
+                </ul>
+            </li>
         </ul>
     </section>
         <!-- /.sidebar -->
