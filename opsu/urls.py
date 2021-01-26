@@ -7,7 +7,11 @@ from django.contrib import admin
 from django.urls import path
 from django.views.static import serve
 
+from globales.views import var_javascript
+
 urlpatterns = [
+    path('javascript', var_javascript, name="javascript"),
+
     path("api-v1/", include("api_v1.urls")),
     path("books/", include("books.urls")),
     path("loeu/", include("oeu.urls")),

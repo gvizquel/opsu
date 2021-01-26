@@ -88,6 +88,12 @@ class BooksPerson(models.Model):
     def __str__(self):
         return "{} {}".format(self.name, self.last_name)
 
+    @property
+    def full_name(self):
+        return "{} {} {} {}".format(
+            self.name, self.other_name, self.last_name, self.other_last_name
+        )
+
     class Meta:
         ordering = ["name", "last_name"]
         verbose_name = _("Autor")

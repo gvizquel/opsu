@@ -72,6 +72,7 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
+    "whitenoise.runserver_nostatic",
     "django.contrib.staticfiles",
     "leaflet",
     "djgeojson",
@@ -279,7 +280,7 @@ LANGUAGES = [("es", _("Spanish"))]
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
-##################################### Stic Config ######################################
+##################################### Static Config ####################################
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 

@@ -2,12 +2,17 @@
 """
 Vistas de la aplicación globales
 """
+# Standard Libraries
+import json
+
 # Django Libraries
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
+from django.http import HttpResponse
 from django.shortcuts import render
 from django.urls import reverse, reverse_lazy
 from django.utils.html import strip_tags
+from django.utils.translation import gettext_lazy as _
 from django.views.generic import CreateView, UpdateView
 
 # Thirdparty Libraries
@@ -22,6 +27,26 @@ from .models import Estado, Etnia, Municipio, Pais, Parroquia
 # @login_required
 def index(request):
     return render(request, "index.html")
+
+
+def var_javascript(request):
+    """ VARIABLES GLOBALES JAVASCRIPT """
+    context = {
+        # DATATABLE VIEWS
+        "dt-person": reverse("books:person:dt-person"),
+        # API BOOKS
+        "api_person_list": reverse("books:person:booksperson-list"),
+        "api_person_detail": reverse(
+            "books:person:booksperson-detail", kwargs={"pk": ":val:"}
+        ),
+        # RUTAS AUTOCOMPLETE
+        "pais_list": reverse("globales:paisAutoComplete2"),
+        # Traducciones del modulo Books:
+        "place_holder_pais": str(_("SELECCIONE UN PAIS")),
+    }
+    print(context)
+    out = "var Django = " + json.dumps(context, indent=1)
+    return HttpResponse(out, content_type="application/javascript")
 
 
 ##############################################################################
@@ -78,7 +103,7 @@ class PaisAutocomplete(autocomplete.Select2QuerySetView):
         qs = Pais.objects.all()
 
         if self.q:
-            qs = qs.filter(nombre__istartswith=self.q).order_by("nombre")
+            qs = Pais.objects.filter(nombre__istartswith=self.q).order_by("nombre")
 
         return qs
 
@@ -87,8 +112,9 @@ class PaisAutocomplete(autocomplete.Select2QuerySetView):
 class PaisAutocomplete2(autocomplete.Select2QuerySetView):
     def get_queryset(self):
         qs = Pais.objects.all()
+
         if self.q:
-            qs = qs.filter(nombre__istartswith=self.q).order_by("nombre")
+            qs = Pais.objects.filter(nombre__istartswith=self.q).order_by("nombre")
 
         return qs
 

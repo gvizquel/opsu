@@ -3,8 +3,7 @@ from django.urls import path
 from django.views.generic import TemplateView
 
 # Thirdparty Libraries
-# from books.datatables import DatatableBase
-from books.models import BooksPerson
+from books.datatables import BooksPersonDatatable
 from books.viewsets import BooksPersonViewSet
 from rest_framework.routers import DefaultRouter
 
@@ -16,20 +15,20 @@ PERSON_ROUTER = DefaultRouter()
 PERSON_ROUTER.register("api/v1", BooksPersonViewSet)
 
 urlpatterns = [
-    # path("datatable", DatatableBase.as_view(model=BooksPerson), name="datatable_person"),
     path(
         "list/",
         TemplateView.as_view(
-            template_name="",
+            template_name="books_person.html",
             extra_context={
-                "dt_view_name": "datatable_person",
+                "dt_view_name": "dt-person",
                 "api_list_name": "api_person_list",
                 "api_detail_name": "api_person_detail",
-                "add_title": "Añadir nueva marca de producto",
-                "title": "Listando marcas de producto",
-                "palabraClave": "Marcas",
+                "add_title": "Añadir nueva persona",
+                "title": "Listando Personas",
+                "palabraClave": "Personas",
             },
         ),
         name="list",
     ),
+    path("datatable/", BooksPersonDatatable.as_view(), name="dt-person"),
 ] + PERSON_ROUTER.urls

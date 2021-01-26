@@ -80,12 +80,15 @@ class GeneralReportView(LoginRequiredMixin, SuccessMessageMixin, FormView):
             "COD_PROGRAMA",
             "TIPO DE PROGRAMA",
             "ACTIVO",
+            "COORDENADAS",
         ]
+        ieu = data["ieu"].pk if data["ieu"] else None
+        gestion = data["gestion"] if data["gestion"] else None
 
         for count, header in enumerate(headers):
             worksheet.write(0, count, header)
 
-        worksheet.autofilter("A1:S1")
+        worksheet.autofilter("A1:T1")
 
         worksheet.set_column("A:A", 102)
         worksheet.set_column("B:B", 61)
@@ -105,26 +108,18 @@ class GeneralReportView(LoginRequiredMixin, SuccessMessageMixin, FormView):
         worksheet.set_column("P:P", 89)
         worksheet.set_column("Q:Q", 20)
         worksheet.set_column("R:R", 23)
-        worksheet.set_column("S:S", 20)
+        worksheet.set_column("S:S", 15)
+        worksheet.set_column("T:T", 25)
 
         # Preparo los argumentos para filtrar las fotos del reporte en un diccionario
         set_if_not_none(
-            filters_kwargs,
-            "localidad__ieu__institucion_ministerial__pk",
-            data["ieu"].pk if data["ieu"] else None,
+            filters_kwargs, "localidad__ieu__institucion_ministerial__pk", ieu
         )
         set_if_not_none(
             filters_kwargs,
             "localidad__ieu__institucion_ministerial__dep_admin",
-            data["gestion"] if data["gestion"] else None,
+            gestion,
         )
-        # set_if_not_none(filters_kwargs, "photo__pub_date__gte", date_inti)
-        # set_if_not_none(filters_kwargs, "photo__pub_date__lte", date_edn)
-        # set_if_not_none(filters_kwargs, "photo__place_obj__zonCodigo__icontains", zona)
-        # set_if_not_none(filters_kwargs, "photo__place_obj__unnNombre", zona)
-        # set_if_not_none(filters_kwargs, "photo__place_obj__regnombre", direccion)
-        # set_if_not_none(filters_kwargs, "photo__place_obj__gerNombre", gerencia)
-        # set_if_not_none(filters_kwargs, "photo__place_obj__tipoAtencion", type_atention)
 
         LOGGER.warning("Inciando la descarga")
         LOGGER.info("Filters Kwargs: {}".format(filters_kwargs))
@@ -154,38 +149,46 @@ class GeneralReportView(LoginRequiredMixin, SuccessMessageMixin, FormView):
         response["Content-Disposition"] = 'attachment; filename="somefilename.csv"'
 
         for count, programa in enumerate(oferta_academica.iterator()):
-            if programa.cod_activacion == "11111111":
+            fila = count + 1
+            if programa.cod_activacion == "11111111" or "10111111":
                 activo = "SI"
             else:
                 activo = "NO"
 
+            coordenadas = ""
+            if programa.localidad.punto:
+                coordenadas = " ".join(
+                    map(str, programa.localidad.punto["coordinates"])
+                )
+
             worksheet.write(
-                count + 1, 0, programa.localidad.ieu.institucion_ministerial.nombre
+                fila, 0, programa.localidad.ieu.institucion_ministerial.nombre
             )
             worksheet.write(
-                count + 1, 1, programa.localidad.ieu.tipo_especifico_ieu.__str__()
+                fila, 1, programa.localidad.ieu.tipo_especifico_ieu.__str__()
             )
-            worksheet.write(count + 1, 2, programa.localidad.ieu.pk)
+            worksheet.write(fila, 2, programa.localidad.ieu.pk)
             worksheet.write(
-                count + 1, 3, programa.localidad.ieu.institucion_ministerial.siglas
+                fila, 3, programa.localidad.ieu.institucion_ministerial.siglas
             )
             worksheet.write(
-                count + 1, 4, programa.localidad.ieu.institucion_ministerial.dep_admin
+                fila, 4, programa.localidad.ieu.institucion_ministerial.dep_admin
             )
-            worksheet.write(count + 1, 5, programa.localidad.tipo_localidad.nombre)
-            worksheet.write(count + 1, 6, programa.localidad.nombre)
-            worksheet.write(count + 1, 7, programa.localidad.estado.nombre)
-            worksheet.write(count + 1, 8, programa.localidad.municipio.nombre)
-            worksheet.write(count + 1, 9, programa.localidad.parroquia.nombre)
-            worksheet.write(count + 1, 10, programa.localidad.pk)
-            worksheet.write(count + 1, 11, programa.area_conocimiento.nombre)
-            worksheet.write(count + 1, 12, programa.area_conocimiento.pk)
-            worksheet.write(count + 1, 13, programa.sub_area_conocimiento.nombre)
-            worksheet.write(count + 1, 14, programa.sub_area_conocimiento.pk)
-            worksheet.write(count + 1, 15, programa.nombre)
-            worksheet.write(count + 1, 16, programa.pk)
-            worksheet.write(count + 1, 17, programa.tipo_carrera.nombre)
-            worksheet.write(count + 1, 18, activo)
+            worksheet.write(fila, 5, programa.localidad.tipo_localidad.nombre)
+            worksheet.write(fila, 6, programa.localidad.nombre)
+            worksheet.write(fila, 7, programa.localidad.estado.nombre)
+            worksheet.write(fila, 8, programa.localidad.municipio.nombre)
+            worksheet.write(fila, 9, programa.localidad.parroquia.nombre)
+            worksheet.write(fila, 10, programa.localidad.pk)
+            worksheet.write(fila, 11, programa.area_conocimiento.nombre)
+            worksheet.write(fila, 12, programa.area_conocimiento.pk)
+            worksheet.write(fila, 13, programa.sub_area_conocimiento.nombre)
+            worksheet.write(fila, 14, programa.sub_area_conocimiento.pk)
+            worksheet.write(fila, 15, programa.nombre)
+            worksheet.write(fila, 16, programa.pk)
+            worksheet.write(fila, 17, programa.tipo_carrera.nombre)
+            worksheet.write(fila, 18, activo)
+            worksheet.write(fila, 19, coordenadas)
 
         workbook.close()
 
