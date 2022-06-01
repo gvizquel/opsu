@@ -28,5 +28,15 @@
 
             L.control.layers(baseLayers).addTo(detail.map);
 
+
+            var map = L.map("mapid", {
+            center: [7.0000000, -65.0000000],
+            zoom: 6
+            });
+
+            var mytilelayer = L.tileLayer(
+            "http://{s}.tile.osm.org/{z}/{x}/{y}.png"
+            ).addTo(map);
+
     });
 })(jQuery); // End of use strict

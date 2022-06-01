@@ -144,12 +144,12 @@ TEMPLATES = [
 ################################## corsheaders Config ##################################
 CORS_ORIGIN_ALLOW_ALL = True
 
-# CORS_ORIGIN_WHITELIST = [
-#     "https://example.com",
-#     "https://sub.example.com",
-#     "http://localhost:8080",
-#     "http://127.0.0.1:9000"
-# ]
+CORS_ORIGIN_WHITELIST = [
+    "https://example.com",
+    "https://sub.example.com",
+    "http://localhost:8080",
+    "http://127.0.0.1:9000"
+]
 
 ############################## Templates Settings Exports ##############################
 NOMBRE_APP = "MPPEU|OPSU|LOEU"
@@ -209,22 +209,18 @@ LEAFLET_CONFIG = {
     "TILES": [
         (
             "Mapa",
-            "https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}",
+            "http://{s}.tile.osm.org/{z}/{x}/{y}.png",
             {
-                "attribution": 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+                "attribution": 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
                 "maxZoom": 24,
-                "id": "mapbox.streets",
-                "accessToken": "pk.eyJ1IjoiZ3ZpenF1ZWwiLCJhIjoiY2szOWVzMnpvMDFpMDNtbmp0YnAzd2s0NCJ9.q34qYWhksU2bEuTs-UGPAg",
             },
         ),
         (
             "Satélite",
-            "https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}",
+            "http://{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.png",
             {
-                "attribution": 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+                "attribution": 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
                 "maxZoom": 24,
-                "id": "mapbox.streets-satellite",
-                "accessToken": "pk.eyJ1IjoiZ3ZpenF1ZWwiLCJhIjoiY2szOWVzMnpvMDFpMDNtbmp0YnAzd2s0NCJ9.q34qYWhksU2bEuTs-UGPAg",
             },
         ),
     ],

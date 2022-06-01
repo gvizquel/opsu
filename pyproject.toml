@@ -1,16 +1,47 @@
-[tool.black]
-line-length = 88
-include = '\.pyi?$'
-exclude = '''
-/(
-    \.git
-  | \.hg
-  | \.mypy_cache
-  | \.tox
-  | \.venv
-  | _build
-  | buck-out
-  | build
-  | dist
-)/
-'''
+[tool.poetry]
+name = "opsu"
+version = "0.1.0"
+description = "El libro de oportunidades de estudio enlas universidades de Venezuela"
+authors = ["gvizquel <gerson.vizquel@aituring.co>"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+django = "2.2.17"
+django-autocomplete-light = "^3.9.1"
+django-ckeditor = "^6.2.0"
+django-cors-headers = "^3.11.0"
+django-crispy-forms = "^1.14.0"
+django-datatables-view = "^1.19.1"
+django-environ = "^0.8.1"
+django-geojson = "^3.2.1"
+django-jinja = "^2.10.0"
+django-leaflet = "^0.28.2"
+django-settings-export = "^1.2.1"
+django-suit = "^0.2.28"
+djangorestframework-datatables = "^0.7.0"
+djangorestframework-jwt = "^1.11.0"
+drf-yasg = "^1.20.0"
+gunicorn = "^20.1.0"
+jsonfield = "^3.1.0"
+psycopg2-binary = "2.8.6"
+whitenoise = "^6.0.0"
+Markdown = "^3.3.6"
+Pillow = "^9.0.1"
+XlsxWriter = "^3.0.3"
+djlint = "^0.7.5"
+
+[tool.poetry.dev-dependencies]
+isort = "^5.10.1"
+autopep8 = "^1.6.0"
+black = "^22.1.0"
+django-extensions = "^3.1.5"
+ipython = "^8.1.1"
+flake8 = "^4.0.1"
+mypy = "^0.931"
+pep8 = "^1.7.1"
+pre-commit = "^2.17.0"
+pylint-django = "^2.5.2"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

@@ -44,7 +44,6 @@ def var_javascript(request):
         # Traducciones del modulo Books:
         "place_holder_pais": str(_("SELECCIONE UN PAIS")),
     }
-    print(context)
     out = "var Django = " + json.dumps(context, indent=1)
     return HttpResponse(out, content_type="application/javascript")
 
